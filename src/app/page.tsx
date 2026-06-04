@@ -190,9 +190,9 @@ export default function HomePage() {
         {/* Panneau droit — blanc */}
         <div style={{ flex: 1, background: 'white', display: 'flex', flexDirection: 'column' }}>
           {/* Top bar */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '32px 64px 0' }}>
-            <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={120} height={32}
-              style={{ height: 26, width: 'auto' }} className="object-contain" priority/>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '32px 56px 0' }}>
+            <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={200} height={56}
+              style={{ height: 44, width: 'auto' }} className="object-contain" priority/>
             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#d1d5db' }}>
               Formulaire de déclaration
             </span>
@@ -270,8 +270,8 @@ export default function HomePage() {
       {/* Header */}
       <header style={{ background: 'white', borderBottom: '1px solid #e5e7eb', position: 'sticky', top: 0, zIndex: 40 }}>
         <div style={{ maxWidth: 1050, margin: '0 auto', padding: '0 24px', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={110} height={28}
-            style={{ height: 24, width: 'auto' }} className="object-contain"/>
+          <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={160} height={44}
+            style={{ height: 36, width: 'auto' }} className="object-contain"/>
           {step < 99 && (
             <span style={{
               fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
