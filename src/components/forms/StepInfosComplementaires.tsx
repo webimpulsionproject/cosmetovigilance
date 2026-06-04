@@ -61,22 +61,26 @@ export default function StepInfosComplementaires({ value, onChange, onBack, onSu
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10">
         <Bloc title="Actions effectuées en magasin">
           <div className="space-y-0.5">
-            {ACTIONS.map(({ label, warn }) => (
-              <label key={label} className={`flex items-center gap-3 px-3 py-3 rounded-xl cursor-pointer transition-all duration-150 select-none text-[14px] min-h-[48px] ${
-                value.actionsEnMagasin.includes(label)
-                  ? warn ? 'bg-amber-50 text-amber-700' : 'bg-[#f5f1fb] text-[#6B3FA0] font-medium'
-                  : 'hover:bg-[#fafafa] text-[#333] active:bg-[#f5f1fb]'
-              }`}>
-                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${
-                  value.actionsEnMagasin.includes(label)
-                    ? warn ? 'bg-amber-400 border-amber-400' : 'bg-[#6B3FA0] border-[#6B3FA0]'
-                    : 'border-[#ccc] bg-white'
+            {ACTIONS.map(({ label, warn }) => {
+              const checked = value.actionsEnMagasin.includes(label);
+              return (
+                <label key={label} className={`flex items-center gap-3 px-3 py-3 rounded-xl cursor-pointer transition-all duration-150 select-none text-[14px] min-h-[48px] ${
+                  checked
+                    ? warn ? 'bg-amber-50 text-amber-700' : 'bg-[#f5f1fb] text-[#6B3FA0] font-medium'
+                    : 'hover:bg-gray-50 text-gray-700'
                 }`}>
-                  {value.actionsEnMagasin.includes(label) && <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2 6 5 9 10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                </div>
-                <span className="leading-tight">{label}</span>
-              </label>
-            ))}
+                  <input type="checkbox" checked={checked} onChange={() => toggle(label)} className="sr-only"/>
+                  <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${
+                    checked
+                      ? warn ? 'bg-amber-400 border-amber-400' : 'bg-[#6B3FA0] border-[#6B3FA0]'
+                      : 'border-gray-300 bg-white'
+                  }`}>
+                    {checked && <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2 6 5 9 10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                  </div>
+                  <span className="leading-tight">{label}</span>
+                </label>
+              );
+            })}
           </div>
         </Bloc>
 

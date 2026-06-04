@@ -5,7 +5,48 @@ import { ClientCoordonnees } from '@/types';
 import StepHeader from '@/components/ui/StepHeader';
 import { FormField, inputCls, selectCls } from '@/components/ui/FormField';
 
-const PAYS = ['France','Belgique','Suisse','Luxembourg','Maroc','Tunisie','Algérie','Espagne','Italie','Allemagne','Portugal','Royaume-Uni','Autre'];
+const PAYS = [
+  'France',
+  'Afghanistan','Afrique du Sud','Albanie','Algérie','Allemagne','Andorre','Angola',
+  'Antigua-et-Barbuda','Arabie saoudite','Argentine','Arménie','Australie','Autriche','Azerbaïdjan',
+  'Bahamas','Bahreïn','Bangladesh','Barbade','Belgique','Belize','Bénin','Bhoutan',
+  'Biélorussie','Birmanie (Myanmar)','Bolivie','Bosnie-Herzégovine','Botswana','Brésil','Brunei',
+  'Bulgarie','Burkina Faso','Burundi',
+  'Cabo Verde','Cambodge','Cameroun','Canada','Centrafrique','Chili','Chine','Chypre',
+  'Colombie','Comores','Congo (Brazzaville)','Congo (RDC)','Corée du Nord','Corée du Sud',
+  'Costa Rica',"Côte d'Ivoire",'Croatie','Cuba',
+  'Danemark','Djibouti','Dominique',
+  'Égypte','Émirats arabes unis','Équateur','Érythrée','Espagne','Estonie','Eswatini',
+  'États-Unis','Éthiopie',
+  'Fidji','Finlande',
+  'Gabon','Gambie','Géorgie','Ghana','Grèce','Grenade','Guatemala',
+  'Guinée','Guinée-Bissau','Guinée équatoriale','Guyana',
+  'Haïti','Honduras','Hongrie',
+  'Inde','Indonésie','Irak','Iran','Irlande','Islande','Israël','Italie',
+  'Jamaïque','Japon','Jordanie',
+  'Kazakhstan','Kenya','Kirghizistan','Kiribati','Kosovo','Koweït',
+  'Laos','Lesotho','Lettonie','Liban','Liberia','Libye','Liechtenstein','Lituanie','Luxembourg',
+  'Madagascar','Malaisie','Malawi','Maldives','Mali','Malte','Maroc',
+  'Îles Marshall','Maurice','Mauritanie','Mexique','Micronésie','Moldavie','Monaco',
+  'Mongolie','Monténégro','Mozambique',
+  'Namibie','Nauru','Népal','Nicaragua','Niger','Nigeria','Norvège','Nouvelle-Zélande',
+  'Oman','Ouganda','Ouzbékistan',
+  'Pakistan','Palaos','Palestine','Panama','Papouasie-Nouvelle-Guinée','Paraguay','Pays-Bas',
+  'Pérou','Philippines','Pologne','Portugal',
+  'Qatar',
+  'République dominicaine','République tchèque','Roumanie','Royaume-Uni','Russie','Rwanda',
+  'Saint-Christophe-et-Niévès','Sainte-Lucie','Saint-Marin','Saint-Vincent-et-les-Grenadines',
+  'Salvador','Samoa','São Tomé-et-Príncipe','Sénégal','Serbie','Seychelles',
+  'Sierra Leone','Singapour','Slovaquie','Slovénie','Somalie','Soudan','Soudan du Sud',
+  'Sri Lanka','Suède','Suisse','Suriname','Syrie',
+  'Tadjikistan','Tanzanie','Tchad','Thaïlande','Timor oriental','Togo','Tonga',
+  'Trinité-et-Tobago','Tunisie','Turkménistan','Turquie','Tuvalu',
+  'Ukraine','Uruguay',
+  'Vanuatu','Vatican','Venezuela','Vietnam',
+  'Yémen',
+  'Zambie','Zimbabwe',
+  'Autre',
+];
 const LANGUES = ['Français','Anglais','Espagnol','Arabe','Portugais','Italien','Allemand','Autre'];
 
 type E = Partial<Record<keyof ClientCoordonnees, string>>;
