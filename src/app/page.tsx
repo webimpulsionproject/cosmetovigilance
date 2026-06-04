@@ -305,30 +305,37 @@ export default function HomePage() {
 
   /* ══ ÉTAPES ══ */
   return (
-    <div style={{ minHeight: '100vh', background: '#f9fafb', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', background: '#f4f3f8', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
-      <header style={{ background: 'white', borderBottom: '1px solid #e5e7eb', position: 'sticky', top: 0, zIndex: 40 }}>
-        <div style={{ maxWidth: 1050, margin: '0 auto', padding: '0 24px', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <header style={{ background: 'white', borderBottom: '1px solid #ebebeb', position: 'sticky', top: 0, zIndex: 40, boxShadow: '0 1px 0 rgba(0,0,0,0.04)' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 32px', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={160} height={44}
-            style={{ height: 36, width: 'auto' }} className="object-contain"/>
+            style={{ height: 32, width: 'auto' }} className="object-contain"/>
           {step < 99 && (
             <span style={{
-              fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
-              color: PURPLE, background: '#f5f3ff', border: '1px solid #ddd6fe',
-              padding: '4px 12px', borderRadius: 999,
+              fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase',
+              color: PURPLE, background: '#f0ebfa', border: '1px solid #e0d4f5',
+              padding: '5px 14px', borderRadius: 999,
             }}>
-              {data.type === 'cosmetovigilance' ? 'Cosmétovigilance' : 'Qualité'}
+              {data.type === 'cosmetovigilance' ? 'Cosmétovigilance' : 'Qualité produit'}
             </span>
           )}
         </div>
       </header>
 
       {/* Contenu */}
-      <main style={{ flex: 1, maxWidth: 1050, margin: '0 auto', width: '100%', padding: '32px 24px' }}>
+      <main style={{ flex: 1, maxWidth: 900, margin: '0 auto', width: '100%', padding: '28px 32px 48px' }}>
         {step > 0 && step < 99 && <Progress step={step} type={data.type}/>}
 
-        <div style={{ background: 'white', borderRadius: 12, border: '1px solid #e5e7eb', boxShadow: '0 1px 4px rgba(0,0,0,0.05)' }}>
-          <div className="p-6 sm:p-8">
+        <div style={{
+          background: 'white', borderRadius: 14,
+          border: '1px solid #e8e8e8',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04)',
+          overflow: 'hidden',
+        }}>
+          {/* Bande de couleur en haut */}
+          {step < 99 && <div style={{ height: 3, background: `linear-gradient(90deg, ${PURPLE}, #9B6FD4)` }}/>}
+          <div style={{ padding: '32px 36px' }}>
             {step === 1 && <StepCoordonnees   value={data.coordonnees}        onChange={(v) => setData((d) => ({...d,coordonnees:v}))}        onBack={goBack}      onNext={goNext}/>}
             {step === 2 && <StepProduit        value={data.produits}           onChange={(v) => setData((d) => ({...d,produits:v}))}           onBack={goBack}      onNext={goNextStep2}/>}
             {step === 3 && isCosmetov && <StepEffetIndesirable value={data.effetIndesirable} onChange={(v) => setData((d) => ({...d,effetIndesirable:v}))} onBack={goBack} onNext={goNext}/>}
@@ -347,7 +354,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <p style={{ textAlign: 'center', fontSize: 11, color: '#d1d5db', marginTop: 24 }}>
+        <p style={{ textAlign: 'center', fontSize: 11, color: '#bbb', marginTop: 20 }}>
           © {new Date().getFullYear()} Marionnaud Lafayette
         </p>
       </main>

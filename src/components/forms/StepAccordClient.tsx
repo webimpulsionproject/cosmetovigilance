@@ -13,7 +13,7 @@ const SignaturePad = dynamic(() => import('@/components/ui/SignaturePad'), { ssr
 function Bloc({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-7">
-      <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">{title}</h3>
+      <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B3FA0] mb-4">{title}</h3>
       {children}
     </div>
   );
