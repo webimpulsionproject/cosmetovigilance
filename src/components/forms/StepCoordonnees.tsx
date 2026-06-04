@@ -68,28 +68,28 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
 
   const validate = () => {
     const e: E = {};
-    if (!value.nom.trim())       e.nom = 'Requis';
-    if (!value.prenom.trim())    e.prenom = 'Requis';
-    if (!value.age.trim())       e.age = 'Requis';
-    if (!value.email.trim())     e.email = 'Requis';
+    if (!value.nom.trim())        e.nom = 'Requis';
+    if (!value.prenom.trim())     e.prenom = 'Requis';
+    if (!value.email.trim())      e.email = 'Requis';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.email)) e.email = 'Format invalide';
-    if (!value.telephone.trim()) e.telephone = 'Requis';
-    if (!value.nomRue.trim())    e.nomRue = 'Requis';
-    if (!value.ville.trim())     e.ville = 'Requis';
+    if (!value.telephone.trim())  e.telephone = 'Requis';
+    if (!value.nomRue.trim())     e.nomRue = 'Requis';
+    if (!value.ville.trim())      e.ville = 'Requis';
     if (!value.codePostal.trim()) e.codePostal = 'Requis';
-    if (!value.pays)             e.pays = 'Requis';
+    if (!value.pays)              e.pays = 'Requis';
     setErrors(e);
     return !Object.keys(e).length;
   };
 
-  const ic = (f: keyof ClientCoordonnees) => `${inputCls}${errors[f] ? ' !border-red-300 !ring-red-100/50' : ''}`;
-  const sc = (f: keyof ClientCoordonnees) => `${selectCls}${errors[f] ? ' !border-red-300 !ring-red-100/50' : ''}`;
+  const ic = (f: keyof ClientCoordonnees) => `${inputCls}${errors[f] ? ' !border-red-300' : ''}`;
+  const sc = (f: keyof ClientCoordonnees) => `${selectCls}${errors[f] ? ' !border-red-300' : ''}`;
 
   return (
     <div>
       <StepHeader title="Coordonnées du client" subtitle="Étape 1 sur 5" onBack={onBack} onNext={() => { if (validate()) onNext(); }}/>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10">
+        {/* Colonne gauche : Identité */}
         <div>
           <Bloc title="Identité">
             <div className="grid grid-cols-2 gap-3">
@@ -107,8 +107,8 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
                   <option>Femme</option><option>Homme</option><option>Non précisé</option>
                 </select>
               </FormField>
-              <FormField label="Âge" required error={errors.age}>
-                <input className={ic('age')} placeholder="30" type="number" min="0" max="120" inputMode="numeric" value={value.age} onChange={(e) => s('age', e.target.value)}/>
+              <FormField label="Âge">
+                <input className={inputCls} placeholder="30" type="number" min="0" max="120" inputMode="numeric" value={value.age} onChange={(e) => s('age', e.target.value)}/>
               </FormField>
             </div>
             <FormField label="Langue parlée">
@@ -125,6 +125,7 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
           </Bloc>
         </div>
 
+        {/* Colonne droite : Contact + Adresse */}
         <div>
           <Bloc title="Contact">
             <FormField label="Email" required error={errors.email}>
@@ -135,25 +136,28 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
             </FormField>
           </Bloc>
 
-          <Bloc title="Adresse">
-            <div className="grid grid-cols-3 gap-3">
+          <Bloc title="Adresse postale">
+            {/* Ligne 1 : N° de rue + Nom de rue */}
+            <div className="grid grid-cols-4 gap-3">
               <FormField label="N° rue">
                 <input className={inputCls} placeholder="12" autoComplete="address-line1" value={value.numeroRue} onChange={(e) => s('numeroRue', e.target.value)}/>
               </FormField>
-              <div className="col-span-2">
+              <div className="col-span-3">
                 <FormField label="Nom de rue" required error={errors.nomRue}>
                   <input className={ic('nomRue')} placeholder="Rue de la Paix" autoComplete="street-address" value={value.nomRue} onChange={(e) => s('nomRue', e.target.value)}/>
                 </FormField>
               </div>
             </div>
+            {/* Ligne 2 : Code postal + Ville */}
             <div className="grid grid-cols-2 gap-3">
-              <FormField label="Ville" required error={errors.ville}>
-                <input className={ic('ville')} placeholder="Paris" autoComplete="address-level2" value={value.ville} onChange={(e) => s('ville', e.target.value)}/>
-              </FormField>
               <FormField label="Code postal" required error={errors.codePostal}>
                 <input className={ic('codePostal')} placeholder="75001" inputMode="numeric" autoComplete="postal-code" value={value.codePostal} onChange={(e) => s('codePostal', e.target.value)}/>
               </FormField>
+              <FormField label="Ville" required error={errors.ville}>
+                <input className={ic('ville')} placeholder="Paris" autoComplete="address-level2" value={value.ville} onChange={(e) => s('ville', e.target.value)}/>
+              </FormField>
             </div>
+            {/* Ligne 3 : Pays */}
             <FormField label="Pays" required error={errors.pays}>
               <select className={sc('pays')} autoComplete="country-name" value={value.pays} onChange={(e) => s('pays', e.target.value)}>
                 <option value="">Sélectionner</option>

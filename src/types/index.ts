@@ -39,6 +39,7 @@ export interface EffetIndesirable {
 export interface AccordClient {
   accordRGPD: 'oui' | 'non' | '';
   signatureClient: string;
+  nomPrenomClient: string;
 }
 
 export interface InfosComplementaires {

@@ -26,7 +26,6 @@ export default function StepProduit({ value, onChange, onBack, onNext }: {
       const e: Record<string, string> = {};
       if (!p.denomination.trim()) { e.denomination = 'Requis'; ok = false; }
       if (!p.marque) { e.marque = 'Requis'; ok = false; }
-      if (!p.dateExpiration) { e.dateExpiration = 'Requis'; ok = false; }
       errs[p.id] = e;
     }
     setErrors(errs);
@@ -74,8 +73,8 @@ export default function StepProduit({ value, onChange, onBack, onNext }: {
               <FormField label="Numéro de lot">
                 <input className={inputCls} placeholder="12345678" value={p.numeroDeLot} onChange={(e) => upd(p.id,'numeroDeLot',e.target.value)}/>
               </FormField>
-              <FormField label="Date d'expiration" required error={errors[p.id]?.dateExpiration}>
-                <input className={`${inputCls}${errors[p.id]?.dateExpiration ? ' !border-red-300' : ''}`} type="date" value={p.dateExpiration} onChange={(e) => upd(p.id,'dateExpiration',e.target.value)}/>
+              <FormField label="Date d'expiration">
+                <input className={inputCls} type="date" value={p.dateExpiration} onChange={(e) => upd(p.id,'dateExpiration',e.target.value)}/>
               </FormField>
               <FormField label="Prix net (€)">
                 <input className={inputCls} placeholder="24.99" type="number" step="0.01" min="0" inputMode="decimal" value={p.prixNet} onChange={(e) => upd(p.id,'prixNet',e.target.value)}/>
@@ -90,8 +89,11 @@ export default function StepProduit({ value, onChange, onBack, onNext }: {
               </FormField>
             </div>
             <div className="px-4 sm:px-5 py-3 bg-[#fafafa] border-t border-[#f0f0f0]">
-              <button type="button" className="text-[13px] text-[#aaa] hover:text-[#6B3FA0] transition-colors font-medium min-h-[44px] flex items-center">
-                + Joindre des photos du produit
+              <button type="button" className="text-[13px] text-[#6B3FA0] hover:text-[#5a2d8a] transition-colors font-medium min-h-[44px] flex items-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+                </svg>
+                Prendre en photo le produit et sa boite (toutes les faces)
               </button>
             </div>
           </div>

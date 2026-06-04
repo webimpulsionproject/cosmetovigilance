@@ -22,7 +22,7 @@ const blank: ReclamationFormData = {
   coordonnees: { nom: '', prenom: '', genre: '', age: '', langueParlée: '', langueAutre: '', email: '', telephone: '', numeroRue: '', nomRue: '', ville: '', codePostal: '', pays: '' },
   produits: [mkProduit()],
   effetIndesirable: { dateApparition: '', dateDisparition: '', consequences: [], localisation: [], description: '' },
-  accordClient: { accordRGPD: '', signatureClient: '' },
+  accordClient: { accordRGPD: '', signatureClient: '', nomPrenomClient: '' },
   infosComplementaires: { actionsEnMagasin: [], nomMagasin: '', numeroDuMagasin: '', emailMagasin: '', nomPrenomRRV: '', nomPrenomResponsable: '', nomPrenomSalarie: '', signatureSalarie: '' },
 };
 

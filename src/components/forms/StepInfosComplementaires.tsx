@@ -54,8 +54,9 @@ export default function StepInfosComplementaires({ value, onChange, onBack, onSu
       <StepHeader title="Informations complémentaires" subtitle="Étape 5 sur 5" onBack={onBack} onNext={() => { if (validate()) onSubmit(); }} nextLabel="Soumettre" isLoading={isLoading}/>
 
       <div className="rounded-xl border-l-4 border-amber-400 bg-amber-50 px-4 sm:px-5 py-4 mb-7">
-        <p className="text-[13px] font-semibold text-amber-800 mb-0.5">Rappel important</p>
-        <p className="text-[12px] text-amber-700 leading-relaxed">Ne pas effectuer de remboursement ni récupérer le produit directement en magasin.</p>
+        <p className="text-[13px] text-amber-800 leading-relaxed">
+          Pour rappel, il est demandé de ne pas réaliser de dédommagement directement en magasin, ni de récupérer le produit.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10">
@@ -99,9 +100,6 @@ export default function StepInfosComplementaires({ value, onChange, onBack, onSu
             </FormField>
             <FormField label="Nom / Prénom du RRV">
               <input className={inputCls} placeholder="Jean Dupont" value={value.nomPrenomRRV} onChange={(e) => set('nomPrenomRRV', e.target.value)}/>
-            </FormField>
-            <FormField label="Nom / Prénom du Responsable magasin">
-              <input className={inputCls} placeholder="Marie Martin" value={value.nomPrenomResponsable} onChange={(e) => set('nomPrenomResponsable', e.target.value)}/>
             </FormField>
           </div>
         </Bloc>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { AccordClient } from '@/types';
 import StepHeader from '@/components/ui/StepHeader';
+import { FormField, inputCls } from '@/components/ui/FormField';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
@@ -21,15 +22,16 @@ function Bloc({ title, children }: { title: string; children: React.ReactNode })
 export default function StepAccordClient({ value, onChange, onBack, onNext }: {
   value: AccordClient; onChange: (v: AccordClient) => void; onBack: () => void; onNext: () => void;
 }) {
-  const [errors, setErrors] = useState<{ accordRGPD?: string; signatureClient?: string }>({});
+  const [errors, setErrors] = useState<{ accordRGPD?: string; signatureClient?: string; nomPrenomClient?: string }>({});
   const [pdfOpen, setPdfOpen] = useState(false);
 
   const set = (f: keyof AccordClient, v: string) => { onChange({ ...value, [f]: v }); setErrors((e) => ({ ...e, [f]: undefined })); };
 
   const validate = () => {
-    const e: { accordRGPD?: string; signatureClient?: string } = {};
+    const e: typeof errors = {};
     if (!value.accordRGPD) e.accordRGPD = 'Veuillez choisir une option';
     if (!value.signatureClient) e.signatureClient = 'La signature est requise';
+    if (!value.nomPrenomClient.trim()) e.nomPrenomClient = 'Requis';
     setErrors(e);
     return !Object.keys(e).length;
   };
@@ -88,6 +90,11 @@ export default function StepAccordClient({ value, onChange, onBack, onNext }: {
           })}
         </div>
         {errors.accordRGPD && <p className="text-[12px] text-red-500 mt-2">⚠ {errors.accordRGPD}</p>}
+        {value.accordRGPD === 'non' && (
+          <p className="text-[13px] text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mt-3 leading-relaxed">
+            Si votre réponse est &quot;non&quot;, nous vous conseillons de vous rapprocher de la marque directement.
+          </p>
+        )}
       </Bloc>
 
       <Bloc title="Signature du client">
@@ -95,9 +102,22 @@ export default function StepAccordClient({ value, onChange, onBack, onNext }: {
         {errors.signatureClient && <p className="text-[12px] text-red-500 mt-2">⚠ {errors.signatureClient}</p>}
       </Bloc>
 
-      <p className="text-[12px] text-[#bbb] text-right">
-        Date : <span className="text-[#888] font-medium">{today}</span>
-      </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-1">
+        <div className="flex-1">
+          <FormField label="Nom et prénom du client" required error={errors.nomPrenomClient}>
+            <input
+              className={`${inputCls}${errors.nomPrenomClient ? ' !border-red-300' : ''}`}
+              placeholder="Marie Dupont"
+              value={value.nomPrenomClient}
+              onChange={(e) => set('nomPrenomClient', e.target.value)}
+              autoComplete="name"
+            />
+          </FormField>
+        </div>
+        <p className="text-[12px] text-[#bbb] sm:text-right whitespace-nowrap">
+          Date : <span className="text-[#888] font-medium">{today}</span>
+        </p>
+      </div>
 
       {/* Modal PDF */}
       {pdfOpen && (
