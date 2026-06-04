@@ -23,10 +23,7 @@ type E = Partial<Record<keyof InfosComplementaires, string>>;
 function Bloc({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-6">
-      <div className="flex items-center gap-3 mb-4">
-        <span className="text-[12px] font-bold tracking-wider text-[#6B3FA0] uppercase shrink-0">{title}</span>
-        <div className="flex-1 h-px bg-[#ede5f7]"/>
-      </div>
+      <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">{title}</h3>
       {children}
     </div>
   );
@@ -113,7 +110,7 @@ export default function StepInfosComplementaires({ value, onChange, onBack, onSu
               <input className={`${inputCls}${errors.nomPrenomSalarie ? ' !border-red-300' : ''}`} placeholder="Jean Dupont" value={value.nomPrenomSalarie} onChange={(e) => set('nomPrenomSalarie', e.target.value)}/>
             </FormField>
             <div>
-              <p className="text-[13px] font-semibold text-[#444] mb-2">
+              <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">
                 Signature du salarié<span className="text-[#6B3FA0] ml-0.5">*</span>
               </p>
               <SignaturePad value={value.signatureSalarie} onChange={(v) => set('signatureSalarie', v)}/>

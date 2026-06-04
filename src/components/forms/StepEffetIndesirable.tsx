@@ -18,10 +18,7 @@ const LOCALISATIONS = ['Yeux','Bouche','Visage','Corps','Cuir chevelu','Autre'];
 function Bloc({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-6">
-      <div className="flex items-center gap-3 mb-4">
-        <span className="text-[12px] font-bold tracking-wider text-[#6B3FA0] uppercase shrink-0">{title}</span>
-        <div className="flex-1 h-px bg-[#ede5f7]"/>
-      </div>
+      <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">{title}</h3>
       {children}
     </div>
   );
