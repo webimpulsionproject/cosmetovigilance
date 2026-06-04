@@ -211,18 +211,6 @@ export default function HomePage() {
                 Sélectionnez le type de remontée pour démarrer la saisie.
               </p>
 
-              {/* Bloc explicatif */}
-              <div style={{ background: '#fafafa', border: '1px solid #e5e7eb', borderRadius: 10, padding: '18px 22px', marginBottom: 32 }}>
-                <p style={{ fontSize: 13, color: '#4b5563', lineHeight: 1.8, marginBottom: 12 }}>
-                  <span style={{ fontWeight: 600, color: '#111827' }}>Cosmétovigilance</span> — Réaction indésirable à un produit : irritation, démangeaisons, brûlures, rougeurs, yeux gonflés, boutons, allergie… ne nécessitant pas forcément de consultation médicale mais gênante pour le client.{' '}
-                  <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>Le mauvais usage du produit ne relève pas de la cosmétovigilance.</span>
-                </p>
-                <div style={{ height: 1, background: '#e5e7eb', margin: '12px 0' }}/>
-                <p style={{ fontSize: 13, color: '#4b5563', lineHeight: 1.8 }}>
-                  <span style={{ fontWeight: 600, color: '#111827' }}>Qualité produit</span> — Toute autre remontée : dysfonctionnement, dérive de couleur ou d&apos;odeur, efficacité insuffisante, packaging défectueux, corps étranger...
-                </p>
-              </div>
-
               {/* Sélection */}
               <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9ca3af', marginBottom: 12 }}>
                 Type de réclamation
@@ -234,18 +222,20 @@ export default function HomePage() {
                     value: 'cosmetovigilance' as const,
                     label: 'Cosmétovigilance',
                     tag: 'Effet indésirable',
+                    desc: "Réaction indésirable à un produit : irritation, démangeaisons, brûlures, rougeurs, yeux gonflés, boutons, allergie… Le mauvais usage du produit ne relève pas de la cosmétovigilance.",
                   },
                   {
                     value: 'qualite' as const,
                     label: 'Qualité produit',
                     tag: 'Défaut qualité',
+                    desc: "Toute autre remontée : dysfonctionnement, dérive de couleur ou d'odeur, efficacité insuffisante, packaging défectueux, corps étranger...",
                   },
                 ] as const).map((opt) => {
                   const active = selectedType === opt.value;
                   return (
                     <label key={opt.value} style={{
-                      display: 'flex', alignItems: 'center', gap: 14,
-                      padding: '16px 20px',
+                      display: 'flex', alignItems: 'flex-start', gap: 14,
+                      padding: '18px 20px',
                       border: `1.5px solid ${active ? PURPLE : '#e5e7eb'}`,
                       borderRadius: 10,
                       cursor: 'pointer', userSelect: 'none',
@@ -253,20 +243,25 @@ export default function HomePage() {
                       transition: 'all 0.15s',
                     }}>
                       <div style={{
-                        width: 18, height: 18, borderRadius: '50%',
+                        marginTop: 2, width: 18, height: 18, borderRadius: '50%',
                         border: `2px solid ${active ? PURPLE : '#d1d5db'}`,
                         flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
                         transition: 'border-color 0.15s',
                       }}>
                         {active && <div style={{ width: 8, height: 8, borderRadius: '50%', background: PURPLE }}/>}
                       </div>
-                      <p style={{ flex: 1, fontSize: 15, fontWeight: 600, color: active ? PURPLE : '#111827' }}>{opt.label}</p>
-                      <span style={{
-                        fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 99,
-                        background: active ? PURPLE : '#f3f4f6',
-                        color: active ? 'white' : '#6b7280',
-                        letterSpacing: '0.04em',
-                      }}>{opt.tag}</span>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                          <p style={{ fontSize: 15, fontWeight: 600, color: active ? PURPLE : '#111827' }}>{opt.label}</p>
+                          <span style={{
+                            fontSize: 11, fontWeight: 600, padding: '2px 9px', borderRadius: 99,
+                            background: active ? PURPLE : '#f3f4f6',
+                            color: active ? 'white' : '#6b7280',
+                            letterSpacing: '0.04em',
+                          }}>{opt.tag}</span>
+                        </div>
+                        <p style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.6 }}>{opt.desc}</p>
+                      </div>
                       <input type="radio" name="type" value={opt.value} checked={active} onChange={() => setSelectedType(opt.value)} style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}/>
                     </label>
                   );
