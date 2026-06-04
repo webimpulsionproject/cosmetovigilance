@@ -160,37 +160,40 @@ export default function HomePage() {
         {/* Panneau gauche */}
         <div style={{
           width: 380, flexShrink: 0, background: PURPLE,
-          display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+          display: 'flex', flexDirection: 'column',
           padding: '48px 40px',
         }}>
-          <div>
-            <div style={{ background: 'white', borderRadius: 10, padding: '10px 18px', display: 'inline-block', marginBottom: 52 }}>
-              <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={140} height={38}
-                style={{ height: 28, width: 'auto', display: 'block' }} className="object-contain" priority/>
-            </div>
+          {/* Logo */}
+          <div style={{ background: 'white', borderRadius: 10, padding: '10px 18px', display: 'inline-block', marginBottom: 56, alignSelf: 'flex-start' }}>
+            <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={140} height={38}
+              style={{ height: 28, width: 'auto', display: 'block' }} className="object-contain" priority/>
+          </div>
 
-            <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', marginBottom: 16 }}>
+          {/* Texte principal */}
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 14 }}>
               Outil interne — Personnel magasin
             </p>
-            <h1 style={{ fontSize: 32, fontWeight: 700, color: 'white', lineHeight: 1.2, marginBottom: 20 }}>
+            <h1 style={{ fontSize: 30, fontWeight: 700, color: 'white', lineHeight: 1.25, marginBottom: 20 }}>
               Déclaration<br/>cosmétovigilance<br/>& qualité
             </h1>
-
-            <div style={{ width: 32, height: 2, background: 'rgba(255,255,255,0.2)', margin: '24px 0' }}/>
-
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 1.8 }}>
+            <div style={{ width: 28, height: 2, background: 'rgba(255,255,255,0.2)', margin: '20px 0' }}/>
+            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 1.8, maxWidth: 280 }}>
               À utiliser pour toute remontée client relative à un effet indésirable ou un défaut qualité sur un produit cosmétique.
             </p>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {/* Bullets */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14, paddingTop: 40, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
             {[
               'Formulaire officiel Marionnaud Lafayette',
               'Saisie guidée étape par étape',
               'Transmission automatique au service qualité',
             ].map((text) => (
-              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'rgba(255,255,255,0.45)', fontSize: 12 }}>
-                <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'rgba(255,255,255,0.35)', flexShrink: 0 }}/>
+              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(255,255,255,0.4)', fontSize: 12 }}>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <polyline points="2 6 5 9 10 3" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
                 {text}
               </div>
             ))}
@@ -198,25 +201,29 @@ export default function HomePage() {
         </div>
 
         {/* Panneau droit */}
-        <div style={{ flex: 1, background: 'white', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+        <div style={{ flex: 1, background: '#f9fafb', display: 'flex', flexDirection: 'column' }}>
 
-          {/* Contenu */}
-          <div style={{ flex: 1, padding: '52px 64px 48px' }}>
-            <div style={{ maxWidth: 540 }}>
+          {/* Zone centrée */}
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px' }}>
+            <div style={{ width: '100%', maxWidth: 520, background: 'white', borderRadius: 16, border: '1px solid #e5e7eb', boxShadow: '0 4px 24px rgba(0,0,0,0.06)', padding: '40px 40px 36px' }}>
 
-              <h2 style={{ fontSize: 20, fontWeight: 700, color: '#111827', marginBottom: 6, lineHeight: 1.3 }}>
-                Formulaire de déclaration client
-              </h2>
-              <p style={{ fontSize: 14, color: '#9ca3af', marginBottom: 32 }}>
-                Sélectionnez le type de remontée pour démarrer la saisie.
-              </p>
+              {/* En-tête */}
+              <div style={{ marginBottom: 28, paddingBottom: 24, borderBottom: '1px solid #f3f4f6' }}>
+                <h2 style={{ fontSize: 20, fontWeight: 700, color: '#111827', marginBottom: 6 }}>
+                  Formulaire de déclaration client
+                </h2>
+                <p style={{ fontSize: 13, color: '#9ca3af' }}>
+                  Sélectionnez le type de remontée pour démarrer la saisie.
+                </p>
+              </div>
 
-              {/* Sélection */}
-              <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9ca3af', marginBottom: 12 }}>
+              {/* Label */}
+              <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#9ca3af', marginBottom: 14 }}>
                 Type de réclamation
               </p>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 32 }}>
+              {/* Options */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
                 {([
                   {
                     value: 'cosmetovigilance' as const,
@@ -235,32 +242,32 @@ export default function HomePage() {
                   return (
                     <label key={opt.value} style={{
                       display: 'flex', alignItems: 'flex-start', gap: 14,
-                      padding: '18px 20px',
+                      padding: '16px 18px',
                       border: `1.5px solid ${active ? PURPLE : '#e5e7eb'}`,
                       borderRadius: 10,
                       cursor: 'pointer', userSelect: 'none',
-                      background: active ? '#f5f3ff' : '#fff',
+                      background: active ? '#f5f3ff' : '#fafafa',
+                      boxShadow: active ? `0 0 0 3px rgba(107,63,160,0.08)` : 'none',
                       transition: 'all 0.15s',
                     }}>
                       <div style={{
-                        marginTop: 2, width: 18, height: 18, borderRadius: '50%',
+                        marginTop: 3, width: 18, height: 18, borderRadius: '50%',
                         border: `2px solid ${active ? PURPLE : '#d1d5db'}`,
                         flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        transition: 'border-color 0.15s',
                       }}>
                         {active && <div style={{ width: 8, height: 8, borderRadius: '50%', background: PURPLE }}/>}
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-                          <p style={{ fontSize: 15, fontWeight: 600, color: active ? PURPLE : '#111827' }}>{opt.label}</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
+                          <span style={{ fontSize: 14, fontWeight: 600, color: active ? PURPLE : '#111827' }}>{opt.label}</span>
                           <span style={{
-                            fontSize: 11, fontWeight: 600, padding: '2px 9px', borderRadius: 99,
-                            background: active ? PURPLE : '#f3f4f6',
+                            fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 99,
+                            background: active ? PURPLE : '#eff0f1',
                             color: active ? 'white' : '#6b7280',
-                            letterSpacing: '0.04em',
+                            letterSpacing: '0.03em',
                           }}>{opt.tag}</span>
                         </div>
-                        <p style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.6 }}>{opt.desc}</p>
+                        <p style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.6, margin: 0 }}>{opt.desc}</p>
                       </div>
                       <input type="radio" name="type" value={opt.value} checked={active} onChange={() => setSelectedType(opt.value)} style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}/>
                     </label>
@@ -268,12 +275,16 @@ export default function HomePage() {
                 })}
               </div>
 
+              {/* Bouton */}
               <button onClick={handleStart} disabled={!selectedType} style={{
+                width: '100%',
                 background: selectedType ? PURPLE : '#e5e7eb',
                 color: selectedType ? 'white' : '#9ca3af',
-                border: 'none', borderRadius: 8, padding: '13px 36px',
-                fontSize: 14, fontWeight: 700, cursor: selectedType ? 'pointer' : 'not-allowed',
-                boxShadow: selectedType ? '0 4px 14px rgba(107,63,160,0.25)' : 'none',
+                border: 'none', borderRadius: 10, padding: '14px 0',
+                fontSize: 14, fontWeight: 700,
+                cursor: selectedType ? 'pointer' : 'not-allowed',
+                boxShadow: selectedType ? '0 4px 16px rgba(107,63,160,0.3)' : 'none',
+                letterSpacing: '0.02em',
                 transition: 'all 0.15s',
               }}>
                 Démarrer la saisie
