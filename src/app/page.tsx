@@ -26,44 +26,51 @@ const blank: ReclamationFormData = {
   infosComplementaires: { actionsEnMagasin: [], nomMagasin: '', numeroDuMagasin: '', emailMagasin: '', nomPrenomRRV: '', nomPrenomResponsable: '', nomPrenomSalarie: '', signatureSalarie: '' },
 };
 
+const PURPLE = '#6B3FA0';
+const PURPLE_DARK = '#5a2d8a';
+
 /* ─── Progress ─── */
 function Progress({ step, type }: { step: number; type: ReclamationType }) {
   const steps = type === 'cosmetovigilance' ? STEPS_CV : STEPS_QU;
   const cur = step - 1;
   return (
-    <div className="mb-6">
-      {/* Mobile */}
-      <div className="flex items-center justify-between mb-2 sm:hidden">
-        <span className="text-sm font-semibold text-gray-900">{steps[cur]}</span>
-        <span className="text-xs text-gray-400">{step} / {steps.length}</span>
+    <div style={{ marginBottom: 28 }}>
+      {/* Barre mobile */}
+      <div className="flex items-center justify-between sm:hidden" style={{ marginBottom: 8 }}>
+        <span style={{ fontSize: 14, fontWeight: 600, color: PURPLE }}>{steps[cur]}</span>
+        <span style={{ fontSize: 12, color: '#9ca3af' }}>{step} / {steps.length}</span>
       </div>
-      <div className="h-1 bg-gray-200 rounded-full overflow-hidden sm:hidden">
-        <div className="h-full bg-[#6B3FA0] rounded-full transition-all duration-500" style={{ width: `${(step / steps.length) * 100}%` }}/>
+      <div className="sm:hidden" style={{ height: 4, background: '#e5e7eb', borderRadius: 4, overflow: 'hidden' }}>
+        <div style={{ height: '100%', background: PURPLE, borderRadius: 4, width: `${(step / steps.length) * 100}%`, transition: 'width 0.4s' }}/>
       </div>
-      {/* Desktop */}
-      <div className="hidden sm:flex items-center gap-0">
+      {/* Cercles desktop */}
+      <div className="hidden sm:flex" style={{ alignItems: 'flex-start', justifyContent: 'space-between' }}>
         {steps.map((label, i) => {
-          const done = i < cur, active = i === cur, isLast = i === steps.length - 1;
+          const done = i < cur, active = i === cur, last = i === steps.length - 1;
           return (
-            <div key={i} className={`flex items-center ${isLast ? '' : 'flex-1'}`}>
-              <div className="flex flex-col items-center gap-1.5 shrink-0">
-                <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold transition-all ${
-                  done  ? 'bg-[#6B3FA0] border-[#6B3FA0] text-white' :
-                  active ? 'bg-white border-[#6B3FA0] text-[#6B3FA0]' :
-                  'bg-white border-gray-200 text-gray-400'
-                }`}>
+            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', flex: last ? undefined : 1 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+                <div style={{
+                  width: 32, height: 32, borderRadius: '50%',
+                  border: `2px solid ${done || active ? PURPLE : '#d1d5db'}`,
+                  background: done ? PURPLE : '#fff',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 12, fontWeight: 700,
+                  color: active ? PURPLE : done ? '#fff' : '#9ca3af',
+                  boxShadow: active ? `0 0 0 4px rgba(107,63,160,0.1)` : 'none',
+                }}>
                   {done ? (
                     <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
                       <polyline points="2 6 5 9 10 3" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   ) : i + 1}
                 </div>
-                <span className={`text-[11px] font-semibold whitespace-nowrap ${active ? 'text-[#6B3FA0]' : done ? 'text-gray-400' : 'text-gray-300'}`}>
+                <span style={{ fontSize: 11, fontWeight: 600, whiteSpace: 'nowrap', color: active ? PURPLE : done ? '#9ca3af' : '#d1d5db' }}>
                   {label}
                 </span>
               </div>
-              {!isLast && (
-                <div className={`flex-1 h-px mx-2 mb-5 transition-all ${done ? 'bg-[#6B3FA0]' : 'bg-gray-200'}`}/>
+              {!last && (
+                <div style={{ flex: 1, height: 1, marginTop: 16, marginLeft: 8, marginRight: 8, marginBottom: 0, background: done ? PURPLE : '#e5e7eb', transition: 'background 0.3s' }}/>
               )}
             </div>
           );
@@ -76,36 +83,35 @@ function Progress({ step, type }: { step: number; type: ReclamationType }) {
 /* ─── Confirmation ─── */
 function Confirmation({ numero, type, onReset }: { numero: string; type: ReclamationType; onReset: () => void }) {
   return (
-    <div className="py-10 flex flex-col items-center gap-6 text-center max-w-sm mx-auto">
-      <div className="w-16 h-16 rounded-full bg-green-50 border-2 border-green-200 flex items-center justify-center">
+    <div style={{ padding: '48px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24, textAlign: 'center', maxWidth: 400, margin: '0 auto' }}>
+      <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#f0fdf4', border: '2px solid #bbf7d0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="20 6 9 17 4 12"/>
         </svg>
       </div>
       <div>
-        <h2 className="text-xl font-bold text-gray-900">Déclaration enregistrée</h2>
-        <p className="text-gray-500 text-sm mt-1.5 leading-relaxed">
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: '#111827', marginBottom: 8 }}>Déclaration enregistrée</h2>
+        <p style={{ fontSize: 14, color: '#6b7280', lineHeight: 1.6 }}>
           Votre déclaration de {type === 'cosmetovigilance' ? 'cosmétovigilance' : 'qualité'} a bien été transmise.
         </p>
       </div>
-      <div className="w-full bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
-        <div className="px-5 py-4 bg-[#6B3FA0] text-white text-center">
-          <p className="text-[10px] tracking-widest uppercase opacity-70 mb-1">Numéro de réclamation</p>
-          <p className="text-2xl font-bold tracking-widest">{numero}</p>
+      <div style={{ width: '100%', borderRadius: 12, overflow: 'hidden', border: '1px solid #e5e7eb' }}>
+        <div style={{ padding: '20px 24px', background: PURPLE, textAlign: 'center', color: 'white' }}>
+          <p style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', opacity: 0.7, marginBottom: 6 }}>Numéro de réclamation</p>
+          <p style={{ fontSize: 26, fontWeight: 700, letterSpacing: '0.1em' }}>{numero}</p>
         </div>
-        <div className="px-5 py-4 space-y-2.5">
+        <div style={{ padding: '16px 20px', background: '#f9fafb', display: 'flex', flexDirection: 'column', gap: 10 }}>
           {['Dossier enregistré', 'Email envoyé au client', 'PDF transmis à Marionnaud'].map((item) => (
-            <div key={item} className="flex items-center gap-3 text-sm text-gray-600">
+            <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, color: '#374151' }}>
               <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
-                <polyline points="2 6 5 9 10 3" stroke="#6B3FA0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <polyline points="2 6 5 9 10 3" stroke={PURPLE} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
               {item}
             </div>
           ))}
         </div>
       </div>
-      <button type="button" onClick={onReset}
-        className="text-sm font-semibold text-white bg-[#6B3FA0] hover:bg-[#5a2d8a] px-6 py-2.5 rounded-lg transition-colors">
+      <button onClick={onReset} style={{ background: PURPLE, color: 'white', border: 'none', borderRadius: 8, padding: '10px 24px', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
         Nouvelle déclaration
       </button>
     </div>
@@ -149,81 +155,107 @@ export default function HomePage() {
   /* ══ ACCUEIL ══ */
   if (step === 0) {
     return (
-      <div className="min-h-screen flex flex-col lg:flex-row">
+      <div style={{ display: 'flex', minHeight: '100vh' }}>
 
-        {/* Panneau gauche */}
-        <div className="lg:w-[380px] xl:w-[420px] shrink-0 flex flex-col justify-between px-8 py-10 lg:px-10 lg:min-h-screen bg-[#6B3FA0]">
+        {/* Panneau gauche — violet */}
+        <div style={{
+          width: 360, flexShrink: 0, background: PURPLE,
+          display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+          padding: '48px 40px',
+        }}>
           <div>
-            <Image src="/logo-marionnaud.png" alt="Marionnaud" width={120} height={32}
-              style={{ height: 26, width: 'auto', filter: 'brightness(0) invert(1)' }}
-              className="object-contain mb-14" priority/>
-            <h1 className="text-4xl xl:text-5xl font-bold text-white leading-[1.1] mb-4">
+            <div style={{ marginBottom: 56 }}>
+              <Image src="/logo-marionnaud.png" alt="Marionnaud" width={120} height={32}
+                style={{ height: 26, width: 'auto', filter: 'brightness(0) invert(1)' }}
+                className="object-contain" priority/>
+            </div>
+            <h1 style={{ fontSize: 42, fontWeight: 800, color: 'white', lineHeight: 1.1, marginBottom: 16 }}>
               Déclaration<br/>client
             </h1>
-            <p className="text-white/60 text-sm leading-relaxed max-w-xs">
+            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, maxWidth: 260 }}>
               Signalez un effet indésirable ou un problème de qualité sur un produit Marionnaud Paris.
             </p>
           </div>
-          <div className="space-y-2.5 mt-10 lg:mt-0">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {['Données protégées — RGPD', 'Processus guidé en 5 étapes', 'Confirmation automatique par email'].map((item) => (
-              <div key={item} className="flex items-center gap-3 text-white/60 text-xs">
-                <div className="w-1.5 h-1.5 rounded-full bg-white/40 shrink-0"/>
+              <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(255,255,255,0.55)', fontSize: 12 }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'rgba(255,255,255,0.4)', flexShrink: 0 }}/>
                 {item}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Panneau droit */}
-        <div className="flex-1 flex flex-col bg-white">
-          <div className="flex items-center justify-end px-8 sm:px-12 lg:px-16 pt-8">
-            <span className="text-[11px] font-bold tracking-widest uppercase text-gray-300">
+        {/* Panneau droit — blanc */}
+        <div style={{ flex: 1, background: 'white', display: 'flex', flexDirection: 'column' }}>
+          {/* Top label */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '32px 64px 0' }}>
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#d1d5db' }}>
               Formulaire de déclaration
             </span>
           </div>
 
-          <div className="flex-1 flex items-center px-8 sm:px-12 lg:px-16 py-12">
-            <div className="w-full max-w-md">
-              <p className="text-[11px] font-bold tracking-widest uppercase text-gray-400 mb-4">
+          {/* Contenu centré verticalement */}
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '32px 64px' }}>
+            <div style={{ width: '100%', maxWidth: 460 }}>
+              <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9ca3af', marginBottom: 16 }}>
                 Type de déclaration
               </p>
-              <h2 className="text-2xl font-bold text-gray-900 leading-snug mb-8">
+              <h2 style={{ fontSize: 26, fontWeight: 700, color: '#111827', lineHeight: 1.3, marginBottom: 32 }}>
                 Choisissez le motif correspondant à votre situation.
               </h2>
 
-              <div className="border-t border-gray-100">
+              {/* Options */}
+              <div style={{ borderTop: '1px solid #f3f4f6' }}>
                 {([
                   { value: 'cosmetovigilance' as const, label: 'Cosmétovigilance', desc: "Effet indésirable à un produit : irritation, rougeurs, brûlures, démangeaisons, yeux gonflés…" },
                   { value: 'qualite' as const, label: 'Qualité', desc: "Dysfonctionnement, dérive de couleur ou d'odeur, remarques sur l'efficacité du produit…" },
                 ] as const).map((opt) => {
                   const active = selectedType === opt.value;
                   return (
-                    <label key={opt.value} className="flex items-start gap-4 py-5 border-b border-gray-100 cursor-pointer group select-none">
-                      <div className={`mt-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${active ? 'border-[#6B3FA0]' : 'border-gray-300 group-hover:border-gray-400'}`}>
-                        {active && <div className="w-2 h-2 rounded-full bg-[#6B3FA0]"/>}
+                    <label key={opt.value} style={{
+                      display: 'flex', alignItems: 'flex-start', gap: 14,
+                      padding: '20px 0', borderBottom: '1px solid #f3f4f6',
+                      cursor: 'pointer', userSelect: 'none',
+                    }}>
+                      <div style={{
+                        marginTop: 2, width: 18, height: 18, borderRadius: '50%',
+                        border: `2px solid ${active ? PURPLE : '#d1d5db'}`,
+                        flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        transition: 'border-color 0.15s',
+                      }}>
+                        {active && <div style={{ width: 8, height: 8, borderRadius: '50%', background: PURPLE }}/>}
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-gray-900 mb-0.5">{opt.label}</p>
-                        <p className={`text-sm leading-relaxed transition-colors ${active ? 'text-[#6B3FA0]' : 'text-gray-400 group-hover:text-gray-500'}`}>{opt.desc}</p>
+                        <p style={{ fontSize: 15, fontWeight: 700, color: '#111827', marginBottom: 4 }}>{opt.label}</p>
+                        <p style={{ fontSize: 13, color: active ? PURPLE : '#9ca3af', lineHeight: 1.5, transition: 'color 0.15s' }}>{opt.desc}</p>
                       </div>
-                      <input type="radio" name="type" value={opt.value} checked={active} onChange={() => setSelectedType(opt.value)} className="sr-only"/>
+                      <input type="radio" name="type" value={opt.value} checked={active} onChange={() => setSelectedType(opt.value)} style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}/>
                     </label>
                   );
                 })}
               </div>
 
-              <div className="mt-8">
-                <button type="button" onClick={handleStart} disabled={!selectedType}
-                  className="text-sm font-bold text-white bg-[#6B3FA0] hover:bg-[#5a2d8a] px-7 py-3 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed shadow-sm">
+              <div style={{ marginTop: 28 }}>
+                <button onClick={handleStart} disabled={!selectedType} style={{
+                  background: selectedType ? PURPLE : '#e5e7eb',
+                  color: selectedType ? 'white' : '#9ca3af',
+                  border: 'none', borderRadius: 8, padding: '12px 28px',
+                  fontSize: 14, fontWeight: 700, cursor: selectedType ? 'pointer' : 'not-allowed',
+                  boxShadow: selectedType ? '0 4px 14px rgba(107,63,160,0.3)' : 'none',
+                  transition: 'all 0.15s',
+                }}>
                   Commencer
                 </button>
               </div>
             </div>
           </div>
 
-          <p className="px-8 sm:px-12 lg:px-16 pb-8 text-xs text-gray-300">
-            © {new Date().getFullYear()} Marionnaud Lafayette — Données protégées conformément au RGPD
-          </p>
+          <div style={{ padding: '0 64px 28px' }}>
+            <p style={{ fontSize: 11, color: '#d1d5db' }}>
+              © {new Date().getFullYear()} Marionnaud Lafayette — Données protégées conformément au RGPD
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -231,23 +263,29 @@ export default function HomePage() {
 
   /* ══ ÉTAPES ══ */
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
-        <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={110} height={30}
+    <div style={{ minHeight: '100vh', background: '#f9fafb', display: 'flex', flexDirection: 'column' }}>
+      {/* Header */}
+      <header style={{ background: 'white', borderBottom: '1px solid #e5e7eb', position: 'sticky', top: 0, zIndex: 40 }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={110} height={28}
             style={{ height: 24, width: 'auto' }} className="object-contain"/>
           {step < 99 && (
-            <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-purple-50 text-[#6B3FA0] border border-purple-100">
+            <span style={{
+              fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
+              color: PURPLE, background: '#f5f3ff', border: '1px solid #ddd6fe',
+              padding: '4px 12px', borderRadius: 999,
+            }}>
               {data.type === 'cosmetovigilance' ? 'Cosmétovigilance' : 'Qualité'}
             </span>
           )}
         </div>
       </header>
 
-      <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-8">
+      {/* Contenu */}
+      <main style={{ flex: 1, maxWidth: 900, margin: '0 auto', width: '100%', padding: '32px 24px' }}>
         {step > 0 && step < 99 && <Progress step={step} type={data.type}/>}
 
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div style={{ background: 'white', borderRadius: 12, border: '1px solid #e5e7eb', boxShadow: '0 1px 4px rgba(0,0,0,0.05)' }}>
           <div className="p-6 sm:p-8">
             {step === 1 && <StepCoordonnees   value={data.coordonnees}        onChange={(v) => setData((d) => ({...d,coordonnees:v}))}        onBack={goBack}      onNext={goNext}/>}
             {step === 2 && <StepProduit        value={data.produits}           onChange={(v) => setData((d) => ({...d,produits:v}))}           onBack={goBack}      onNext={goNextStep2}/>}
@@ -256,7 +294,7 @@ export default function HomePage() {
             {step === 5 && (
               <>
                 {submitError && (
-                  <div className="mb-6 bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-600">
+                  <div style={{ marginBottom: 20, background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8, padding: '12px 16px', fontSize: 13, color: '#dc2626' }}>
                     {submitError}
                   </div>
                 )}
@@ -267,7 +305,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-gray-300 mt-6">
+        <p style={{ textAlign: 'center', fontSize: 11, color: '#d1d5db', marginTop: 24 }}>
           © {new Date().getFullYear()} Marionnaud Lafayette — Données protégées conformément au RGPD
         </p>
       </main>
