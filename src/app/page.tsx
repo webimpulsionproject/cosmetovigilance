@@ -157,141 +157,139 @@ export default function HomePage() {
     return (
       <div style={{ display: 'flex', minHeight: '100vh' }}>
 
-        {/* Panneau gauche — violet */}
+        {/* Panneau gauche */}
         <div style={{
           width: 380, flexShrink: 0, background: PURPLE,
           display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
           padding: '48px 40px',
         }}>
           <div>
-            {/* Logo dans pilule blanche */}
-            <div style={{ background: 'white', borderRadius: 10, padding: '10px 18px', display: 'inline-block', marginBottom: 48 }}>
+            <div style={{ background: 'white', borderRadius: 10, padding: '10px 18px', display: 'inline-block', marginBottom: 52 }}>
               <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={140} height={38}
                 style={{ height: 28, width: 'auto', display: 'block' }} className="object-contain" priority/>
             </div>
 
-            <h1 style={{ fontSize: 36, fontWeight: 800, color: 'white', lineHeight: 1.15, marginBottom: 20 }}>
-              Formulaire de<br/>déclaration client
-            </h1>
-            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.7)', lineHeight: 1.75 }}>
-              Cosmétovigilance & qualité produit
+            <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', marginBottom: 16 }}>
+              Outil interne — Personnel magasin
             </p>
+            <h1 style={{ fontSize: 32, fontWeight: 700, color: 'white', lineHeight: 1.2, marginBottom: 20 }}>
+              Déclaration<br/>cosmétovigilance<br/>& qualité
+            </h1>
 
-            {/* Séparateur */}
-            <div style={{ width: 40, height: 2, background: 'rgba(255,255,255,0.25)', margin: '28px 0' }}/>
+            <div style={{ width: 32, height: 2, background: 'rgba(255,255,255,0.2)', margin: '24px 0' }}/>
 
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', lineHeight: 1.75 }}>
-              Ce formulaire est destiné à signaler un effet indésirable ou un problème de qualité constaté sur un produit cosmétique vendu en magasin Marionnaud.
+            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 1.8 }}>
+              À utiliser pour toute remontée client relative à un effet indésirable ou un défaut qualité sur un produit cosmétique.
             </p>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {[
-              { icon: '🔒', text: 'Données protégées — RGPD' },
-              { icon: '📋', text: 'Processus guidé en 5 étapes' },
-              { icon: '📧', text: 'Confirmation automatique par email' },
-            ].map(({ icon, text }) => (
-              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'rgba(255,255,255,0.6)', fontSize: 13 }}>
-                <span style={{ fontSize: 15 }}>{icon}</span>
+              'Formulaire officiel Marionnaud Lafayette',
+              'Saisie guidée étape par étape',
+              'Transmission automatique au service qualité',
+            ].map((text) => (
+              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'rgba(255,255,255,0.45)', fontSize: 12 }}>
+                <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'rgba(255,255,255,0.35)', flexShrink: 0 }}/>
                 {text}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Panneau droit — blanc */}
+        {/* Panneau droit */}
         <div style={{ flex: 1, background: 'white', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-          {/* Top bar */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '28px 56px 0' }}>
-            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#d1d5db' }}>
-              Formulaire de déclaration
-            </span>
-          </div>
 
           {/* Contenu */}
-          <div style={{ flex: 1, padding: '32px 56px 48px' }}>
-            <div style={{ maxWidth: 560 }}>
+          <div style={{ flex: 1, padding: '52px 64px 48px' }}>
+            <div style={{ maxWidth: 540 }}>
 
-              {/* Titre */}
-              <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 24, lineHeight: 1.3 }}>
-                Formulaire de déclaration client :<br/>cosmétovigilance ou qualité
+              <h2 style={{ fontSize: 20, fontWeight: 700, color: '#111827', marginBottom: 6, lineHeight: 1.3 }}>
+                Formulaire de déclaration client
               </h2>
+              <p style={{ fontSize: 14, color: '#9ca3af', marginBottom: 32 }}>
+                Sélectionnez le type de remontée pour démarrer la saisie.
+              </p>
 
               {/* Bloc explicatif */}
-              <div style={{ background: '#f9f7fd', border: '1px solid #e8e0f5', borderRadius: 12, padding: '20px 24px', marginBottom: 32 }}>
-                <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.75, marginBottom: 14 }}>
-                  <strong style={{ color: PURPLE }}>Cosmétovigilance</strong> : Est considéré comme «&thinsp;effet indésirable&thinsp;» une réaction à un produit ne nécessitant pas toujours de consultation médicale, mais étant néanmoins gênante et parfois très désagréable. Réactions possibles : irritation, démangeaisons, brûlures, rougeurs, yeux gonflés, boutons, etc.
-                  <br/><em style={{ color: '#9ca3af' }}>Ne relève pas de la cosmétovigilance : mauvais usage du produit.</em>
+              <div style={{ background: '#fafafa', border: '1px solid #e5e7eb', borderRadius: 10, padding: '18px 22px', marginBottom: 32 }}>
+                <p style={{ fontSize: 13, color: '#4b5563', lineHeight: 1.8, marginBottom: 12 }}>
+                  <span style={{ fontWeight: 600, color: '#111827' }}>Cosmétovigilance</span> — Réaction indésirable à un produit : irritation, démangeaisons, brûlures, rougeurs, yeux gonflés, boutons, allergie… ne nécessitant pas forcément de consultation médicale mais gênante pour le client.{' '}
+                  <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>Le mauvais usage du produit ne relève pas de la cosmétovigilance.</span>
                 </p>
-                <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.75 }}>
-                  <strong style={{ color: '#374151' }}>Qualité</strong> : Il s&apos;agit des remontées autres que la cosmétovigilance. Par exemple : dysfonctionnements, dérives de couleurs ou d&apos;odeurs, commentaires sur l&apos;efficacité, packaging défectueux...
+                <div style={{ height: 1, background: '#e5e7eb', margin: '12px 0' }}/>
+                <p style={{ fontSize: 13, color: '#4b5563', lineHeight: 1.8 }}>
+                  <span style={{ fontWeight: 600, color: '#111827' }}>Qualité produit</span> — Toute autre remontée : dysfonctionnement, dérive de couleur ou d&apos;odeur, efficacité insuffisante, packaging défectueux, corps étranger...
                 </p>
               </div>
 
               {/* Sélection */}
-              <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#9ca3af', marginBottom: 14 }}>
-                Choisir le type de réclamation
+              <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9ca3af', marginBottom: 12 }}>
+                Type de réclamation
               </p>
 
-              <div style={{ borderTop: '1px solid #f3f4f6' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 32 }}>
                 {([
                   {
                     value: 'cosmetovigilance' as const,
                     label: 'Cosmétovigilance',
-                    desc: 'Réaction indésirable à un produit : irritation, rougeurs, brûlures, démangeaisons, yeux gonflés, boutons…',
+                    tag: 'Effet indésirable',
                   },
                   {
                     value: 'qualite' as const,
                     label: 'Qualité produit',
-                    desc: "Dysfonctionnement, dérive de couleur ou d'odeur, efficacité insuffisante, packaging défectueux…",
+                    tag: 'Défaut qualité',
                   },
                 ] as const).map((opt) => {
                   const active = selectedType === opt.value;
                   return (
                     <label key={opt.value} style={{
-                      display: 'flex', alignItems: 'flex-start', gap: 14,
-                      padding: '18px 0', borderBottom: '1px solid #f3f4f6',
+                      display: 'flex', alignItems: 'center', gap: 14,
+                      padding: '16px 20px',
+                      border: `1.5px solid ${active ? PURPLE : '#e5e7eb'}`,
+                      borderRadius: 10,
                       cursor: 'pointer', userSelect: 'none',
-                      background: active ? '#faf8fe' : 'transparent',
-                      marginLeft: -8, marginRight: -8, paddingLeft: 8, paddingRight: 8,
-                      borderRadius: 8,
+                      background: active ? '#f5f3ff' : '#fff',
+                      transition: 'all 0.15s',
                     }}>
                       <div style={{
-                        marginTop: 3, width: 18, height: 18, borderRadius: '50%',
+                        width: 18, height: 18, borderRadius: '50%',
                         border: `2px solid ${active ? PURPLE : '#d1d5db'}`,
                         flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
                         transition: 'border-color 0.15s',
                       }}>
                         {active && <div style={{ width: 8, height: 8, borderRadius: '50%', background: PURPLE }}/>}
                       </div>
-                      <div>
-                        <p style={{ fontSize: 15, fontWeight: 700, color: active ? PURPLE : '#111827', marginBottom: 4 }}>{opt.label}</p>
-                        <p style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.55 }}>{opt.desc}</p>
-                      </div>
+                      <p style={{ flex: 1, fontSize: 15, fontWeight: 600, color: active ? PURPLE : '#111827' }}>{opt.label}</p>
+                      <span style={{
+                        fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 99,
+                        background: active ? PURPLE : '#f3f4f6',
+                        color: active ? 'white' : '#6b7280',
+                        letterSpacing: '0.04em',
+                      }}>{opt.tag}</span>
                       <input type="radio" name="type" value={opt.value} checked={active} onChange={() => setSelectedType(opt.value)} style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}/>
                     </label>
                   );
                 })}
               </div>
 
-              <div style={{ marginTop: 28 }}>
-                <button onClick={handleStart} disabled={!selectedType} style={{
-                  background: selectedType ? PURPLE : '#e5e7eb',
-                  color: selectedType ? 'white' : '#9ca3af',
-                  border: 'none', borderRadius: 8, padding: '13px 32px',
-                  fontSize: 14, fontWeight: 700, cursor: selectedType ? 'pointer' : 'not-allowed',
-                  boxShadow: selectedType ? '0 4px 14px rgba(107,63,160,0.3)' : 'none',
-                  transition: 'all 0.15s',
-                }}>
-                  Commencer
-                </button>
-              </div>
+              <button onClick={handleStart} disabled={!selectedType} style={{
+                background: selectedType ? PURPLE : '#e5e7eb',
+                color: selectedType ? 'white' : '#9ca3af',
+                border: 'none', borderRadius: 8, padding: '13px 36px',
+                fontSize: 14, fontWeight: 700, cursor: selectedType ? 'pointer' : 'not-allowed',
+                boxShadow: selectedType ? '0 4px 14px rgba(107,63,160,0.25)' : 'none',
+                transition: 'all 0.15s',
+              }}>
+                Démarrer la saisie
+              </button>
+
             </div>
           </div>
 
-          <div style={{ padding: '0 64px 28px' }}>
-            <p style={{ fontSize: 11, color: '#d1d5db' }}>
-              © {new Date().getFullYear()} Marionnaud Lafayette — Données protégées conformément au RGPD
+          <div style={{ padding: '0 64px 24px' }}>
+            <p style={{ fontSize: 11, color: '#e5e7eb' }}>
+              © {new Date().getFullYear()} Marionnaud Lafayette
             </p>
           </div>
         </div>
@@ -344,7 +342,7 @@ export default function HomePage() {
         </div>
 
         <p style={{ textAlign: 'center', fontSize: 11, color: '#d1d5db', marginTop: 24 }}>
-          © {new Date().getFullYear()} Marionnaud Lafayette — Données protégées conformément au RGPD
+          © {new Date().getFullYear()} Marionnaud Lafayette
         </p>
       </main>
     </div>
