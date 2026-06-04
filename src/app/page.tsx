@@ -164,10 +164,11 @@ export default function HomePage() {
           padding: '48px 40px',
         }}>
           <div>
-            <div style={{ marginBottom: 56 }}>
-              <Image src="/logo-marionnaud.png" alt="Marionnaud" width={120} height={32}
-                style={{ height: 26, width: 'auto', filter: 'brightness(0) invert(1)' }}
-                className="object-contain" priority/>
+            <div style={{ marginBottom: 56, opacity: 0.4 }}>
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="white">
+                <rect width="32" height="32" rx="6" opacity="0.3"/>
+                <path d="M6 24V10l10-6 10 6v14l-10 4L6 24z" fill="white" opacity="0.7"/>
+              </svg>
             </div>
             <h1 style={{ fontSize: 42, fontWeight: 800, color: 'white', lineHeight: 1.1, marginBottom: 16 }}>
               Déclaration<br/>client
@@ -188,8 +189,10 @@ export default function HomePage() {
 
         {/* Panneau droit — blanc */}
         <div style={{ flex: 1, background: 'white', display: 'flex', flexDirection: 'column' }}>
-          {/* Top label */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '32px 64px 0' }}>
+          {/* Top bar */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '32px 64px 0' }}>
+            <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={120} height={32}
+              style={{ height: 26, width: 'auto' }} className="object-contain" priority/>
             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#d1d5db' }}>
               Formulaire de déclaration
             </span>
@@ -266,7 +269,7 @@ export default function HomePage() {
     <div style={{ minHeight: '100vh', background: '#f9fafb', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
       <header style={{ background: 'white', borderBottom: '1px solid #e5e7eb', position: 'sticky', top: 0, zIndex: 40 }}>
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ maxWidth: 1050, margin: '0 auto', padding: '0 24px', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={110} height={28}
             style={{ height: 24, width: 'auto' }} className="object-contain"/>
           {step < 99 && (
@@ -282,7 +285,7 @@ export default function HomePage() {
       </header>
 
       {/* Contenu */}
-      <main style={{ flex: 1, maxWidth: 900, margin: '0 auto', width: '100%', padding: '32px 24px' }}>
+      <main style={{ flex: 1, maxWidth: 1050, margin: '0 auto', width: '100%', padding: '32px 24px' }}>
         {step > 0 && step < 99 && <Progress step={step} type={data.type}/>}
 
         <div style={{ background: 'white', borderRadius: 12, border: '1px solid #e5e7eb', boxShadow: '0 1px 4px rgba(0,0,0,0.05)' }}>
