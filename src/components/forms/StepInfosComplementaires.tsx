@@ -24,8 +24,8 @@ function Bloc({ title, children }: { title: string; children: React.ReactNode })
   return (
     <div className="mb-6">
       <div className="flex items-center gap-3 mb-4">
-        <span className="text-[11px] font-bold tracking-[0.1em] text-[#6B3FA0] uppercase">{title}</span>
-        <div className="flex-1 h-px bg-[#f0ebf8]"/>
+        <span className="text-[12px] font-bold tracking-wider text-[#6B3FA0] uppercase shrink-0">{title}</span>
+        <div className="flex-1 h-px bg-[#ede5f7]"/>
       </div>
       {children}
     </div>
@@ -113,7 +113,7 @@ export default function StepInfosComplementaires({ value, onChange, onBack, onSu
               <input className={`${inputCls}${errors.nomPrenomSalarie ? ' !border-red-300' : ''}`} placeholder="Jean Dupont" value={value.nomPrenomSalarie} onChange={(e) => set('nomPrenomSalarie', e.target.value)}/>
             </FormField>
             <div>
-              <p className="text-[11px] font-bold tracking-[0.09em] text-[#666] uppercase mb-2">
+              <p className="text-[13px] font-semibold text-[#444] mb-2">
                 Signature du salarié<span className="text-[#6B3FA0] ml-0.5">*</span>
               </p>
               <SignaturePad value={value.signatureSalarie} onChange={(v) => set('signatureSalarie', v)}/>

@@ -8,40 +8,25 @@ interface FormFieldProps {
 
 export function FormField({ label, required, error, hint, children }: FormFieldProps) {
   return (
-    <div className="flex flex-col gap-1.5">
-      <label className="text-[11px] font-bold tracking-[0.09em] text-[#666] uppercase select-none">
-        {label}
-        {required && <span className="text-[#6B3FA0] ml-0.5">*</span>}
+    <div className="flex flex-col gap-2">
+      <label className="text-[13px] font-semibold text-[#444] select-none leading-none">
+        {label}{required && <span className="text-[#6B3FA0] ml-0.5">*</span>}
       </label>
       {children}
-      {hint && !error && <p className="text-[11px] text-[#aaa] leading-tight">{hint}</p>}
-      {error && <p className="text-[11px] text-red-500 leading-tight flex items-center gap-1">
-        <span>⚠</span>{error}
-      </p>}
+      {hint && !error && <p className="text-[12px] text-[#a0a0a0]">{hint}</p>}
+      {error && <p className="text-[12px] text-red-500">⚠ {error}</p>}
     </div>
   );
 }
 
-/* font-size: 16px empêche le zoom iOS */
-export const inputCls = [
-  'w-full bg-white rounded-lg border border-[#e6e6e6]',
-  'px-4 py-3 text-[15px] text-[#111] leading-tight',
-  'placeholder:text-[#ccc]',
-  'transition-all duration-150',
-  'focus:outline-none focus:border-[#6B3FA0] focus:ring-2 focus:ring-[#6B3FA0]/15',
-  'hover:border-[#c0c0c0]',
-  'shadow-[0_1px_3px_rgba(0,0,0,0.05)]',
-  '[-webkit-appearance:none]',
-].join(' ');
+export const inputCls =
+  'w-full bg-white border border-[#e0e0e0] rounded-xl px-4 py-3 text-[15px] text-[#0d0d0d] ' +
+  'placeholder:text-[#c0c0c0] shadow-sm ' +
+  'transition-all duration-150 focus:outline-none focus:border-[#6B3FA0] ' +
+  'focus:ring-2 focus:ring-[#6B3FA0]/20 hover:border-[#b8b8b8]';
 
-export const selectCls = [
-  'w-full bg-white rounded-lg border border-[#e6e6e6]',
-  'px-4 py-3 text-[15px] text-[#111] leading-tight',
-  'transition-all duration-150 cursor-pointer',
-  'focus:outline-none focus:border-[#6B3FA0] focus:ring-2 focus:ring-[#6B3FA0]/15',
-  'hover:border-[#c0c0c0]',
-  'shadow-[0_1px_3px_rgba(0,0,0,0.05)]',
-  '[-webkit-appearance:none] appearance-none',
-  'bg-[url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23999\' stroke-width=\'2\'><polyline points=\'6 9 12 15 18 9\'></polyline></svg>")] bg-no-repeat bg-[right_12px_center]',
-  'pr-10',
-].join(' ');
+export const selectCls =
+  'w-full bg-white border border-[#e0e0e0] rounded-xl px-4 py-3 text-[15px] text-[#0d0d0d] ' +
+  'shadow-sm cursor-pointer ' +
+  'transition-all duration-150 focus:outline-none focus:border-[#6B3FA0] ' +
+  'focus:ring-2 focus:ring-[#6B3FA0]/20 hover:border-[#b8b8b8]';

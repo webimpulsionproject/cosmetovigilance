@@ -26,43 +26,57 @@ const blank: ReclamationFormData = {
   infosComplementaires: { actionsEnMagasin: [], nomMagasin: '', numeroDuMagasin: '', emailMagasin: '', nomPrenomRRV: '', nomPrenomResponsable: '', nomPrenomSalarie: '', signatureSalarie: '' },
 };
 
-/* ── Barre de progression ── */
+const gradientPurple = 'linear-gradient(160deg,#3a1a6e 0%,#5a2d8a 50%,#7B4FB0 100%)';
+const gradientBtn    = 'linear-gradient(135deg,#4a2878,#7B4FB0)';
+
+function CheckIcon() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+      <polyline points="2 6 5 9 10 3" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+/* ─── Progress bar (étapes) ─── */
 function Progress({ step, type }: { step: number; type: ReclamationType }) {
   const steps = type === 'cosmetovigilance' ? STEPS_CV : STEPS_QU;
   const cur = step - 1;
-
   return (
     <div className="mb-8">
-      {/* Mobile : texte uniquement */}
+      {/* Mobile */}
       <div className="flex items-center justify-between mb-3 sm:hidden">
-        <span className="text-[12px] font-semibold text-[#6B3FA0]">{steps[cur]}</span>
-        <span className="text-[12px] text-[#aaa]">{step} / {steps.length}</span>
+        <span className="text-[15px] font-bold text-[#6B3FA0]">{steps[cur]}</span>
+        <span className="text-[13px] text-[#aaa] font-semibold">Étape {step} / {steps.length}</span>
       </div>
-      {/* Barre */}
-      <div className="relative h-1 bg-[#e6e6e6] rounded-full overflow-hidden">
-        <div
-          className="absolute inset-y-0 left-0 bg-[#6B3FA0] rounded-full transition-all duration-500"
-          style={{ width: `${(step / steps.length) * 100}%` }}
-        />
+      <div className="h-1.5 bg-[#e8e8e8] rounded-full overflow-hidden sm:hidden">
+        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${(step / steps.length) * 100}%`, background: gradientPurple }}/>
       </div>
-      {/* Desktop : points numérotés */}
-      <div className="hidden sm:flex items-start justify-between mt-3">
+      {/* Desktop */}
+      <div className="hidden sm:flex items-start justify-between">
         {steps.map((label, i) => {
-          const done = i < cur, active = i === cur;
+          const done = i < cur, active = i === cur, isLast = i === steps.length - 1;
           return (
-            <div key={i} className="flex flex-col items-center gap-1.5 flex-1">
-              <div className={`w-7 h-7 rounded-full border-2 flex items-center justify-center text-[11px] font-bold transition-all duration-300 ${
-                done   ? 'bg-[#6B3FA0] border-[#6B3FA0] text-white' :
-                active ? 'bg-white border-[#6B3FA0] text-[#6B3FA0] shadow-[0_0_0_3px_rgba(107,63,160,0.15)]' :
-                         'bg-white border-[#ddd] text-[#ccc]'
-              }`}>
-                {done
-                  ? <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2 6 5 9 10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  : i + 1}
+            <div key={i} className={`flex items-start ${isLast ? 'shrink-0' : 'flex-1'}`}>
+              <div className="flex flex-col items-center gap-2 shrink-0">
+                <div
+                  className={`w-10 h-10 rounded-full border-2 flex items-center justify-center text-[13px] font-bold transition-all duration-300 ${
+                    done ? 'text-white border-[#6B3FA0]' : active ? 'bg-white border-[#6B3FA0] text-[#6B3FA0]' : 'bg-white border-[#ddd] text-[#ccc]'
+                  }`}
+                  style={{
+                    ...(done   ? { background: gradientPurple } : {}),
+                    ...(active ? { boxShadow: '0 0 0 5px rgba(107,63,160,0.13)' } : {}),
+                  }}
+                >
+                  {done ? <CheckIcon /> : i + 1}
+                </div>
+                <span className={`text-[12px] font-semibold whitespace-nowrap ${active ? 'text-[#6B3FA0]' : done ? 'text-[#aaa]' : 'text-[#ccc]'}`}>
+                  {label}
+                </span>
               </div>
-              <span className={`text-[10px] font-semibold tracking-wide uppercase text-center leading-tight ${active ? 'text-[#6B3FA0]' : done ? 'text-[#bbb]' : 'text-[#ddd]'}`}>
-                {label}
-              </span>
+              {!isLast && (
+                <div className="flex-1 h-[2px] mx-3 mt-5 rounded-full transition-all duration-500"
+                  style={{ background: i < cur ? gradientPurple : '#e8e8e8' }}/>
+              )}
             </div>
           );
         })}
@@ -71,58 +85,46 @@ function Progress({ step, type }: { step: number; type: ReclamationType }) {
   );
 }
 
-/* ── Confirmation ── */
+/* ─── Confirmation ─── */
 function Confirmation({ numero, type, onReset }: { numero: string; type: ReclamationType; onReset: () => void }) {
   return (
-    <div className="py-10 sm:py-14 flex flex-col items-center gap-7 text-center max-w-sm mx-auto fade-up">
-      <div className="relative w-20 h-20">
-        <div className="pulse-ring absolute inset-0 rounded-full bg-[#6B3FA0]/20" />
-        <div className="relative w-20 h-20 rounded-full bg-[#f5f1fb] border-2 border-[#6B3FA0] flex items-center justify-center">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6B3FA0" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
+    <div className="py-12 flex flex-col items-center gap-7 text-center max-w-sm mx-auto">
+      <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{background: gradientPurple}}>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
       </div>
-
       <div>
-        <p className="text-[11px] tracking-[0.12em] uppercase font-bold text-[#6B3FA0] mb-2">Déclaration enregistrée</p>
-        <h2 className="text-2xl font-bold text-[#111] tracking-tight">Merci !</h2>
-        <p className="text-[#777] text-sm mt-2 leading-relaxed">
+        <p className="text-[12px] font-bold tracking-[0.14em] uppercase text-[#6B3FA0] mb-2">Déclaration enregistrée</p>
+        <h2 className="text-[24px] font-bold text-[#0d0d0d]">Merci !</h2>
+        <p className="text-[#525252] text-[15px] mt-2 leading-relaxed">
           Votre déclaration de {type === 'cosmetovigilance' ? 'cosmétovigilance' : 'qualité'} a bien été transmise.
         </p>
       </div>
-
-      <div className="w-full rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(107,63,160,0.2)]">
-        <div className="bg-[#6B3FA0] px-6 py-5 text-white">
-          <p className="text-[10px] tracking-[0.14em] uppercase opacity-70 mb-1">Numéro de réclamation</p>
-          <p className="text-3xl font-bold tracking-widest">{numero}</p>
+      <div className="w-full rounded-2xl overflow-hidden border border-[#d8c8f0]">
+        <div className="px-6 py-5 text-white" style={{background: gradientPurple}}>
+          <p className="text-[11px] tracking-[0.16em] uppercase opacity-70 mb-1.5">Numéro de réclamation</p>
+          <p className="text-[28px] font-bold tracking-widest">{numero}</p>
         </div>
-        <div className="bg-[#f5f1fb] px-6 py-4 space-y-2.5">
+        <div className="px-5 py-4 bg-[#f9f7fd] space-y-3">
           {['Dossier enregistré en base de données', 'Email de confirmation envoyé au client', 'PDF transmis à l\'équipe Marionnaud'].map((item) => (
-            <div key={item} className="flex items-center gap-3 text-[13px] text-[#555]">
-              <div className="w-5 h-5 rounded-full bg-white border border-[#ddd0f0] flex items-center justify-center shrink-0">
-                <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
-                  <polyline points="2 6 5 9 10 3" stroke="#6B3FA0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+            <div key={item} className="flex items-center gap-3 text-[14px] text-[#444]">
+              <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{background:'#6B3FA0'}}>
+                <CheckIcon/>
               </div>
               <span className="text-left">{item}</span>
             </div>
           ))}
         </div>
       </div>
-
-      <button
-        type="button"
-        onClick={onReset}
-        className="text-[13px] font-semibold text-[#6B3FA0] border-2 border-[#6B3FA0] hover:bg-[#6B3FA0] hover:text-white px-8 py-3 rounded-xl transition-all duration-200 w-full sm:w-auto"
-      >
+      <button type="button" onClick={onReset} className="w-full text-[15px] font-bold text-white px-8 py-4 rounded-xl" style={{background: gradientBtn, boxShadow:'0 4px 16px rgba(107,63,160,0.35)'}}>
         Nouvelle déclaration
       </button>
     </div>
   );
 }
 
-/* ── Page principale ── */
+/* ═══════════════════════════════════════════════════════ */
 export default function HomePage() {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<ReclamationFormData>(blank);
@@ -147,7 +149,7 @@ export default function HomePage() {
       const json = await res.json();
       if (json.success) { setSuccessNumero(json.numeroReclamation); setStep(99); }
       else setSubmitError(json.error || 'Une erreur est survenue.');
-    } catch { setSubmitError('Impossible de joindre le serveur. Vérifiez votre connexion.'); }
+    } catch { setSubmitError('Impossible de joindre le serveur.'); }
     finally { setIsLoading(false); }
   };
 
@@ -157,156 +159,185 @@ export default function HomePage() {
   const goNextStep2 = () => setStep(isCosmetov ? 3 : 4);
   const goBackStep4 = () => setStep(isCosmetov ? 3 : 2);
 
-  return (
-    <div className="min-h-screen flex flex-col bg-[#f4f3f7]">
+  /* ══ PAGE ACCUEIL — split panel ══ */
+  if (step === 0) {
+    return (
+      <div className="min-h-screen flex flex-col lg:flex-row">
 
-      {/* ── HEADER ── */}
-      <header className="bg-white border-b border-[#ebebeb] sticky top-0 z-40 shadow-[0_1px_0_rgba(0,0,0,0.04)]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
-          <Image
-            src="/logo-marionnaud.png"
-            alt="Marionnaud Paris"
-            width={120} height={34} priority
-            style={{ height: 28, width: 'auto' }}
-            className="object-contain sm:h-[32px]"
-          />
-          {step > 0 && step < 99 && (
-            <span className="text-[11px] font-semibold tracking-widest uppercase text-[#6B3FA0] bg-[#f5f1fb] px-3 py-1.5 rounded-full border border-[#ddd0f0]">
+        {/* ── Panneau gauche (violet) ── */}
+        <div
+          className="lg:w-[360px] xl:w-[420px] flex-shrink-0 flex flex-col justify-between px-8 py-8 lg:px-10 lg:py-10"
+          style={{ background: gradientPurple, minHeight: '100dvh' }}
+        >
+          {/* Logo */}
+          <div>
+            <div className="mb-12 lg:mb-16">
+              <Image
+                src="/logo-marionnaud.png"
+                alt="Marionnaud Paris"
+                width={130} height={36}
+                style={{ height: 28, width: 'auto', filter: 'brightness(0) invert(1)' }}
+                className="object-contain"
+                priority
+              />
+            </div>
+            <h1 className="text-[38px] lg:text-[44px] xl:text-[52px] font-bold text-white leading-[1.1] mb-5">
+              Déclaration<br/>client
+            </h1>
+            <p className="text-white/65 text-[14px] lg:text-[15px] leading-relaxed max-w-xs">
+              Signalez un effet indésirable ou un problème de qualité sur un produit Marionnaud Paris.
+            </p>
+          </div>
+
+          {/* Bullets */}
+          <div className="space-y-3 mt-10 lg:mt-0">
+            {[
+              'Données protégées — RGPD',
+              'Processus guidé en 5 étapes',
+              'Confirmation automatique par email',
+            ].map((item) => (
+              <div key={item} className="flex items-center gap-3 text-white/70 text-[13px]">
+                <div className="w-4 h-4 rounded-full border border-white/35 flex items-center justify-center shrink-0">
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/60"/>
+                </div>
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Panneau droit (blanc) ── */}
+        <div className="flex-1 flex flex-col bg-white min-h-screen">
+          {/* Top bar */}
+          <div className="flex items-center justify-between px-8 sm:px-12 lg:px-16 pt-8">
+            {/* Logo visible uniquement sur mobile (le panneau gauche est caché) */}
+            <div className="lg:hidden">
+              <Image
+                src="/logo-marionnaud.png"
+                alt="Marionnaud Paris"
+                width={110} height={30}
+                style={{ height: 24, width: 'auto' }}
+                className="object-contain"
+              />
+            </div>
+            <span className="ml-auto text-[11px] font-bold tracking-[0.18em] uppercase text-[#bbb]">
+              Formulaire de déclaration
+            </span>
+          </div>
+
+          {/* Contenu centré */}
+          <div className="flex-1 flex items-center px-8 sm:px-12 lg:px-16 py-12">
+            <div className="w-full max-w-lg">
+
+              <p className="text-[11px] font-bold tracking-[0.18em] uppercase text-[#999] mb-5">
+                Type de déclaration
+              </p>
+              <h2 className="text-[22px] sm:text-[27px] font-bold text-[#111] leading-snug mb-8">
+                Choisissez le motif correspondant à votre situation.
+              </h2>
+
+              {/* Options */}
+              <div className="border-t border-[#ebebeb]">
+                {([
+                  {
+                    value: 'cosmetovigilance' as const,
+                    label: 'Cosmétovigilance',
+                    desc: "Effet indésirable à un produit : irritation, rougeurs, brûlures, démangeaisons, yeux gonflés…",
+                  },
+                  {
+                    value: 'qualite' as const,
+                    label: 'Qualité',
+                    desc: "Dysfonctionnement, dérive de couleur ou d'odeur, remarques sur l'efficacité du produit…",
+                  },
+                ] as const).map((opt) => {
+                  const active = selectedType === opt.value;
+                  return (
+                    <label
+                      key={opt.value}
+                      className="flex items-start gap-4 py-5 border-b border-[#ebebeb] cursor-pointer group select-none"
+                    >
+                      <div className={`mt-0.5 w-[18px] h-[18px] rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${
+                        active ? 'border-[#6B3FA0]' : 'border-[#ccc] group-hover:border-[#aaa]'
+                      }`}>
+                        {active && <div className="w-2 h-2 rounded-full bg-[#6B3FA0]"/>}
+                      </div>
+                      <div>
+                        <p className="text-[16px] font-bold text-[#111] mb-1">{opt.label}</p>
+                        <p className={`text-[13px] leading-relaxed transition-colors ${active ? 'text-[#6B3FA0]' : 'text-[#aaa] group-hover:text-[#888]'}`}>
+                          {opt.desc}
+                        </p>
+                      </div>
+                      <input type="radio" name="type" value={opt.value} checked={active} onChange={() => setSelectedType(opt.value)} className="sr-only"/>
+                    </label>
+                  );
+                })}
+              </div>
+
+              {/* CTA */}
+              <div className="mt-8">
+                <button
+                  type="button"
+                  onClick={handleStart}
+                  disabled={!selectedType}
+                  className="text-[14px] font-bold text-white px-8 py-3.5 rounded-xl transition-all duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
+                  style={{
+                    background: selectedType ? gradientBtn : '#bbb',
+                    boxShadow: selectedType ? '0 4px 16px rgba(107,63,160,0.35)' : 'none',
+                  }}
+                >
+                  Commencer
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <p className="px-8 sm:px-12 lg:px-16 pb-8 text-[11px] text-[#ccc]">
+            &copy; {new Date().getFullYear()} Marionnaud Lafayette — Données protégées conformément au RGPD
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  /* ══ ÉTAPES DU FORMULAIRE ══ */
+  return (
+    <div className="min-h-screen flex flex-col bg-[#f7f6fb]">
+      <header className="bg-white border-b border-[#e8e8e8] sticky top-0 z-40" style={{boxShadow:'0 1px 0 rgba(0,0,0,0.05)'}}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
+          <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={120} height={34} style={{height:26,width:'auto'}} className="object-contain"/>
+          {step < 99 && (
+            <span className="text-[11px] font-bold tracking-[0.12em] uppercase px-3.5 py-1.5 rounded-full border" style={{color:'#6B3FA0',background:'#f4f0fa',borderColor:'#d8c8f0'}}>
               {data.type === 'cosmetovigilance' ? 'Cosmétovigilance' : 'Qualité'}
             </span>
           )}
         </div>
       </header>
 
-      {/* ── MAIN ── */}
-      <main className="flex-1 max-w-4xl mx-auto w-full px-3 sm:px-6 py-6 sm:py-10">
+      <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-8 py-8 sm:py-10">
+        {step > 0 && step < 99 && <Progress step={step} type={data.type}/>}
 
-        {step > 0 && step < 99 && <Progress step={step} type={data.type} />}
-
-        {/* ── ACCUEIL ── */}
-        {step === 0 && (
-          <div className="fade-up bg-white rounded-2xl overflow-hidden shadow-[0_4px_32px_rgba(0,0,0,0.08)]">
-            <div className="flex flex-col md:flex-row">
-
-              {/* Panneau gauche */}
-              <div className="relative md:w-72 lg:w-80 bg-[#6B3FA0] p-7 sm:p-9 flex flex-col justify-between overflow-hidden min-h-[200px] md:min-h-0">
-                {/* Décorations */}
-                <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-white/[0.06]" aria-hidden="true"/>
-                <div className="absolute -bottom-16 -left-8 w-48 h-48 rounded-full bg-white/[0.06]" aria-hidden="true"/>
-                <div className="absolute top-1/2 -translate-y-1/2 right-3 w-20 h-20 rounded-full bg-white/[0.04]" aria-hidden="true"/>
-
-                <div className="relative">
-                  <p className="text-white/40 text-[10px] tracking-[0.18em] uppercase font-bold mb-5 sm:mb-7">Marionnaud Paris</p>
-                  <h1 className="text-[22px] sm:text-[26px] font-bold text-white leading-tight tracking-tight">
-                    Formulaire de<br className="hidden sm:block"/>déclaration client
-                  </h1>
-                  <p className="text-white/55 text-[13px] mt-3 leading-relaxed hidden sm:block">
-                    Signalez un effet indésirable ou un problème de qualité sur un produit Marionnaud.
-                  </p>
-                </div>
-
-                <div className="relative mt-6 sm:mt-10 hidden sm:flex flex-col gap-3">
-                  {['Données protégées — RGPD', 'Formulaire guidé en 5 étapes', 'Confirmation par email automatique'].map((txt) => (
-                    <div key={txt} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-white/15 flex items-center justify-center shrink-0">
-                        <svg width="9" height="9" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                          <polyline points="2 6 5 9 10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      </div>
-                      <span className="text-white/60 text-[12px]">{txt}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Panneau droite */}
-              <div className="flex-1 p-6 sm:p-9 flex flex-col justify-center">
-                <p className="text-[11px] tracking-[0.1em] uppercase font-bold text-[#aaa] mb-1">Type de déclaration</p>
-                <h2 className="text-[18px] sm:text-[20px] font-bold text-[#111] tracking-tight mb-1.5">
-                  Choisissez votre motif
-                </h2>
-                <p className="text-[13px] text-[#999] mb-6 leading-relaxed">
-                  Sélectionnez le cas correspondant à votre situation.
-                </p>
-
-                <div className="space-y-3 mb-7">
-                  {[
-                    { value: 'cosmetovigilance' as const, label: 'Cosmétovigilance', desc: 'Réaction indésirable : irritation, rougeurs, brûlures, démangeaisons, yeux gonflés...' },
-                    { value: 'qualite'           as const, label: 'Qualité',          desc: 'Dysfonctionnement, dérive de couleur/odeur, efficacité du produit...' },
-                  ].map((opt) => {
-                    const active = selectedType === opt.value;
-                    return (
-                      <label
-                        key={opt.value}
-                        className={`flex items-start gap-3 sm:gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 select-none ${
-                          active ? 'border-[#6B3FA0] bg-[#f5f1fb]' : 'border-[#ebebeb] hover:border-[#cbb8e8] hover:bg-[#fdfaff]'
-                        }`}
-                      >
-                        {/* Radio custom */}
-                        <div className={`mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${active ? 'border-[#6B3FA0]' : 'border-[#ccc]'}`}>
-                          {active && <div className="w-2.5 h-2.5 rounded-full bg-[#6B3FA0]"/>}
-                        </div>
-                        <div>
-                          <p className={`text-[14px] font-semibold transition-colors ${active ? 'text-[#6B3FA0]' : 'text-[#111]'}`}>{opt.label}</p>
-                          <p className="text-[12px] text-[#999] mt-0.5 leading-relaxed">{opt.desc}</p>
-                        </div>
-                        <input type="radio" name="type" value={opt.value} checked={active} onChange={() => setSelectedType(opt.value)} className="sr-only"/>
-                      </label>
-                    );
-                  })}
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleStart}
-                  disabled={!selectedType}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 text-[14px] font-semibold text-white bg-[#6B3FA0] hover:bg-[#5a2d8a] active:bg-[#4e2a70] px-7 py-3.5 rounded-xl transition-all duration-150 disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_4px_16px_rgba(107,63,160,0.35)] hover:shadow-[0_6px_20px_rgba(107,63,160,0.45)] disabled:shadow-none"
-                  aria-disabled={!selectedType}
-                >
-                  Commencer le formulaire
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16" aria-hidden="true">
-                    <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
+        <div className="bg-white rounded-2xl" style={{boxShadow:'0 4px 32px rgba(107,63,160,0.07),0 1px 4px rgba(0,0,0,0.05)'}}>
+          <div className="p-6 sm:p-8 lg:p-10">
+            {step === 1 && <StepCoordonnees   value={data.coordonnees}        onChange={(v) => setData((d) => ({...d,coordonnees:v}))}        onBack={goBack}      onNext={goNext}/>}
+            {step === 2 && <StepProduit        value={data.produits}           onChange={(v) => setData((d) => ({...d,produits:v}))}           onBack={goBack}      onNext={goNextStep2}/>}
+            {step === 3 && isCosmetov && <StepEffetIndesirable value={data.effetIndesirable} onChange={(v) => setData((d) => ({...d,effetIndesirable:v}))} onBack={goBack} onNext={goNext}/>}
+            {step === 4 && <StepAccordClient   value={data.accordClient}       onChange={(v) => setData((d) => ({...d,accordClient:v}))}       onBack={goBackStep4} onNext={goNext}/>}
+            {step === 5 && (
+              <>
+                {submitError && (
+                  <div className="mb-6 border border-red-200 bg-red-50 rounded-xl px-4 py-3.5 text-[14px] text-red-600 font-medium">
+                    ⚠ {submitError}
+                  </div>
+                )}
+                <StepInfosComplementaires value={data.infosComplementaires} onChange={(v) => setData((d) => ({...d,infosComplementaires:v}))} onBack={goBack} onSubmit={handleSubmit} isLoading={isLoading}/>
+              </>
+            )}
+            {step === 99 && <Confirmation numero={successNumero} type={data.type} onReset={reset}/>}
           </div>
-        )}
+        </div>
 
-        {/* ── ÉTAPES ── */}
-        {step > 0 && step < 99 && (
-          <div className="fade-up bg-white rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.07)] overflow-hidden">
-            <div className="p-5 sm:p-8 md:p-10">
-              {step === 1 && <StepCoordonnees   value={data.coordonnees}         onChange={(v) => setData((d) => ({ ...d, coordonnees: v }))}         onBack={goBack}      onNext={goNext}/>}
-              {step === 2 && <StepProduit        value={data.produits}            onChange={(v) => setData((d) => ({ ...d, produits: v }))}            onBack={goBack}      onNext={goNextStep2}/>}
-              {step === 3 && isCosmetov && <StepEffetIndesirable value={data.effetIndesirable} onChange={(v) => setData((d) => ({ ...d, effetIndesirable: v }))} onBack={goBack} onNext={goNext}/>}
-              {step === 4 && <StepAccordClient   value={data.accordClient}        onChange={(v) => setData((d) => ({ ...d, accordClient: v }))}        onBack={goBackStep4} onNext={goNext}/>}
-              {step === 5 && (
-                <>
-                  {submitError && (
-                    <div role="alert" className="mb-6 flex items-start gap-3 border border-red-200 bg-red-50 rounded-xl px-4 py-3.5">
-                      <svg className="w-4 h-4 text-red-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 16 16" aria-hidden="true">
-                        <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5"/>
-                        <path d="M8 5v3M8 11h.01" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                      </svg>
-                      <p className="text-[13px] text-red-600">{submitError}</p>
-                    </div>
-                  )}
-                  <StepInfosComplementaires value={data.infosComplementaires} onChange={(v) => setData((d) => ({ ...d, infosComplementaires: v }))} onBack={goBack} onSubmit={handleSubmit} isLoading={isLoading}/>
-                </>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* ── CONFIRMATION ── */}
-        {step === 99 && (
-          <div className="bg-white rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.07)] p-6 sm:p-10">
-            <Confirmation numero={successNumero} type={data.type} onReset={reset}/>
-          </div>
-        )}
-
-        <p className="text-center text-[11px] text-[#c0c0c0] mt-6 sm:mt-8">
+        <p className="text-center text-[12px] text-[#bbb] mt-6">
           &copy; {new Date().getFullYear()} Marionnaud Lafayette &nbsp;&mdash;&nbsp; Données protégées conformément au RGPD
         </p>
       </main>

@@ -19,8 +19,8 @@ function Bloc({ title, children }: { title: string; children: React.ReactNode })
   return (
     <div className="mb-6">
       <div className="flex items-center gap-3 mb-4">
-        <span className="text-[11px] font-bold tracking-[0.1em] text-[#6B3FA0] uppercase">{title}</span>
-        <div className="flex-1 h-px bg-[#f0ebf8]"/>
+        <span className="text-[12px] font-bold tracking-wider text-[#6B3FA0] uppercase shrink-0">{title}</span>
+        <div className="flex-1 h-px bg-[#ede5f7]"/>
       </div>
       {children}
     </div>
