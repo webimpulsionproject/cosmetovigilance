@@ -159,70 +159,105 @@ export default function HomePage() {
 
         {/* Panneau gauche — violet */}
         <div style={{
-          width: 360, flexShrink: 0, background: PURPLE,
+          width: 380, flexShrink: 0, background: PURPLE,
           display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
           padding: '48px 40px',
         }}>
           <div>
-            <div style={{ marginBottom: 56, opacity: 0.4 }}>
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="white">
-                <rect width="32" height="32" rx="6" opacity="0.3"/>
-                <path d="M6 24V10l10-6 10 6v14l-10 4L6 24z" fill="white" opacity="0.7"/>
-              </svg>
+            {/* Logo dans pilule blanche */}
+            <div style={{ background: 'white', borderRadius: 10, padding: '10px 18px', display: 'inline-block', marginBottom: 48 }}>
+              <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={140} height={38}
+                style={{ height: 28, width: 'auto', display: 'block' }} className="object-contain" priority/>
             </div>
-            <h1 style={{ fontSize: 42, fontWeight: 800, color: 'white', lineHeight: 1.1, marginBottom: 16 }}>
-              Déclaration<br/>client
+
+            <h1 style={{ fontSize: 36, fontWeight: 800, color: 'white', lineHeight: 1.15, marginBottom: 20 }}>
+              Formulaire de<br/>déclaration client
             </h1>
-            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, maxWidth: 260 }}>
-              Signalez un effet indésirable ou un problème de qualité sur un produit Marionnaud Paris.
+            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.7)', lineHeight: 1.75 }}>
+              Cosmétovigilance & qualité produit
+            </p>
+
+            {/* Séparateur */}
+            <div style={{ width: 40, height: 2, background: 'rgba(255,255,255,0.25)', margin: '28px 0' }}/>
+
+            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', lineHeight: 1.75 }}>
+              Ce formulaire est destiné à signaler un effet indésirable ou un problème de qualité constaté sur un produit cosmétique vendu en magasin Marionnaud.
             </p>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {['Données protégées — RGPD', 'Processus guidé en 5 étapes', 'Confirmation automatique par email'].map((item) => (
-              <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(255,255,255,0.55)', fontSize: 12 }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'rgba(255,255,255,0.4)', flexShrink: 0 }}/>
-                {item}
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {[
+              { icon: '🔒', text: 'Données protégées — RGPD' },
+              { icon: '📋', text: 'Processus guidé en 5 étapes' },
+              { icon: '📧', text: 'Confirmation automatique par email' },
+            ].map(({ icon, text }) => (
+              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'rgba(255,255,255,0.6)', fontSize: 13 }}>
+                <span style={{ fontSize: 15 }}>{icon}</span>
+                {text}
               </div>
             ))}
           </div>
         </div>
 
         {/* Panneau droit — blanc */}
-        <div style={{ flex: 1, background: 'white', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ flex: 1, background: 'white', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
           {/* Top bar */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '32px 56px 0' }}>
-            <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={200} height={56}
-              style={{ height: 44, width: 'auto' }} className="object-contain" priority/>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '28px 56px 0' }}>
             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#d1d5db' }}>
               Formulaire de déclaration
             </span>
           </div>
 
-          {/* Contenu centré verticalement */}
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '32px 64px' }}>
-            <div style={{ width: '100%', maxWidth: 460 }}>
-              <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9ca3af', marginBottom: 16 }}>
-                Type de déclaration
-              </p>
-              <h2 style={{ fontSize: 26, fontWeight: 700, color: '#111827', lineHeight: 1.3, marginBottom: 32 }}>
-                Choisissez le motif correspondant à votre situation.
+          {/* Contenu */}
+          <div style={{ flex: 1, padding: '32px 56px 48px' }}>
+            <div style={{ maxWidth: 560 }}>
+
+              {/* Titre */}
+              <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 24, lineHeight: 1.3 }}>
+                Formulaire de déclaration client :<br/>cosmétovigilance ou qualité
               </h2>
 
-              {/* Options */}
+              {/* Bloc explicatif */}
+              <div style={{ background: '#f9f7fd', border: '1px solid #e8e0f5', borderRadius: 12, padding: '20px 24px', marginBottom: 32 }}>
+                <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.75, marginBottom: 14 }}>
+                  <strong style={{ color: PURPLE }}>Cosmétovigilance</strong> : Est considéré comme «&thinsp;effet indésirable&thinsp;» une réaction à un produit ne nécessitant pas toujours de consultation médicale, mais étant néanmoins gênante et parfois très désagréable. Réactions possibles : irritation, démangeaisons, brûlures, rougeurs, yeux gonflés, boutons, etc.
+                  <br/><em style={{ color: '#9ca3af' }}>Ne relève pas de la cosmétovigilance : mauvais usage du produit.</em>
+                </p>
+                <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.75 }}>
+                  <strong style={{ color: '#374151' }}>Qualité</strong> : Il s&apos;agit des remontées autres que la cosmétovigilance. Par exemple : dysfonctionnements, dérives de couleurs ou d&apos;odeurs, commentaires sur l&apos;efficacité, packaging défectueux...
+                </p>
+              </div>
+
+              {/* Sélection */}
+              <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#9ca3af', marginBottom: 14 }}>
+                Choisir le type de réclamation
+              </p>
+
               <div style={{ borderTop: '1px solid #f3f4f6' }}>
                 {([
-                  { value: 'cosmetovigilance' as const, label: 'Cosmétovigilance', desc: "Effet indésirable à un produit : irritation, rougeurs, brûlures, démangeaisons, yeux gonflés…" },
-                  { value: 'qualite' as const, label: 'Qualité', desc: "Dysfonctionnement, dérive de couleur ou d'odeur, remarques sur l'efficacité du produit…" },
+                  {
+                    value: 'cosmetovigilance' as const,
+                    label: 'Cosmétovigilance',
+                    desc: 'Réaction indésirable à un produit : irritation, rougeurs, brûlures, démangeaisons, yeux gonflés, boutons…',
+                  },
+                  {
+                    value: 'qualite' as const,
+                    label: 'Qualité produit',
+                    desc: "Dysfonctionnement, dérive de couleur ou d'odeur, efficacité insuffisante, packaging défectueux…",
+                  },
                 ] as const).map((opt) => {
                   const active = selectedType === opt.value;
                   return (
                     <label key={opt.value} style={{
                       display: 'flex', alignItems: 'flex-start', gap: 14,
-                      padding: '20px 0', borderBottom: '1px solid #f3f4f6',
+                      padding: '18px 0', borderBottom: '1px solid #f3f4f6',
                       cursor: 'pointer', userSelect: 'none',
+                      background: active ? '#faf8fe' : 'transparent',
+                      marginLeft: -8, marginRight: -8, paddingLeft: 8, paddingRight: 8,
+                      borderRadius: 8,
                     }}>
                       <div style={{
-                        marginTop: 2, width: 18, height: 18, borderRadius: '50%',
+                        marginTop: 3, width: 18, height: 18, borderRadius: '50%',
                         border: `2px solid ${active ? PURPLE : '#d1d5db'}`,
                         flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
                         transition: 'border-color 0.15s',
@@ -230,8 +265,8 @@ export default function HomePage() {
                         {active && <div style={{ width: 8, height: 8, borderRadius: '50%', background: PURPLE }}/>}
                       </div>
                       <div>
-                        <p style={{ fontSize: 15, fontWeight: 700, color: '#111827', marginBottom: 4 }}>{opt.label}</p>
-                        <p style={{ fontSize: 13, color: active ? PURPLE : '#9ca3af', lineHeight: 1.5, transition: 'color 0.15s' }}>{opt.desc}</p>
+                        <p style={{ fontSize: 15, fontWeight: 700, color: active ? PURPLE : '#111827', marginBottom: 4 }}>{opt.label}</p>
+                        <p style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.55 }}>{opt.desc}</p>
                       </div>
                       <input type="radio" name="type" value={opt.value} checked={active} onChange={() => setSelectedType(opt.value)} style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}/>
                     </label>
@@ -243,7 +278,7 @@ export default function HomePage() {
                 <button onClick={handleStart} disabled={!selectedType} style={{
                   background: selectedType ? PURPLE : '#e5e7eb',
                   color: selectedType ? 'white' : '#9ca3af',
-                  border: 'none', borderRadius: 8, padding: '12px 28px',
+                  border: 'none', borderRadius: 8, padding: '13px 32px',
                   fontSize: 14, fontWeight: 700, cursor: selectedType ? 'pointer' : 'not-allowed',
                   boxShadow: selectedType ? '0 4px 14px rgba(107,63,160,0.3)' : 'none',
                   transition: 'all 0.15s',
