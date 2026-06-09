@@ -12,18 +12,18 @@ const SignaturePad = dynamic(() => import('@/components/ui/SignaturePad'), { ssr
 
 const ACTIONS = [
   { label: 'Constitution du dossier cosmétovigilance', warn: false },
-  { label: 'Le client a gardé le produit', warn: false },
+  { label: 'Le client a gardé le produit (recommandé)', warn: false },
   { label: 'Remboursement (à éviter)', warn: true },
   { label: 'Échange (à éviter)', warn: true },
   { label: 'Produit récupéré par le magasin (à éviter)', warn: true },
 ];
 
-type E = Partial<Record<keyof InfosComplementaires, string>>;
+type E = Partial<Record<keyof InfosComplementaires | 'actionsMin', string>>;
 
 function Bloc({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-6">
-      <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B3FA0] mb-4">{title}</h3>
+      <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B3FA0] mb-3">{title}</h3>
       {children}
     </div>
   );
@@ -39,8 +39,11 @@ export default function StepInfosComplementaires({ value, onChange, onBack, onSu
 
   const validate = () => {
     const e: E = {};
+    if (!value.actionsEnMagasin.length) e.actionsMin = 'Sélectionner au moins une action';
     if (!value.nomMagasin.trim()) e.nomMagasin = 'Requis';
     if (!value.numeroDuMagasin.trim()) e.numeroDuMagasin = 'Requis';
+    if (!value.emailMagasin.trim()) e.emailMagasin = 'Requis';
+    if (!value.nomPrenomRRV.trim()) e.nomPrenomRRV = 'Requis';
     if (!value.nomPrenomSalarie.trim()) e.nomPrenomSalarie = 'Requis';
     if (!value.signatureSalarie) e.signatureSalarie = 'La signature est requise';
     setErrors(e);
@@ -53,19 +56,13 @@ export default function StepInfosComplementaires({ value, onChange, onBack, onSu
     <div>
       <StepHeader title="Informations complémentaires" subtitle="Étape 5 sur 5" onBack={onBack} onNext={() => { if (validate()) onSubmit(); }} nextLabel="Soumettre" isLoading={isLoading}/>
 
-      <div className="rounded-xl border-l-4 border-amber-400 bg-amber-50 px-4 sm:px-5 py-4 mb-7">
-        <p className="text-[13px] text-amber-800 leading-relaxed">
-          Pour rappel, il est demandé de ne pas réaliser de dédommagement directement en magasin, ni de récupérer le produit.
-        </p>
-      </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10">
         <Bloc title="Actions effectuées en magasin">
           <div className="space-y-0.5">
             {ACTIONS.map(({ label, warn }) => {
               const checked = value.actionsEnMagasin.includes(label);
               return (
-                <label key={label} className={`flex items-center gap-3 px-3 py-3 rounded-xl cursor-pointer transition-all duration-150 select-none text-[14px] min-h-[48px] ${
+                <label key={label} className={`flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-all duration-150 select-none text-[14px] min-h-[40px] ${
                   checked
                     ? warn ? 'bg-amber-50 text-amber-700' : 'bg-[#f5f1fb] text-[#6B3FA0] font-medium'
                     : 'hover:bg-gray-50 text-gray-700'
@@ -83,10 +80,11 @@ export default function StepInfosComplementaires({ value, onChange, onBack, onSu
               );
             })}
           </div>
+          {errors.actionsMin && <p className="text-[12px] text-red-500 mt-2">⚠ {errors.actionsMin}</p>}
         </Bloc>
 
         <Bloc title="Informations du magasin">
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <FormField label="Nom du magasin" required error={errors.nomMagasin}>
                 <input className={`${inputCls}${errors.nomMagasin ? ' !border-red-300' : ''}`} placeholder="Paris Rivoli" value={value.nomMagasin} onChange={(e) => set('nomMagasin', e.target.value)}/>
@@ -95,11 +93,11 @@ export default function StepInfosComplementaires({ value, onChange, onBack, onSu
                 <input className={`${inputCls}${errors.numeroDuMagasin ? ' !border-red-300' : ''}`} placeholder="1234" inputMode="numeric" value={value.numeroDuMagasin} onChange={(e) => set('numeroDuMagasin', e.target.value)}/>
               </FormField>
             </div>
-            <FormField label="Email du magasin">
-              <input className={inputCls} placeholder="magasin@marionnaud.com" type="email" inputMode="email" value={value.emailMagasin} onChange={(e) => set('emailMagasin', e.target.value)}/>
+            <FormField label="Email du magasin" required error={errors.emailMagasin}>
+              <input className={`${inputCls}${errors.emailMagasin ? ' !border-red-300' : ''}`} placeholder="magasin@marionnaud.com" type="email" inputMode="email" value={value.emailMagasin} onChange={(e) => set('emailMagasin', e.target.value)}/>
             </FormField>
-            <FormField label="Nom / Prénom du RRV">
-              <input className={inputCls} placeholder="Jean Dupont" value={value.nomPrenomRRV} onChange={(e) => set('nomPrenomRRV', e.target.value)}/>
+            <FormField label="Nom / Prénom du RRV" required error={errors.nomPrenomRRV}>
+              <input className={`${inputCls}${errors.nomPrenomRRV ? ' !border-red-300' : ''}`} placeholder="Jean Dupont" value={value.nomPrenomRRV} onChange={(e) => set('nomPrenomRRV', e.target.value)}/>
             </FormField>
           </div>
         </Bloc>
@@ -112,7 +110,7 @@ export default function StepInfosComplementaires({ value, onChange, onBack, onSu
               <input className={`${inputCls}${errors.nomPrenomSalarie ? ' !border-red-300' : ''}`} placeholder="Jean Dupont" value={value.nomPrenomSalarie} onChange={(e) => set('nomPrenomSalarie', e.target.value)}/>
             </FormField>
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">
+              <p className="text-[12px] font-bold uppercase tracking-widest text-gray-400 mb-2">
                 Signature du salarié<span className="text-[#6B3FA0] ml-0.5">*</span>
               </p>
               <SignaturePad value={value.signatureSalarie} onChange={(v) => set('signatureSalarie', v)}/>

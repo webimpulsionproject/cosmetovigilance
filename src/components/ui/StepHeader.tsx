@@ -17,7 +17,7 @@ export default function StepHeader({
   return (
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      gap: 16, marginBottom: 32, paddingBottom: 24,
+      gap: 16, marginBottom: 20, paddingBottom: 18,
       borderBottom: '1px solid #f3f4f6',
     }}>
       <button type="button" onClick={onBack} style={{

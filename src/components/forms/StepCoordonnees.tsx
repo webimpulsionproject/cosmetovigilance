@@ -53,9 +53,9 @@ type E = Partial<Record<keyof ClientCoordonnees, string>>;
 
 function Bloc({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="mb-7">
-      <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B3FA0] mb-4">{title}</h3>
-      <div className="space-y-4">{children}</div>
+    <div className="mb-6">
+      <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B3FA0] mb-3">{title}</h3>
+      <div className="space-y-3">{children}</div>
     </div>
   );
 }
@@ -89,7 +89,7 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
       <StepHeader title="Coordonnées du client" subtitle="Étape 1 sur 5" onBack={onBack} onNext={() => { if (validate()) onNext(); }}/>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10">
-        {/* Colonne gauche : Identité */}
+        {/* Colonne gauche : Identité + Contact */}
         <div>
           <Bloc title="Identité">
             <div className="grid grid-cols-2 gap-3">
@@ -123,10 +123,7 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
               </FormField>
             )}
           </Bloc>
-        </div>
 
-        {/* Colonne droite : Contact + Adresse */}
-        <div>
           <Bloc title="Contact">
             <FormField label="Email" required error={errors.email}>
               <input className={ic('email')} placeholder="marie@email.com" type="email" inputMode="email" autoComplete="email" value={value.email} onChange={(e) => s('email', e.target.value)}/>
@@ -135,9 +132,11 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
               <input className={ic('telephone')} placeholder="+33 6 00 00 00 00" type="tel" inputMode="tel" autoComplete="tel" value={value.telephone} onChange={(e) => s('telephone', e.target.value)}/>
             </FormField>
           </Bloc>
+        </div>
 
+        {/* Colonne droite : Adresse postale */}
+        <div>
           <Bloc title="Adresse postale">
-            {/* Ligne 1 : N° de rue + Nom de rue */}
             <div className="grid grid-cols-4 gap-3">
               <FormField label="N° rue">
                 <input className={inputCls} placeholder="12" autoComplete="address-line1" value={value.numeroRue} onChange={(e) => s('numeroRue', e.target.value)}/>
@@ -148,7 +147,6 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
                 </FormField>
               </div>
             </div>
-            {/* Ligne 2 : Code postal + Ville */}
             <div className="grid grid-cols-2 gap-3">
               <FormField label="Code postal" required error={errors.codePostal}>
                 <input className={ic('codePostal')} placeholder="75001" inputMode="numeric" autoComplete="postal-code" value={value.codePostal} onChange={(e) => s('codePostal', e.target.value)}/>
@@ -157,7 +155,6 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
                 <input className={ic('ville')} placeholder="Paris" autoComplete="address-level2" value={value.ville} onChange={(e) => s('ville', e.target.value)}/>
               </FormField>
             </div>
-            {/* Ligne 3 : Pays */}
             <FormField label="Pays" required error={errors.pays}>
               <select className={sc('pays')} autoComplete="country-name" value={value.pays} onChange={(e) => s('pays', e.target.value)}>
                 <option value="">Sélectionner</option>

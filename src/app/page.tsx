@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { ReclamationType, ReclamationFormData, Produit } from '@/types';
+import StepPrerequis from '@/components/forms/StepPrerequis';
 import StepCoordonnees from '@/components/forms/StepCoordonnees';
 import StepProduit from '@/components/forms/StepProduit';
 import StepEffetIndesirable from '@/components/forms/StepEffetIndesirable';
@@ -13,15 +14,15 @@ const STEPS_CV = ['Coordonnées', 'Produit', 'Effet', 'Accord', 'Magasin'];
 const STEPS_QU = ['Coordonnées', 'Produit', 'Accord', 'Magasin'];
 
 const mkProduit = (): Produit => ({
-  id: Math.random().toString(36).slice(2), marque: '', denomination: '', codeBarres: '',
-  numeroDeLot: '', dateExpiration: '', prixNet: '', dateAchat: '', quantite: '1',
+  id: Math.random().toString(36).slice(2), marque: '', marqueAutre: '', denomination: '', codeBarres: '',
+  numeroDeLot: '', dateExpiration: '', prixNet: '', dateAchat: '', quantite: '1', photos: [],
 });
 
 const blank: ReclamationFormData = {
   type: 'cosmetovigilance',
   coordonnees: { nom: '', prenom: '', genre: '', age: '', langueParlée: '', langueAutre: '', email: '', telephone: '', numeroRue: '', nomRue: '', ville: '', codePostal: '', pays: '' },
   produits: [mkProduit()],
-  effetIndesirable: { dateApparition: '', dateDisparition: '', consequences: [], localisation: [], description: '' },
+  effetIndesirable: { dateApparition: '', dateDisparition: '', consequences: [], consequencesAutre: '', localisation: [], localisationAutre: '', description: '', ticketCaissePhoto: '', documentsPhotos: [] },
   accordClient: { accordRGPD: '', signatureClient: '', nomPrenomClient: '' },
   infosComplementaires: { actionsEnMagasin: [], nomMagasin: '', numeroDuMagasin: '', emailMagasin: '', nomPrenomRRV: '', nomPrenomResponsable: '', nomPrenomSalarie: '', signatureSalarie: '' },
 };
@@ -121,6 +122,7 @@ function Confirmation({ numero, type, onReset }: { numero: string; type: Reclama
 /* ═══════════════════════════════════════════════════════ */
 export default function HomePage() {
   const [step, setStep] = useState(0);
+  const [checklistVisible, setChecklistVisible] = useState(false);
   const [data, setData] = useState<ReclamationFormData>(blank);
   const [selectedType, setSelectedType] = useState<ReclamationType | ''>('');
   const [isLoading, setIsLoading] = useState(false);
@@ -132,7 +134,7 @@ export default function HomePage() {
   const handleStart = () => {
     if (!selectedType) return;
     setData((d) => ({ ...d, type: selectedType }));
-    setStep(1);
+    setChecklistVisible(true);
   };
 
   const handleSubmit = async () => {
@@ -146,14 +148,14 @@ export default function HomePage() {
     finally { setIsLoading(false); }
   };
 
-  const reset = () => { setStep(0); setSelectedType(''); setData(blank); setSuccessNumero(''); setSubmitError(''); };
+  const reset = () => { setStep(0); setChecklistVisible(false); setSelectedType(''); setData(blank); setSuccessNumero(''); setSubmitError(''); };
   const goNext = () => setStep((s) => s + 1);
   const goBack = () => setStep((s) => s - 1);
   const goNextStep2 = () => setStep(isCosmetov ? 3 : 4);
   const goBackStep4 = () => setStep(isCosmetov ? 3 : 2);
 
   /* ══ ACCUEIL ══ */
-  if (step === 0) {
+  if (step === 0 && !checklistVisible) {
     return (
       <div style={{ display: 'flex', minHeight: '100vh' }}>
 
@@ -334,9 +336,10 @@ export default function HomePage() {
           overflow: 'hidden',
         }}>
           {/* Bande de couleur en haut */}
-          {step < 99 && <div style={{ height: 3, background: `linear-gradient(90deg, ${PURPLE}, #9B6FD4)` }}/>}
+          {(checklistVisible || (step > 0 && step < 99)) && <div style={{ height: 3, background: `linear-gradient(90deg, ${PURPLE}, #9B6FD4)` }}/>}
           <div style={{ padding: '32px 36px' }}>
-            {step === 1 && <StepCoordonnees   value={data.coordonnees}        onChange={(v) => setData((d) => ({...d,coordonnees:v}))}        onBack={goBack}      onNext={goNext}/>}
+            {checklistVisible && <StepPrerequis onConfirm={() => { setChecklistVisible(false); setStep(1); }} onBack={() => setChecklistVisible(false)}/>}
+            {!checklistVisible && step === 1 && <StepCoordonnees   value={data.coordonnees}        onChange={(v) => setData((d) => ({...d,coordonnees:v}))}        onBack={goBack}      onNext={goNext}/>}
             {step === 2 && <StepProduit        value={data.produits}           onChange={(v) => setData((d) => ({...d,produits:v}))}           onBack={goBack}      onNext={goNextStep2}/>}
             {step === 3 && isCosmetov && <StepEffetIndesirable value={data.effetIndesirable} onChange={(v) => setData((d) => ({...d,effetIndesirable:v}))} onBack={goBack} onNext={goNext}/>}
             {step === 4 && <StepAccordClient   value={data.accordClient}       onChange={(v) => setData((d) => ({...d,accordClient:v}))}       onBack={goBackStep4} onNext={goNext}/>}

@@ -19,6 +19,7 @@ export interface ClientCoordonnees {
 export interface Produit {
   id: string;
   marque: string;
+  marqueAutre: string;
   denomination: string;
   codeBarres: string;
   numeroDeLot: string;
@@ -26,14 +27,19 @@ export interface Produit {
   prixNet: string;
   dateAchat: string;
   quantite: string;
+  photos: string[];
 }
 
 export interface EffetIndesirable {
   dateApparition: string;
   dateDisparition: string;
   consequences: string[];
+  consequencesAutre: string;
   localisation: string[];
+  localisationAutre: string;
   description: string;
+  ticketCaissePhoto: string;
+  documentsPhotos: string[];
 }
 
 export interface AccordClient {

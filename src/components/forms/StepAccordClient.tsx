@@ -69,7 +69,7 @@ export default function StepAccordClient({ value, onChange, onBack, onNext }: {
 
       <Bloc title="Texte de l'accord">
         <div className="rounded-xl bg-[#faf8fd] border border-[#ddd0f0] px-5 py-4 text-[13px] sm:text-[14px] text-[#555] space-y-3 leading-relaxed">
-          <p>Je suis informé(e) de l'utilisation, par Marionnaud Lafayette, de ses éventuels prestataires et les marques concernées le cas échéant, des données communiquées concernant ma santé dans le cadre du respect des incompatibilités ou maladies de cosmétovigilance et de garanties des produits concernés.</p>
+          <p>Je suis informé(e) de l'utilisation, par Marionnaud Lafayette, de ses éventuels prestataires et les marques concernées le cas échéant, des données communiquées concernant ma santé dans le cadre du respect des lois applicables en matière de cosmétovigilance et de garanties des produits concernés.</p>
           <p>J'autorise Marionnaud Lafayette à transmettre mon nom complet, mon adresse email, mon adresse postale et mon numéro de téléphone à la ou aux marque(s) concernée(s).</p>
         </div>
       </Bloc>
