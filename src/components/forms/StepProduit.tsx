@@ -105,14 +105,12 @@ export default function StepProduit({ value, onChange, onBack, onNext }: {
   };
 
   return (
-    <div>
-      <StepHeader
-        title="Informations produit"
-        subtitle={`Étape 2 sur 5 — ${value.length} produit${value.length > 1 ? 's' : ''}`}
-        onBack={onBack}
-        onNext={() => { if (validate()) onNext(); }}
-      />
-
+    <StepHeader
+      title="Informations produit"
+      subtitle={`Étape 2 sur 5 — ${value.length} produit${value.length > 1 ? 's' : ''}`}
+      onBack={onBack}
+      onNext={() => { if (validate()) onNext(); }}
+    >
       <div className="space-y-5">
         {value.map((p, i) => (
           <div key={p.id} className="rounded-xl border border-[#ebebeb] overflow-hidden">
@@ -201,6 +199,6 @@ export default function StepProduit({ value, onChange, onBack, onNext }: {
           + Ajouter un produit
         </button>
       </div>
-    </div>
+    </StepHeader>
   );
 }

@@ -4,20 +4,12 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { AccordClient } from '@/types';
 import StepHeader from '@/components/ui/StepHeader';
+import { Bloc } from '@/components/ui/Bloc';
 import { FormField, inputCls } from '@/components/ui/FormField';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 const SignaturePad = dynamic(() => import('@/components/ui/SignaturePad'), { ssr: false });
-
-function Bloc({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="mb-7">
-      <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B3FA0] mb-4">{title}</h3>
-      {children}
-    </div>
-  );
-}
 
 export default function StepAccordClient({ value, onChange, onBack, onNext, type = 'cosmetovigilance' }: {
   value: AccordClient; onChange: (v: AccordClient) => void; onBack: () => void; onNext: () => void; type?: 'cosmetovigilance' | 'qualite';
@@ -40,8 +32,8 @@ export default function StepAccordClient({ value, onChange, onBack, onNext, type
   const today = format(new Date(), 'dd MMMM yyyy', { locale: fr });
 
   return (
-    <div className="max-w-xl mx-auto">
-      <StepHeader title="Accord du client" subtitle="Étape 4 sur 5" onBack={onBack} onNext={() => { if (validate()) onNext(); }}/>
+    <StepHeader title="Accord du client" subtitle="Étape 4 sur 5" onBack={onBack} onNext={() => { if (validate()) onNext(); }}>
+      <div className="max-w-xl mx-auto">
 
       <Bloc title="Document officiel">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-[#e6e6e6] bg-[#fafafa] p-4">
@@ -120,6 +112,8 @@ export default function StepAccordClient({ value, onChange, onBack, onNext, type
         </p>
       </div>
 
+      </div>
+
       {/* Modal PDF */}
       {pdfOpen && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6" style={{backdropFilter:'blur(4px)'}} onClick={() => setPdfOpen(false)}>
@@ -147,6 +141,6 @@ export default function StepAccordClient({ value, onChange, onBack, onNext, type
           </div>
         </div>
       )}
-    </div>
+    </StepHeader>
   );
 }

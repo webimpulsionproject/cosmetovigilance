@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { EffetIndesirable } from '@/types';
 import StepHeader from '@/components/ui/StepHeader';
+import { Bloc } from '@/components/ui/Bloc';
 import { FormField, inputCls } from '@/components/ui/FormField';
 
 const CONSEQUENCES = [
@@ -16,17 +17,6 @@ const CONSEQUENCES = [
 ];
 const LOCALISATIONS = ['Yeux','Bouche','Visage','Corps','Cuir chevelu','Autre'];
 
-function Bloc({ title, hint, children, className }: { title: string; hint?: string; children: React.ReactNode; className?: string }) {
-  return (
-    <div className={className ?? 'mb-6'}>
-      <div className="mb-2">
-        <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B3FA0]">{title}</h3>
-        {hint && <p className="text-[11px] text-gray-400 mt-0.5 italic">{hint}</p>}
-      </div>
-      {children}
-    </div>
-  );
-}
 
 function CheckRow({ label, checked, onChange }: { label: string; checked: boolean; onChange: () => void }) {
   return (
@@ -155,16 +145,14 @@ export default function StepEffetIndesirable({ value, onChange, onBack, onNext }
   /* ── Page 1 : Dates & Effets ── */
   if (page === 1) {
     return (
-      <div>
-        <StepHeader
-          title="Effet indésirable"
-          subtitle="Étape 3 sur 5 — Partie 1/2 : Dates & effets"
-          onBack={onBack}
-          onNext={() => { if (validatePage1()) setPage(2); }}
-          nextLabel="Suite"
-        />
-
-        <Bloc title="Dates de l'effet" className="mb-8">
+      <StepHeader
+        title="Effet indésirable"
+        subtitle="Étape 3 sur 5 — Partie 1/2 : Dates & effets"
+        onBack={onBack}
+        onNext={() => { if (validatePage1()) setPage(2); }}
+        nextLabel="Suite"
+      >
+        <Bloc title="Dates de l'effet">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Date d'apparition" required error={errors.dateApparition}>
               <input
@@ -246,19 +234,18 @@ export default function StepEffetIndesirable({ value, onChange, onBack, onNext }
             </Bloc>
           </div>
         </div>
-      </div>
+      </StepHeader>
     );
   }
 
   /* ── Page 2 : Description & Documents ── */
   return (
-    <div>
-      <StepHeader
-        title="Effet indésirable"
-        subtitle="Étape 3 sur 5 — Partie 2/2 : Description & documents"
-        onBack={() => setPage(1)}
-        onNext={() => { if (validatePage2()) onNext(); }}
-      />
+    <StepHeader
+      title="Effet indésirable"
+      subtitle="Étape 3 sur 5 — Partie 2/2 : Description & documents"
+      onBack={() => setPage(1)}
+      onNext={() => { if (validatePage2()) onNext(); }}
+    >
 
       <Bloc title="Description détaillée de l'effet *">
         <p className="text-[12px] text-gray-400 mb-3">
@@ -295,6 +282,6 @@ export default function StepEffetIndesirable({ value, onChange, onBack, onNext }
           />
         </Bloc>
       </div>
-    </div>
+    </StepHeader>
   );
 }

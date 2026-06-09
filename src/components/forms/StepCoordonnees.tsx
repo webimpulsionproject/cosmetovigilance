@@ -3,62 +3,40 @@
 import { useState } from 'react';
 import { ClientCoordonnees } from '@/types';
 import StepHeader from '@/components/ui/StepHeader';
+import { Bloc } from '@/components/ui/Bloc';
 import { FormField, inputCls, selectCls } from '@/components/ui/FormField';
 
 const PAYS = [
-  'France',
-  'Afghanistan','Afrique du Sud','Albanie','Algérie','Allemagne','Andorre','Angola',
+  'France','Afghanistan','Afrique du Sud','Albanie','Algérie','Allemagne','Andorre','Angola',
   'Antigua-et-Barbuda','Arabie saoudite','Argentine','Arménie','Australie','Autriche','Azerbaïdjan',
   'Bahamas','Bahreïn','Bangladesh','Barbade','Belgique','Belize','Bénin','Bhoutan',
   'Biélorussie','Birmanie (Myanmar)','Bolivie','Bosnie-Herzégovine','Botswana','Brésil','Brunei',
-  'Bulgarie','Burkina Faso','Burundi',
-  'Cabo Verde','Cambodge','Cameroun','Canada','Centrafrique','Chili','Chine','Chypre',
-  'Colombie','Comores','Congo (Brazzaville)','Congo (RDC)','Corée du Nord','Corée du Sud',
-  'Costa Rica',"Côte d'Ivoire",'Croatie','Cuba',
-  'Danemark','Djibouti','Dominique',
-  'Égypte','Émirats arabes unis','Équateur','Érythrée','Espagne','Estonie','Eswatini',
-  'États-Unis','Éthiopie',
-  'Fidji','Finlande',
+  'Bulgarie','Burkina Faso','Burundi','Cabo Verde','Cambodge','Cameroun','Canada','Centrafrique',
+  'Chili','Chine','Chypre','Colombie','Comores','Congo (Brazzaville)','Congo (RDC)',
+  'Corée du Nord','Corée du Sud','Costa Rica',"Côte d'Ivoire",'Croatie','Cuba',
+  'Danemark','Djibouti','Dominique','Égypte','Émirats arabes unis','Équateur','Érythrée',
+  'Espagne','Estonie','Eswatini','États-Unis','Éthiopie','Fidji','Finlande',
   'Gabon','Gambie','Géorgie','Ghana','Grèce','Grenade','Guatemala',
-  'Guinée','Guinée-Bissau','Guinée équatoriale','Guyana',
-  'Haïti','Honduras','Hongrie',
+  'Guinée','Guinée-Bissau','Guinée équatoriale','Guyana','Haïti','Honduras','Hongrie',
   'Inde','Indonésie','Irak','Iran','Irlande','Islande','Israël','Italie',
-  'Jamaïque','Japon','Jordanie',
-  'Kazakhstan','Kenya','Kirghizistan','Kiribati','Kosovo','Koweït',
+  'Jamaïque','Japon','Jordanie','Kazakhstan','Kenya','Kirghizistan','Kiribati','Kosovo','Koweït',
   'Laos','Lesotho','Lettonie','Liban','Liberia','Libye','Liechtenstein','Lituanie','Luxembourg',
-  'Madagascar','Malaisie','Malawi','Maldives','Mali','Malte','Maroc',
-  'Îles Marshall','Maurice','Mauritanie','Mexique','Micronésie','Moldavie','Monaco',
-  'Mongolie','Monténégro','Mozambique',
+  'Madagascar','Malaisie','Malawi','Maldives','Mali','Malte','Maroc','Îles Marshall',
+  'Maurice','Mauritanie','Mexique','Micronésie','Moldavie','Monaco','Mongolie','Monténégro','Mozambique',
   'Namibie','Nauru','Népal','Nicaragua','Niger','Nigeria','Norvège','Nouvelle-Zélande',
-  'Oman','Ouganda','Ouzbékistan',
-  'Pakistan','Palaos','Palestine','Panama','Papouasie-Nouvelle-Guinée','Paraguay','Pays-Bas',
-  'Pérou','Philippines','Pologne','Portugal',
-  'Qatar',
-  'République dominicaine','République tchèque','Roumanie','Royaume-Uni','Russie','Rwanda',
+  'Oman','Ouganda','Ouzbékistan','Pakistan','Palaos','Palestine','Panama',
+  'Papouasie-Nouvelle-Guinée','Paraguay','Pays-Bas','Pérou','Philippines','Pologne','Portugal',
+  'Qatar','République dominicaine','République tchèque','Roumanie','Royaume-Uni','Russie','Rwanda',
   'Saint-Christophe-et-Niévès','Sainte-Lucie','Saint-Marin','Saint-Vincent-et-les-Grenadines',
   'Salvador','Samoa','São Tomé-et-Príncipe','Sénégal','Serbie','Seychelles',
   'Sierra Leone','Singapour','Slovaquie','Slovénie','Somalie','Soudan','Soudan du Sud',
-  'Sri Lanka','Suède','Suisse','Suriname','Syrie',
-  'Tadjikistan','Tanzanie','Tchad','Thaïlande','Timor oriental','Togo','Tonga',
-  'Trinité-et-Tobago','Tunisie','Turkménistan','Turquie','Tuvalu',
-  'Ukraine','Uruguay',
-  'Vanuatu','Vatican','Venezuela','Vietnam',
-  'Yémen',
-  'Zambie','Zimbabwe',
-  'Autre',
+  'Sri Lanka','Suède','Suisse','Suriname','Syrie','Tadjikistan','Tanzanie','Tchad',
+  'Thaïlande','Timor oriental','Togo','Tonga','Trinité-et-Tobago','Tunisie','Turkménistan','Turquie','Tuvalu',
+  'Ukraine','Uruguay','Vanuatu','Vatican','Venezuela','Vietnam','Yémen','Zambie','Zimbabwe','Autre',
 ];
 const LANGUES = ['Français','Anglais','Espagnol','Arabe','Portugais','Italien','Allemand','Autre'];
 
 type E = Partial<Record<keyof ClientCoordonnees, string>>;
-
-function Bloc({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="mb-6">
-      <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B3FA0] mb-3">{title}</h3>
-      <div className="space-y-3">{children}</div>
-    </div>
-  );
-}
 
 export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
   value: ClientCoordonnees; onChange: (v: ClientCoordonnees) => void; onBack: () => void; onNext: () => void;
@@ -85,85 +63,89 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
   const sc = (f: keyof ClientCoordonnees) => `${selectCls}${errors[f] ? ' !border-red-300' : ''}`;
 
   return (
-    <div>
-      <StepHeader title="Coordonnées du client" subtitle="Étape 1 sur 5" onBack={onBack} onNext={() => { if (validate()) onNext(); }}/>
-
+    <StepHeader title="Coordonnées du client" subtitle="Étape 1 sur 5" onBack={onBack} onNext={() => { if (validate()) onNext(); }}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10">
-        {/* Colonne gauche : Identité + Contact */}
+        {/* Gauche : Identité + Contact */}
         <div>
           <Bloc title="Identité">
-            <div className="grid grid-cols-2 gap-3">
-              <FormField label="Nom de famille" required error={errors.nom}>
-                <input className={ic('nom')} placeholder="Dupont" value={value.nom} onChange={(e) => s('nom', e.target.value)} autoComplete="family-name"/>
-              </FormField>
-              <FormField label="Prénom" required error={errors.prenom}>
-                <input className={ic('prenom')} placeholder="Marie" value={value.prenom} onChange={(e) => s('prenom', e.target.value)} autoComplete="given-name"/>
-              </FormField>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <FormField label="Genre">
-                <select className={selectCls} value={value.genre} onChange={(e) => s('genre', e.target.value)}>
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <FormField label="Nom de famille" required error={errors.nom}>
+                  <input className={ic('nom')} placeholder="Dupont" value={value.nom} onChange={(e) => s('nom', e.target.value)} autoComplete="family-name"/>
+                </FormField>
+                <FormField label="Prénom" required error={errors.prenom}>
+                  <input className={ic('prenom')} placeholder="Marie" value={value.prenom} onChange={(e) => s('prenom', e.target.value)} autoComplete="given-name"/>
+                </FormField>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <FormField label="Genre">
+                  <select className={selectCls} value={value.genre} onChange={(e) => s('genre', e.target.value)}>
+                    <option value="">—</option>
+                    <option>Femme</option><option>Homme</option><option>Non précisé</option>
+                  </select>
+                </FormField>
+                <FormField label="Âge">
+                  <input className={inputCls} placeholder="30" type="number" min="0" max="120" inputMode="numeric" value={value.age} onChange={(e) => s('age', e.target.value)}/>
+                </FormField>
+              </div>
+              <FormField label="Langue parlée">
+                <select className={selectCls} value={value.langueParlée} onChange={(e) => s('langueParlée', e.target.value)}>
                   <option value="">—</option>
-                  <option>Femme</option><option>Homme</option><option>Non précisé</option>
+                  {LANGUES.map((l) => <option key={l}>{l}</option>)}
                 </select>
               </FormField>
-              <FormField label="Âge">
-                <input className={inputCls} placeholder="30" type="number" min="0" max="120" inputMode="numeric" value={value.age} onChange={(e) => s('age', e.target.value)}/>
-              </FormField>
+              {value.langueParlée === 'Autre' && (
+                <FormField label="Préciser la langue">
+                  <input className={inputCls} placeholder="Langue" value={value.langueAutre} onChange={(e) => s('langueAutre', e.target.value)}/>
+                </FormField>
+              )}
             </div>
-            <FormField label="Langue parlée">
-              <select className={selectCls} value={value.langueParlée} onChange={(e) => s('langueParlée', e.target.value)}>
-                <option value="">—</option>
-                {LANGUES.map((l) => <option key={l}>{l}</option>)}
-              </select>
-            </FormField>
-            {value.langueParlée === 'Autre' && (
-              <FormField label="Préciser">
-                <input className={inputCls} placeholder="Langue" value={value.langueAutre} onChange={(e) => s('langueAutre', e.target.value)}/>
-              </FormField>
-            )}
           </Bloc>
 
           <Bloc title="Contact">
-            <FormField label="Email" required error={errors.email}>
-              <input className={ic('email')} placeholder="marie@email.com" type="email" inputMode="email" autoComplete="email" value={value.email} onChange={(e) => s('email', e.target.value)}/>
-            </FormField>
-            <FormField label="Téléphone" required error={errors.telephone}>
-              <input className={ic('telephone')} placeholder="+33 6 00 00 00 00" type="tel" inputMode="tel" autoComplete="tel" value={value.telephone} onChange={(e) => s('telephone', e.target.value)}/>
-            </FormField>
+            <div className="space-y-3">
+              <FormField label="Email" required error={errors.email}>
+                <input className={ic('email')} placeholder="marie@email.com" type="email" inputMode="email" autoComplete="email" value={value.email} onChange={(e) => s('email', e.target.value)}/>
+              </FormField>
+              <FormField label="Téléphone" required error={errors.telephone}>
+                <input className={ic('telephone')} placeholder="+33 6 00 00 00 00" type="tel" inputMode="tel" autoComplete="tel" value={value.telephone} onChange={(e) => s('telephone', e.target.value)}/>
+              </FormField>
+            </div>
           </Bloc>
         </div>
 
-        {/* Colonne droite : Adresse postale */}
+        {/* Droite : Adresse */}
         <div>
           <Bloc title="Adresse postale">
-            <div className="grid grid-cols-4 gap-3">
-              <FormField label="N° rue">
-                <input className={inputCls} placeholder="12" autoComplete="address-line1" value={value.numeroRue} onChange={(e) => s('numeroRue', e.target.value)}/>
-              </FormField>
-              <div className="col-span-3">
-                <FormField label="Nom de rue" required error={errors.nomRue}>
-                  <input className={ic('nomRue')} placeholder="Rue de la Paix" autoComplete="street-address" value={value.nomRue} onChange={(e) => s('nomRue', e.target.value)}/>
+            <div className="space-y-3">
+              <div className="grid grid-cols-4 gap-3">
+                <FormField label="N° rue">
+                  <input className={inputCls} placeholder="12" autoComplete="address-line1" value={value.numeroRue} onChange={(e) => s('numeroRue', e.target.value)}/>
+                </FormField>
+                <div className="col-span-3">
+                  <FormField label="Nom de rue" required error={errors.nomRue}>
+                    <input className={ic('nomRue')} placeholder="Rue de la Paix" autoComplete="street-address" value={value.nomRue} onChange={(e) => s('nomRue', e.target.value)}/>
+                  </FormField>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <FormField label="Code postal" required error={errors.codePostal}>
+                  <input className={ic('codePostal')} placeholder="75001" inputMode="numeric" autoComplete="postal-code" value={value.codePostal} onChange={(e) => s('codePostal', e.target.value)}/>
+                </FormField>
+                <FormField label="Ville" required error={errors.ville}>
+                  <input className={ic('ville')} placeholder="Paris" autoComplete="address-level2" value={value.ville} onChange={(e) => s('ville', e.target.value)}/>
                 </FormField>
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <FormField label="Code postal" required error={errors.codePostal}>
-                <input className={ic('codePostal')} placeholder="75001" inputMode="numeric" autoComplete="postal-code" value={value.codePostal} onChange={(e) => s('codePostal', e.target.value)}/>
-              </FormField>
-              <FormField label="Ville" required error={errors.ville}>
-                <input className={ic('ville')} placeholder="Paris" autoComplete="address-level2" value={value.ville} onChange={(e) => s('ville', e.target.value)}/>
+              <FormField label="Pays" required error={errors.pays}>
+                <select className={sc('pays')} autoComplete="country-name" value={value.pays} onChange={(e) => s('pays', e.target.value)}>
+                  <option value="">Sélectionner</option>
+                  {PAYS.map((p) => <option key={p}>{p}</option>)}
+                </select>
               </FormField>
             </div>
-            <FormField label="Pays" required error={errors.pays}>
-              <select className={sc('pays')} autoComplete="country-name" value={value.pays} onChange={(e) => s('pays', e.target.value)}>
-                <option value="">Sélectionner</option>
-                {PAYS.map((p) => <option key={p}>{p}</option>)}
-              </select>
-            </FormField>
           </Bloc>
         </div>
       </div>
-    </div>
+    </StepHeader>
   );
 }

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { InfosComplementaires } from '@/types';
 import StepHeader from '@/components/ui/StepHeader';
+import { Bloc } from '@/components/ui/Bloc';
 import { FormField, inputCls } from '@/components/ui/FormField';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -19,15 +20,6 @@ const ACTIONS = [
 ];
 
 type E = Partial<Record<keyof InfosComplementaires | 'actionsMin', string>>;
-
-function Bloc({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="mb-6">
-      <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B3FA0] mb-3">{title}</h3>
-      {children}
-    </div>
-  );
-}
 
 export default function StepInfosComplementaires({ value, onChange, onBack, onSubmit, isLoading }: {
   value: InfosComplementaires; onChange: (v: InfosComplementaires) => void;
@@ -53,9 +45,7 @@ export default function StepInfosComplementaires({ value, onChange, onBack, onSu
   const today = format(new Date(), 'dd MMMM yyyy', { locale: fr });
 
   return (
-    <div>
-      <StepHeader title="Informations complémentaires" subtitle="Étape 5 sur 5" onBack={onBack} onNext={() => { if (validate()) onSubmit(); }} nextLabel="Soumettre" isLoading={isLoading}/>
-
+    <StepHeader title="Informations complémentaires" subtitle="Étape 5 sur 5" onBack={onBack} onNext={() => { if (validate()) onSubmit(); }} nextLabel="Soumettre" isLoading={isLoading}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10">
         <Bloc title="Actions effectuées en magasin">
           <div className="space-y-0.5">
@@ -122,6 +112,6 @@ export default function StepInfosComplementaires({ value, onChange, onBack, onSu
           </div>
         </Bloc>
       </div>
-    </div>
+    </StepHeader>
   );
 }
