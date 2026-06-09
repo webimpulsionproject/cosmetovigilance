@@ -19,11 +19,12 @@ function Bloc({ title, children }: { title: string; children: React.ReactNode })
   );
 }
 
-export default function StepAccordClient({ value, onChange, onBack, onNext }: {
-  value: AccordClient; onChange: (v: AccordClient) => void; onBack: () => void; onNext: () => void;
+export default function StepAccordClient({ value, onChange, onBack, onNext, type = 'cosmetovigilance' }: {
+  value: AccordClient; onChange: (v: AccordClient) => void; onBack: () => void; onNext: () => void; type?: 'cosmetovigilance' | 'qualite';
 }) {
   const [errors, setErrors] = useState<{ accordRGPD?: string; signatureClient?: string; nomPrenomClient?: string }>({});
   const [pdfOpen, setPdfOpen] = useState(false);
+  const pdfPath = type === 'qualite' ? '/accord-qualite.pdf' : '/accord-cosmetovigilance.pdf';
 
   const set = (f: keyof AccordClient, v: string) => { onChange({ ...value, [f]: v }); setErrors((e) => ({ ...e, [f]: undefined })); };
 
@@ -60,7 +61,7 @@ export default function StepAccordClient({ value, onChange, onBack, onNext }: {
             <button onClick={() => setPdfOpen(true)} className="text-[12px] font-semibold text-[#6B3FA0] bg-[#f5f1fb] hover:bg-[#ede5f7] border border-[#ddd0f0] px-4 py-2.5 rounded-lg transition-colors min-h-[44px]">
               Consulter
             </button>
-            <a href="/accord-client.pdf" download className="text-[12px] font-medium text-[#777] border border-[#e6e6e6] bg-white hover:bg-[#f5f5f5] px-4 py-2.5 rounded-lg transition-colors min-h-[44px] flex items-center">
+            <a href={pdfPath} download className="text-[12px] font-medium text-[#777] border border-[#e6e6e6] bg-white hover:bg-[#f5f5f5] px-4 py-2.5 rounded-lg transition-colors min-h-[44px] flex items-center">
               Télécharger
             </a>
           </div>
@@ -136,12 +137,12 @@ export default function StepAccordClient({ value, onChange, onBack, onNext }: {
                 <p className="text-[11px] text-[#aaa]">Marionnaud Lafayette</p>
               </div>
               <div className="flex items-center gap-3">
-                <a href="/accord-client.pdf" download className="text-[12px] font-semibold text-[#6B3FA0] hover:underline hidden sm:block">Télécharger</a>
+                <a href={pdfPath} download className="text-[12px] font-semibold text-[#6B3FA0] hover:underline hidden sm:block">Télécharger</a>
                 <button onClick={() => setPdfOpen(false)} className="w-9 h-9 flex items-center justify-center rounded-xl text-[#aaa] hover:bg-[#f5f5f5] hover:text-[#333] transition-colors text-xl" aria-label="Fermer">×</button>
               </div>
             </div>
             <div className="flex-1 overflow-hidden">
-              <iframe src="/accord-client.pdf" className="w-full h-full border-0" title="Accord client"/>
+              <iframe src={pdfPath} className="w-full h-full border-0" title="Accord client"/>
             </div>
           </div>
         </div>
