@@ -9,9 +9,10 @@ import StepProduit from '@/components/forms/StepProduit';
 import StepEffetIndesirable from '@/components/forms/StepEffetIndesirable';
 import StepAccordClient from '@/components/forms/StepAccordClient';
 import StepInfosComplementaires from '@/components/forms/StepInfosComplementaires';
+import StepRecapitulatif from '@/components/forms/StepRecapitulatif';
 
-const STEPS_CV = ['Coordonnées', 'Produit', 'Effet indésirable', 'Accord client', 'Infos magasin'];
-const STEPS_QU = ['Coordonnées', 'Produit', 'Accord client', 'Infos magasin'];
+const STEPS_CV = ['Coordonnées', 'Produit', 'Effet indésirable', 'Accord client', 'Infos magasin', 'Récapitulatif'];
+const STEPS_QU = ['Coordonnées', 'Produit', 'Accord client', 'Infos magasin', 'Récapitulatif'];
 
 const mkProduit = (): Produit => ({
   id: Math.random().toString(36).slice(2), marque: '', marqueAutre: '', denomination: '', codeBarres: '',
@@ -392,7 +393,10 @@ export default function HomePage() {
             <StepAccordClient value={data.accordClient} onChange={(v) => setData((d) => ({ ...d, accordClient: v }))} onBack={goBackStep4} onNext={goNext} type={data.type}/>
           )}
           {!checklistVisible && step === 5 && (
-            <StepInfosComplementaires value={data.infosComplementaires} onChange={(v) => setData((d) => ({ ...d, infosComplementaires: v }))} onBack={goBack} onSubmit={handleSubmit} isLoading={isLoading}/>
+            <StepInfosComplementaires value={data.infosComplementaires} onChange={(v) => setData((d) => ({ ...d, infosComplementaires: v }))} onBack={goBack} onSubmit={goNext} isLoading={false}/>
+          )}
+          {!checklistVisible && step === 6 && (
+            <StepRecapitulatif data={data} type={data.type} onBack={goBack} onSubmit={handleSubmit} isLoading={isLoading}/>
           )}
           {step === 99 && (
             <Confirmation numero={successNumero} type={data.type} onReset={reset}/>
