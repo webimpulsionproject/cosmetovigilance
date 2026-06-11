@@ -161,61 +161,10 @@ export default function HomePage() {
 
   /* ══ ACCUEIL ══ */
   if (step === 0 && !checklistVisible) {
-    const FEATURES = [
-      { icon: '🔒', text: 'Données protégées RGPD' },
-      { icon: '📋', text: 'Formulaire guidé étape par étape' },
-      { icon: '📧', text: 'Confirmation automatique par email' },
-      { icon: '📄', text: 'Génération PDF du dossier' },
-    ];
     return (
-      <div style={{ display: 'flex', minHeight: '100vh' }}>
-        {/* ── Panneau gauche ── */}
-        <div style={{
-          width: '42%', minWidth: 340, maxWidth: 520, flexShrink: 0,
-          background: `linear-gradient(160deg, #5a2d8a 0%, #6B3FA0 50%, #7c52b0 100%)`,
-          display: 'flex', flexDirection: 'column',
-          padding: '40px 44px',
-          position: 'relative', overflow: 'hidden',
-        }}>
-          {/* Cercle décoratif fond */}
-          <div style={{ position: 'absolute', top: -80, right: -80, width: 320, height: 320, borderRadius: '50%', background: 'rgba(255,255,255,0.04)', pointerEvents: 'none' }}/>
-          <div style={{ position: 'absolute', bottom: -60, left: -60, width: 240, height: 240, borderRadius: '50%', background: 'rgba(255,255,255,0.03)', pointerEvents: 'none' }}/>
-
-          {/* Logo */}
-          <div style={{ background: 'white', borderRadius: 10, padding: '10px 18px', display: 'inline-block', marginBottom: 52, alignSelf: 'flex-start', boxShadow: '0 2px 12px rgba(0,0,0,0.15)' }}>
-            <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={140} height={38}
-              style={{ height: 28, width: 'auto', display: 'block' }} className="object-contain" priority/>
-          </div>
-
-          {/* Titre */}
-          <div style={{ flex: 1 }}>
-            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', marginBottom: 12 }}>
-              Outil interne — Personnel magasin
-            </p>
-            <h1 style={{ fontSize: 32, fontWeight: 800, color: 'white', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: 16 }}>
-              Déclaration<br/>cosmétovigilance<br/>& qualité
-            </h1>
-            <div style={{ width: 32, height: 2.5, background: 'rgba(255,255,255,0.25)', borderRadius: 2, margin: '20px 0' }}/>
-            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.75, maxWidth: 300 }}>
-              Signalez un effet indésirable ou un problème de qualité produit auprès de nos équipes via ce formulaire officiel Marionnaud.
-            </p>
-          </div>
-
-          {/* Features */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 32, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-            {FEATURES.map((f) => (
-              <div key={f.text} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{ width: 30, height: 30, borderRadius: 8, background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, flexShrink: 0 }}>
-                  {f.icon}
-                </div>
-                <span style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.55)', lineHeight: 1.4 }}>{f.text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── Panneau droit ── */}
-        <div style={{ flex: 1, background: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '48px 40px' }}>
+      <div style={{ display: 'flex', minHeight: '100vh', background: 'white' }}>
+        {/* ── Panneau principal ── */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '48px 40px' }}>
           <div style={{ width: '100%', maxWidth: 460 }}>
             {/* Titre bloc */}
             <div style={{ marginBottom: 32 }}>
