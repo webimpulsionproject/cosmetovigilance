@@ -178,8 +178,8 @@ export default function HomePage() {
           }}>
             <div style={{ position: 'absolute', top: -50, right: -50, width: 200, height: 200, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', pointerEvents: 'none' }}/>
             <div style={{ background: 'white', borderRadius: 10, padding: '8px 20px', display: 'inline-block', marginBottom: 18, boxShadow: '0 2px 14px rgba(0,0,0,0.18)' }}>
-              <Image src="/logo-marionnaud.webp" alt="Marionnaud Paris" width={140} height={38}
-                style={{ height: 26, width: 'auto', display: 'block' }} className="object-contain" priority/>
+              <Image src="/logo-marionnaud.webp" alt="Marionnaud Paris" width={768} height={278}
+                quality={100} style={{ height: 26, width: 'auto', display: 'block' }} className="object-contain" priority/>
             </div>
             <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', marginBottom: 8 }}>
               Outil interne — Personnel magasin
@@ -313,8 +313,8 @@ export default function HomePage() {
           {/* Logo + badge type */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
             <div style={{ background: 'white', borderRadius: 9, padding: '6px 16px', boxShadow: '0 2px 10px rgba(0,0,0,0.15)' }}>
-              <Image src="/logo-marionnaud.webp" alt="Marionnaud" width={120} height={34}
-                style={{ height: 22, width: 'auto', display: 'block' }} className="object-contain"/>
+              <Image src="/logo-marionnaud.webp" alt="Marionnaud" width={768} height={278}
+                quality={100} style={{ height: 22, width: 'auto', display: 'block' }} className="object-contain"/>
             </div>
             {step < 99 && (
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.15)', borderRadius: 999, padding: '5px 13px', backdropFilter: 'blur(4px)' }}>
