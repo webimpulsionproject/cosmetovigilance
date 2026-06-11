@@ -162,58 +162,93 @@ export default function HomePage() {
   /* ══ ACCUEIL ══ */
   if (step === 0 && !checklistVisible) {
     return (
-      <div style={{ display: 'flex', minHeight: '100vh', background: 'white' }}>
-        {/* ── Panneau principal ── */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '48px 40px' }}>
-          <div style={{ width: '100%', maxWidth: 460 }}>
-            {/* Titre bloc */}
-            <div style={{ marginBottom: 32 }}>
-              <h2 style={{ fontSize: 24, fontWeight: 700, color: '#111827', letterSpacing: '-0.02em', marginBottom: 8 }}>
-                Démarrer une déclaration
-              </h2>
-              <p style={{ fontSize: 14, color: '#9ca3af', lineHeight: 1.6 }}>
-                Sélectionnez le type de remontée pour commencer la saisie.
-              </p>
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(145deg, #f5f0ff 0%, #ede4fa 50%, #e8ddf7 100%)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        padding: '40px 24px', position: 'relative', overflow: 'hidden',
+      }}>
+        {/* Cercles décoratifs */}
+        <div style={{ position: 'absolute', top: -140, right: -140, width: 440, height: 440, borderRadius: '50%', background: 'rgba(107,63,160,0.07)', pointerEvents: 'none' }}/>
+        <div style={{ position: 'absolute', bottom: -100, left: -100, width: 340, height: 340, borderRadius: '50%', background: 'rgba(107,63,160,0.05)', pointerEvents: 'none' }}/>
+
+        {/* Carte */}
+        <div style={{
+          width: '100%', maxWidth: 500,
+          background: 'white', borderRadius: 22,
+          boxShadow: '0 12px 48px rgba(107,63,160,0.18), 0 2px 6px rgba(0,0,0,0.04)',
+          overflow: 'hidden', position: 'relative', zIndex: 1,
+        }}>
+          {/* Header violet */}
+          <div style={{
+            background: 'linear-gradient(160deg, #5a2d8a 0%, #6B3FA0 55%, #7c52b0 100%)',
+            padding: '30px 40px 28px', textAlign: 'center', position: 'relative', overflow: 'hidden',
+          }}>
+            <div style={{ position: 'absolute', top: -50, right: -50, width: 200, height: 200, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', pointerEvents: 'none' }}/>
+            <div style={{ background: 'white', borderRadius: 10, padding: '8px 20px', display: 'inline-block', marginBottom: 18, boxShadow: '0 2px 14px rgba(0,0,0,0.18)' }}>
+              <Image src="/logo-marionnaud.png" alt="Marionnaud Paris" width={140} height={38}
+                style={{ height: 26, width: 'auto', display: 'block' }} className="object-contain" priority/>
             </div>
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', marginBottom: 8 }}>
+              Outil interne — Personnel magasin
+            </p>
+            <h1 style={{ fontSize: 21, fontWeight: 800, color: 'white', lineHeight: 1.3, letterSpacing: '-0.01em', margin: 0 }}>
+              Déclaration cosmétovigilance<br/>& qualité produit
+            </h1>
+          </div>
+
+          {/* Corps */}
+          <div style={{ padding: '28px 36px 32px' }}>
+            <p style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.65, textAlign: 'center', marginBottom: 22 }}>
+              Signalez un effet indésirable ou un défaut produit via ce formulaire officiel Marionnaud.
+            </p>
 
             {/* Type sélection */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
               {([
                 {
                   value: 'cosmetovigilance' as const,
                   label: 'Cosmétovigilance',
                   tag: 'Effet indésirable',
-                  desc: "Réaction indésirable : irritation, démangeaisons, brûlures, rougeurs, allergie, yeux gonflés…",
-                  emoji: '⚠️',
+                  desc: "Irritation, démangeaisons, brûlures, rougeurs, allergie, yeux gonflés…",
+                  icon: '⚠️',
                 },
                 {
                   value: 'qualite' as const,
                   label: 'Qualité produit',
                   tag: 'Défaut produit',
-                  desc: "Dysfonctionnement, dérive de couleur ou d'odeur, efficacité insuffisante, packaging défectueux, corps étranger…",
-                  emoji: '🔍',
+                  desc: "Dysfonctionnement, dérive de couleur ou d'odeur, packaging défectueux, corps étranger…",
+                  icon: '🔍',
                 },
               ] as const).map((opt) => {
                 const active = selectedType === opt.value;
                 return (
                   <label key={opt.value} style={{
                     display: 'flex', alignItems: 'flex-start', gap: 14,
-                    padding: '16px 18px',
+                    padding: '15px 18px',
                     border: `1.5px solid ${active ? PURPLE : '#e5e7eb'}`,
-                    borderRadius: 12, cursor: 'pointer', userSelect: 'none',
+                    borderRadius: 13, cursor: 'pointer', userSelect: 'none',
                     background: active ? 'rgba(107,63,160,0.04)' : '#fafafa',
-                    boxShadow: active ? `0 0 0 3px rgba(107,63,160,0.08)` : 'none',
+                    boxShadow: active ? `0 0 0 3px rgba(107,63,160,0.09)` : 'none',
                     transition: 'all 0.15s',
                   }}>
-                    <div style={{ marginTop: 2, width: 18, height: 18, borderRadius: '50%', border: `2px solid ${active ? PURPLE : '#d1d5db'}`, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'border-color 0.15s' }}>
-                      {active && <div style={{ width: 8, height: 8, borderRadius: '50%', background: PURPLE }}/>}
+                    <div style={{
+                      width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+                      background: active ? 'rgba(107,63,160,0.1)' : '#f0f0f5',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: 17, transition: 'background 0.15s',
+                    }}>
+                      {opt.icon}
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
                         <span style={{ fontSize: 14, fontWeight: 600, color: active ? PURPLE : '#111827', transition: 'color 0.15s' }}>{opt.label}</span>
-                        <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 99, background: active ? PURPLE : '#eef0f2', color: active ? 'white' : '#6b7280', transition: 'all 0.15s' }}>{opt.tag}</span>
+                        <span style={{ fontSize: 10.5, fontWeight: 600, padding: '2px 8px', borderRadius: 99, background: active ? PURPLE : '#eef0f2', color: active ? 'white' : '#6b7280', transition: 'all 0.15s' }}>{opt.tag}</span>
                       </div>
-                      <p style={{ fontSize: 12.5, color: '#6b7280', lineHeight: 1.55, margin: 0 }}>{opt.desc}</p>
+                      <p style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5, margin: 0 }}>{opt.desc}</p>
+                    </div>
+                    <div style={{ marginTop: 8, width: 16, height: 16, borderRadius: '50%', border: `2px solid ${active ? PURPLE : '#d1d5db'}`, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'border-color 0.15s' }}>
+                      {active && <div style={{ width: 7, height: 7, borderRadius: '50%', background: PURPLE }}/>}
                     </div>
                     <input type="radio" name="type" value={opt.value} checked={active} onChange={() => setSelectedType(opt.value)} style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}/>
                   </label>
@@ -226,11 +261,11 @@ export default function HomePage() {
               onClick={handleStart}
               disabled={!selectedType}
               style={{
-                width: '100%', border: 'none', borderRadius: 11, padding: '14px 0',
+                width: '100%', border: 'none', borderRadius: 12, padding: '14px 0',
                 fontSize: 14, fontWeight: 700, cursor: selectedType ? 'pointer' : 'not-allowed',
                 background: selectedType ? PURPLE : '#e9e9ef',
                 color: selectedType ? 'white' : '#aaa',
-                boxShadow: selectedType ? '0 4px 16px rgba(107,63,160,0.3)' : 'none',
+                boxShadow: selectedType ? '0 4px 18px rgba(107,63,160,0.32)' : 'none',
                 letterSpacing: '0.01em', transition: 'all 0.15s',
               }}
               onMouseEnter={e => { if (selectedType) (e.currentTarget as HTMLButtonElement).style.background = '#5a2d8a'; }}
@@ -239,11 +274,20 @@ export default function HomePage() {
               Démarrer la saisie →
             </button>
 
-            <p style={{ textAlign: 'center', fontSize: 11.5, color: '#d1d5db', marginTop: 20 }}>
-              © {new Date().getFullYear()} Marionnaud Lafayette — Données protégées RGPD
-            </p>
+            {/* Features */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 20, marginTop: 20, paddingTop: 18, borderTop: '1px solid #f3f4f6', flexWrap: 'wrap' }}>
+              {[{ icon: '🔒', text: 'RGPD' }, { icon: '📧', text: 'Email auto' }, { icon: '📄', text: 'PDF généré' }].map((f) => (
+                <div key={f.text} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11.5, color: '#c4b5d8' }}>
+                  <span>{f.icon}</span><span>{f.text}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
+
+        <p style={{ marginTop: 20, fontSize: 11, color: '#c4b5d8', position: 'relative', zIndex: 1 }}>
+          © {new Date().getFullYear()} Marionnaud Lafayette
+        </p>
       </div>
     );
   }
