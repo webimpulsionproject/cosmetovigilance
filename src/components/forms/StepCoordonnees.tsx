@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ClientCoordonnees } from '@/types';
 import StepHeader from '@/components/ui/StepHeader';
 import { Bloc } from '@/components/ui/Bloc';
@@ -35,6 +35,67 @@ const PAYS = [
   'Ukraine','Uruguay','Vanuatu','Vatican','Venezuela','Vietnam','Yémen','Zambie','Zimbabwe','Autre',
 ];
 const LANGUES = ['Français','Anglais','Espagnol','Arabe','Portugais','Italien','Allemand','Autre'];
+
+function PaysCombobox({ value, onChange, error }: { value: string; onChange: (v: string) => void; error?: string }) {
+  const [query, setQuery] = useState(value);
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const filtered = query.trim().length === 0
+    ? PAYS
+    : PAYS.filter((p) => p.toLowerCase().includes(query.toLowerCase()));
+
+  const select = (p: string) => { onChange(p); setQuery(p); setOpen(false); };
+
+  return (
+    <div ref={ref} style={{ position: 'relative' }}>
+      <div style={{ position: 'relative' }}>
+        <input
+          className={`${inputCls}${error ? ' !border-red-300' : ''}`}
+          placeholder="Rechercher un pays…"
+          value={query}
+          autoComplete="off"
+          onFocus={() => setOpen(true)}
+          onChange={(e) => { setQuery(e.target.value); setOpen(true); if (!e.target.value) onChange(''); }}
+        />
+        <svg style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#9ca3af' }}
+          width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </div>
+      {open && filtered.length > 0 && (
+        <div style={{
+          position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 50,
+          background: 'white', border: '1px solid #e5e7eb', borderRadius: 10,
+          boxShadow: '0 8px 24px rgba(0,0,0,0.1)', maxHeight: 200, overflowY: 'auto',
+        }}>
+          {filtered.map((p) => (
+            <div
+              key={p}
+              onMouseDown={() => select(p)}
+              style={{
+                padding: '8px 14px', fontSize: 13, cursor: 'pointer',
+                background: p === value ? 'rgba(107,63,160,0.07)' : 'white',
+                color: p === value ? '#6B3FA0' : '#374151',
+                fontWeight: p === value ? 600 : 400,
+              }}
+            >
+              {p}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 type E = Partial<Record<keyof ClientCoordonnees, string>>;
 
@@ -137,10 +198,7 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
                 </FormField>
               </div>
               <FormField label="Pays" required error={errors.pays}>
-                <select className={sc('pays')} autoComplete="country-name" value={value.pays} onChange={(e) => s('pays', e.target.value)}>
-                  <option value="">Sélectionner</option>
-                  {PAYS.map((p) => <option key={p}>{p}</option>)}
-                </select>
+                <PaysCombobox value={value.pays} onChange={(v) => s('pays', v)} error={errors.pays}/>
               </FormField>
             </div>
           </Bloc>
