@@ -29,58 +29,50 @@ const blank: ReclamationFormData = {
 
 const PURPLE = '#6B3FA0';
 
-/* ─── Sidebar progress vertical ─── */
-function SidebarProgress({ step, type }: { step: number; type: ReclamationType }) {
+/* ─── Progress horizontal ─── */
+function TopProgress({ step, type }: { step: number; type: ReclamationType }) {
   const steps = type === 'cosmetovigilance' ? STEPS_CV : STEPS_QU;
   const cur = step - 1;
   return (
-    <nav style={{ padding: '20px 16px', flex: 1 }}>
-      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#bbb', marginBottom: 16, paddingLeft: 4 }}>
-        Progression
-      </p>
+    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', gap: 0, padding: '18px 32px 20px' }}>
       {steps.map((label, i) => {
         const done = i < cur, active = i === cur;
         return (
-          <div key={i} style={{ position: 'relative', marginBottom: 2 }}>
-            {i < steps.length - 1 && (
+          <div key={i} style={{ display: 'flex', alignItems: 'flex-start', flex: i < steps.length - 1 ? 1 : 'none' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 56 }}>
               <div style={{
-                position: 'absolute', left: 15, top: 32, height: 16, width: 1,
-                background: done ? PURPLE : '#e9e9e9', borderRadius: 1, zIndex: 0,
-              }}/>
-            )}
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              padding: '8px 10px', borderRadius: 10,
-              background: active ? 'rgba(107,63,160,0.07)' : 'transparent',
-              transition: 'background 0.15s',
-              position: 'relative', zIndex: 1,
-            }}>
-              <div style={{
-                width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
-                background: done ? PURPLE : 'white',
-                border: `2px solid ${done || active ? PURPLE : '#ddd'}`,
+                width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
+                background: done ? PURPLE : active ? 'white' : 'rgba(255,255,255,0.2)',
+                border: `2px solid ${done || active ? 'white' : 'rgba(255,255,255,0.35)'}`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: active ? `0 0 0 3px rgba(107,63,160,0.12)` : 'none',
+                boxShadow: active ? '0 0 0 4px rgba(255,255,255,0.2)' : 'none',
                 transition: 'all 0.2s',
               }}>
                 {done ? (
-                  <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
+                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
                     <polyline points="2 6 5 9 10 3" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 ) : (
-                  <span style={{ fontSize: 10, fontWeight: 700, color: active ? PURPLE : '#bbb' }}>{i + 1}</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: active ? PURPLE : 'rgba(255,255,255,0.5)' }}>{i + 1}</span>
                 )}
               </div>
               <span style={{
-                fontSize: 13, fontWeight: active ? 600 : done ? 500 : 400, lineHeight: 1.3,
-                color: active ? PURPLE : done ? '#374151' : '#aaa',
+                fontSize: 10, fontWeight: active ? 700 : 400, marginTop: 5, textAlign: 'center', lineHeight: 1.3,
+                color: active ? 'white' : done ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.4)',
                 transition: 'color 0.15s',
               }}>{label}</span>
             </div>
+            {i < steps.length - 1 && (
+              <div style={{
+                flex: 1, height: 2, marginTop: 13,
+                background: done ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.2)',
+                borderRadius: 2, transition: 'background 0.3s',
+              }}/>
+            )}
           </div>
         );
       })}
-    </nav>
+    </div>
   );
 }
 
@@ -293,115 +285,98 @@ export default function HomePage() {
   }
 
   /* ══ ÉTAPES ══ */
-  const stepsArr = isCosmetov ? STEPS_CV : STEPS_QU;
-
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      {/* ── Sidebar ── */}
-      <aside style={{
-        width: 252, flexShrink: 0,
-        background: 'white',
-        borderRight: '1px solid #ebebeb',
-        display: 'flex', flexDirection: 'column',
-        position: 'sticky', top: 0, height: '100vh',
-        overflowY: 'auto',
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(145deg, #f5f0ff 0%, #ede4fa 50%, #e8ddf7 100%)',
+      display: 'flex', flexDirection: 'column', alignItems: 'center',
+      padding: '32px 24px 48px', position: 'relative', overflow: 'hidden',
+    }}>
+      {/* Cercles décoratifs */}
+      <div style={{ position: 'absolute', top: -140, right: -140, width: 440, height: 440, borderRadius: '50%', background: 'rgba(107,63,160,0.07)', pointerEvents: 'none' }}/>
+      <div style={{ position: 'absolute', bottom: -100, left: -100, width: 340, height: 340, borderRadius: '50%', background: 'rgba(107,63,160,0.05)', pointerEvents: 'none' }}/>
+
+      {/* Carte */}
+      <div style={{
+        width: '100%', maxWidth: 780, position: 'relative', zIndex: 1,
+        background: 'white', borderRadius: 22,
+        boxShadow: '0 12px 48px rgba(107,63,160,0.18), 0 2px 6px rgba(0,0,0,0.04)',
+        overflow: 'hidden',
       }}>
-        {/* Logo */}
-        <div style={{ padding: '18px 20px', borderBottom: '1px solid #f0f0f0' }}>
-          <Image src="/logo-marionnaud.png" alt="Marionnaud" width={130} height={36}
-            style={{ height: 26, width: 'auto' }} className="object-contain"/>
-        </div>
+        {/* Header violet */}
+        <div style={{
+          background: 'linear-gradient(160deg, #5a2d8a 0%, #6B3FA0 55%, #7c52b0 100%)',
+          padding: '20px 32px 0', position: 'relative', overflow: 'hidden',
+        }}>
+          <div style={{ position: 'absolute', top: -50, right: -50, width: 200, height: 200, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', pointerEvents: 'none' }}/>
 
-        {/* Badge type */}
-        {step < 99 && (
-          <div style={{ padding: '12px 20px', borderBottom: '1px solid #f8f8f8' }}>
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 7,
-              background: 'rgba(107,63,160,0.07)', borderRadius: 999,
-              padding: '5px 12px',
-            }}>
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: PURPLE, flexShrink: 0 }}/>
-              <span style={{ fontSize: 11, fontWeight: 700, color: PURPLE, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                {isCosmetov ? 'Cosmétovigilance' : 'Qualité produit'}
-              </span>
+          {/* Logo + badge type */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+            <div style={{ background: 'white', borderRadius: 9, padding: '6px 16px', boxShadow: '0 2px 10px rgba(0,0,0,0.15)' }}>
+              <Image src="/logo-marionnaud.png" alt="Marionnaud" width={120} height={34}
+                style={{ height: 22, width: 'auto', display: 'block' }} className="object-contain"/>
             </div>
-          </div>
-        )}
-
-        {/* Progress steps */}
-        {step < 99 && !checklistVisible && (
-          <SidebarProgress step={step} type={data.type}/>
-        )}
-
-        {(checklistVisible || step === 99) && (
-          <div style={{ flex: 1, padding: '20px', display: 'flex', alignItems: 'flex-start' }}>
-            <p style={{ fontSize: 12.5, color: '#bbb', lineHeight: 1.7 }}>
-              {checklistVisible
-                ? 'Préparez les éléments nécessaires avant de démarrer la saisie.'
-                : 'Votre déclaration a été transmise avec succès.'}
-            </p>
-          </div>
-        )}
-
-        {/* Spacer */}
-        <div style={{ flex: 1 }}/>
-
-        {/* Pied sidebar */}
-        <div style={{ padding: '14px 20px', borderTop: '1px solid #f0f0f0' }}>
-          <p style={{ fontSize: 11, color: '#d0ccdb' }}>Outil interne — Marionnaud</p>
-        </div>
-      </aside>
-
-      {/* ── Contenu principal ── */}
-      <div style={{ flex: 1, background: '#f7f5fb', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <div style={{ flex: 1, padding: '28px 32px 52px' }}>
-          <div style={{ maxWidth: 720, margin: '0 auto' }}>
-            {/* Carte principale */}
-            <div style={{
-              background: 'white',
-              borderRadius: 16,
-              border: '1px solid rgba(107,63,160,0.09)',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 8px 28px -4px rgba(107,63,160,0.1)',
-              overflow: 'hidden',
-            }}>
-              {step < 99 && <div style={{ height: 3, background: `linear-gradient(90deg, ${PURPLE}, #a87fd4)` }}/>}
-              <div style={{ padding: '32px 36px' }}>
-                {submitError && (
-                  <div style={{ marginBottom: 20, background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, padding: '12px 16px', fontSize: 13, color: '#dc2626' }}>
-                    {submitError}
-                  </div>
-                )}
-
-                {checklistVisible && (
-                  <StepPrerequis onConfirm={() => { setChecklistVisible(false); setStep(1); }} onBack={() => setChecklistVisible(false)}/>
-                )}
-                {!checklistVisible && step === 1 && (
-                  <StepCoordonnees value={data.coordonnees} onChange={(v) => setData((d) => ({ ...d, coordonnees: v }))} onBack={goBack} onNext={goNext}/>
-                )}
-                {!checklistVisible && step === 2 && (
-                  <StepProduit value={data.produits} onChange={(v) => setData((d) => ({ ...d, produits: v }))} onBack={goBack} onNext={goNextStep2}/>
-                )}
-                {!checklistVisible && step === 3 && isCosmetov && (
-                  <StepEffetIndesirable value={data.effetIndesirable} onChange={(v) => setData((d) => ({ ...d, effetIndesirable: v }))} onBack={goBack} onNext={goNext}/>
-                )}
-                {!checklistVisible && step === 4 && (
-                  <StepAccordClient value={data.accordClient} onChange={(v) => setData((d) => ({ ...d, accordClient: v }))} onBack={goBackStep4} onNext={goNext} type={data.type}/>
-                )}
-                {!checklistVisible && step === 5 && (
-                  <StepInfosComplementaires value={data.infosComplementaires} onChange={(v) => setData((d) => ({ ...d, infosComplementaires: v }))} onBack={goBack} onSubmit={handleSubmit} isLoading={isLoading}/>
-                )}
-                {step === 99 && (
-                  <Confirmation numero={successNumero} type={data.type} onReset={reset}/>
-                )}
+            {step < 99 && (
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.15)', borderRadius: 999, padding: '5px 13px', backdropFilter: 'blur(4px)' }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'rgba(255,255,255,0.8)', flexShrink: 0 }}/>
+                <span style={{ fontSize: 11, fontWeight: 700, color: 'white', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                  {isCosmetov ? 'Cosmétovigilance' : 'Qualité produit'}
+                </span>
               </div>
-            </div>
+            )}
+            {step === 99 && (
+              <span style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                Déclaration transmise
+              </span>
+            )}
           </div>
+
+          {/* Progress */}
+          {step < 99 && !checklistVisible && (
+            <TopProgress step={step} type={data.type}/>
+          )}
+          {(checklistVisible || step === 99) && (
+            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', paddingBottom: 18, marginTop: -4 }}>
+              {checklistVisible ? 'Préparez les éléments nécessaires avant de démarrer la saisie.' : ''}
+            </p>
+          )}
         </div>
 
-        <p style={{ textAlign: 'center', fontSize: 11, color: '#ccc', paddingBottom: 20 }}>
-          © {new Date().getFullYear()} Marionnaud Lafayette
-        </p>
+        {/* Corps */}
+        <div style={{ padding: '32px 40px' }}>
+          {submitError && (
+            <div style={{ marginBottom: 20, background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, padding: '12px 16px', fontSize: 13, color: '#dc2626' }}>
+              {submitError}
+            </div>
+          )}
+
+          {checklistVisible && (
+            <StepPrerequis onConfirm={() => { setChecklistVisible(false); setStep(1); }} onBack={() => setChecklistVisible(false)}/>
+          )}
+          {!checklistVisible && step === 1 && (
+            <StepCoordonnees value={data.coordonnees} onChange={(v) => setData((d) => ({ ...d, coordonnees: v }))} onBack={goBack} onNext={goNext}/>
+          )}
+          {!checklistVisible && step === 2 && (
+            <StepProduit value={data.produits} onChange={(v) => setData((d) => ({ ...d, produits: v }))} onBack={goBack} onNext={goNextStep2}/>
+          )}
+          {!checklistVisible && step === 3 && isCosmetov && (
+            <StepEffetIndesirable value={data.effetIndesirable} onChange={(v) => setData((d) => ({ ...d, effetIndesirable: v }))} onBack={goBack} onNext={goNext}/>
+          )}
+          {!checklistVisible && step === 4 && (
+            <StepAccordClient value={data.accordClient} onChange={(v) => setData((d) => ({ ...d, accordClient: v }))} onBack={goBackStep4} onNext={goNext} type={data.type}/>
+          )}
+          {!checklistVisible && step === 5 && (
+            <StepInfosComplementaires value={data.infosComplementaires} onChange={(v) => setData((d) => ({ ...d, infosComplementaires: v }))} onBack={goBack} onSubmit={handleSubmit} isLoading={isLoading}/>
+          )}
+          {step === 99 && (
+            <Confirmation numero={successNumero} type={data.type} onReset={reset}/>
+          )}
+        </div>
       </div>
+
+      <p style={{ marginTop: 20, fontSize: 11, color: '#c4b5d8', position: 'relative', zIndex: 1 }}>
+        © {new Date().getFullYear()} Marionnaud Lafayette
+      </p>
     </div>
   );
 }
