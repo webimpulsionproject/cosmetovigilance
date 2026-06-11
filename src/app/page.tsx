@@ -203,14 +203,25 @@ export default function HomePage() {
                   label: 'Cosmétovigilance',
                   tag: 'Effet indésirable',
                   desc: "Irritation, démangeaisons, brûlures, rougeurs, allergie, yeux gonflés…",
-                  icon: '⚠️',
+                  icon: (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor">
+                      <path d="M12 2C8 2 4.5 5 4.5 9c0 2.5 1.2 4.7 3 6.1V17a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-1.9c1.8-1.4 3-3.6 3-6.1C19.5 5 16 2 12 2z"/>
+                      <line x1="9" y1="21" x2="15" y2="21"/>
+                      <line x1="10" y1="17" x2="10" y2="21"/>
+                      <line x1="14" y1="17" x2="14" y2="21"/>
+                    </svg>
+                  ),
                 },
                 {
                   value: 'qualite' as const,
                   label: 'Qualité produit',
                   tag: 'Défaut produit',
                   desc: "Dysfonctionnement, dérive de couleur ou d'odeur, packaging défectueux, corps étranger…",
-                  icon: '🔍',
+                  icon: (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor">
+                      <path d="M12 2l2.4 4.9 5.6.8-4 3.9.9 5.4L12 14.5l-4.9 2.5.9-5.4-4-3.9 5.6-.8z"/>
+                    </svg>
+                  ),
                 },
               ] as const).map((opt) => {
                 const active = selectedType === opt.value;
@@ -225,10 +236,11 @@ export default function HomePage() {
                     transition: 'all 0.15s',
                   }}>
                     <div style={{
-                      width: 36, height: 36, borderRadius: 10, flexShrink: 0,
-                      background: active ? 'rgba(107,63,160,0.1)' : '#f0f0f5',
+                      width: 40, height: 40, borderRadius: 11, flexShrink: 0,
+                      background: active ? PURPLE : '#ede9f6',
+                      color: active ? 'white' : PURPLE,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 17, transition: 'background 0.15s',
+                      transition: 'all 0.15s',
                     }}>
                       {opt.icon}
                     </div>
@@ -239,7 +251,7 @@ export default function HomePage() {
                       </div>
                       <p style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5, margin: 0 }}>{opt.desc}</p>
                     </div>
-                    <div style={{ marginTop: 8, width: 16, height: 16, borderRadius: '50%', border: `2px solid ${active ? PURPLE : '#d1d5db'}`, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'border-color 0.15s' }}>
+                    <div style={{ marginTop: 10, width: 16, height: 16, borderRadius: '50%', border: `2px solid ${active ? PURPLE : '#d1d5db'}`, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'border-color 0.15s' }}>
                       {active && <div style={{ width: 7, height: 7, borderRadius: '50%', background: PURPLE }}/>}
                     </div>
                     <input type="radio" name="type" value={opt.value} checked={active} onChange={() => setSelectedType(opt.value)} style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}/>
@@ -267,10 +279,24 @@ export default function HomePage() {
             </button>
 
             {/* Features */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 20, marginTop: 20, paddingTop: 18, borderTop: '1px solid #f3f4f6', flexWrap: 'wrap' }}>
-              {[{ icon: '🔒', text: 'RGPD' }, { icon: '📧', text: 'Email auto' }, { icon: '📄', text: 'PDF généré' }].map((f) => (
-                <div key={f.text} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11.5, color: '#c4b5d8' }}>
-                  <span>{f.icon}</span><span>{f.text}</span>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 20, paddingTop: 18, borderTop: '1px solid #f3f4f6', flexWrap: 'wrap' }}>
+              {([
+                {
+                  text: 'Données RGPD',
+                  icon: <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>,
+                },
+                {
+                  text: 'Email automatique',
+                  icon: <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 4 12 13 22 4"/></svg>,
+                },
+                {
+                  text: 'PDF généré',
+                  icon: <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/></svg>,
+                },
+              ]).map((f) => (
+                <div key={f.text} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, color: '#b8a8d0' }}>
+                  <span style={{ color: '#c4b5d8' }}>{f.icon}</span>
+                  <span>{f.text}</span>
                 </div>
               ))}
             </div>
