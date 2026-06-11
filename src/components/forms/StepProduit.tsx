@@ -9,9 +9,6 @@ const MARQUES = ['Marque Propre Marionnaud','Lancôme',"L'Oréal Paris",'Vichy',
 const QUANTITES = ['1','2','3','4','5','6','7','8','9','10','Plus de 10'];
 const mk = (): Produit => ({ id: Math.random().toString(36).slice(2), marque:'', marqueAutre:'', denomination:'', codeBarres:'', numeroDeLot:'', dateExpiration:'', prixNet:'', dateAchat:'', quantite:'1', photos:[] });
 
-const dateInputCls = (base: string, hasValue: boolean) =>
-  `${base}${!hasValue ? ' text-gray-300' : ''}`;
-
 async function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -21,53 +18,85 @@ async function fileToBase64(file: File): Promise<string> {
   });
 }
 
-function PhotoButton({ photos, onAdd }: { photos: string[]; onAdd: (photos: string[]) => void }) {
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9ca3af', marginBottom: 10, marginTop: 2 }}>
+      {children}
+    </p>
+  );
+}
+
+function PhotoZone({ photos, onAdd }: { photos: string[]; onAdd: (photos: string[]) => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [dragging, setDragging] = useState(false);
 
   const handleFiles = async (files: FileList | null) => {
     if (!files) return;
-    const newPhotos: string[] = [];
-    for (const file of Array.from(files)) {
-      const b64 = await fileToBase64(file);
-      newPhotos.push(b64);
-    }
-    onAdd([...photos, ...newPhotos]);
+    const result: string[] = [];
+    for (const file of Array.from(files)) result.push(await fileToBase64(file));
+    onAdd([...photos, ...result]);
   };
 
   return (
     <div>
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        multiple
-        className="sr-only"
-        onChange={(e) => handleFiles(e.target.files)}
-      />
-      <button
-        type="button"
+      <input ref={inputRef} type="file" accept="image/*" multiple className="sr-only"
+        onChange={(e) => handleFiles(e.target.files)}/>
+      <div
         onClick={() => inputRef.current?.click()}
-        className="text-[13px] text-[#6B3FA0] hover:text-[#5a2d8a] transition-colors font-medium min-h-[44px] flex items-center gap-2"
+        onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={(e) => { e.preventDefault(); setDragging(false); handleFiles(e.dataTransfer.files); }}
+        style={{
+          border: `2px dashed ${dragging ? '#6B3FA0' : '#ddd0f0'}`,
+          borderRadius: 12, padding: '14px 20px', cursor: 'pointer',
+          background: dragging ? 'rgba(107,63,160,0.04)' : '#fdfcff',
+          transition: 'all 0.15s',
+          display: 'flex', alignItems: 'center', gap: 14,
+        }}
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/>
+        <div style={{
+          width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+          background: 'rgba(107,63,160,0.08)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B3FA0',
+        }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+        </div>
+        <div style={{ flex: 1 }}>
+          <p style={{ fontSize: 13, fontWeight: 600, color: '#6B3FA0', margin: 0 }}>
+            Photos du produit
+            {photos.length > 0 && (
+              <span style={{ marginLeft: 8, fontSize: 11, fontWeight: 600, background: '#6B3FA0', color: 'white', borderRadius: 99, padding: '1px 8px' }}>
+                {photos.length}
+              </span>
+            )}
+          </p>
+          <p style={{ fontSize: 11.5, color: '#9ca3af', margin: '2px 0 0', lineHeight: 1.4 }}>
+            Photographiez le produit et sa boîte (toutes les faces)
+          </p>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c4b5d8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="9 18 15 12 9 6"/>
         </svg>
-        Prendre en photo le produit et sa boîte (toutes les faces)
-        {photos.length > 0 && (
-          <span className="ml-1 text-[11px] bg-[#6B3FA0] text-white rounded-full px-2 py-0.5">{photos.length}</span>
-        )}
-      </button>
+      </div>
+
       {photos.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-2">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 10 }}>
           {photos.map((src, i) => (
-            <div key={i} className="relative w-14 h-14 rounded-lg overflow-hidden border border-[#ddd0f0]">
+            <div key={i} style={{ position: 'relative', width: 60, height: 60, borderRadius: 10, overflow: 'hidden', border: '1px solid #ddd0f0' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt={`Photo ${i + 1}`} className="w-full h-full object-cover"/>
+              <img src={src} alt={`Photo ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
               <button
                 type="button"
-                onClick={() => onAdd(photos.filter((_, j) => j !== i))}
-                className="absolute top-0.5 right-0.5 w-4 h-4 bg-black/60 rounded-full flex items-center justify-center text-white text-[10px] leading-none"
+                onClick={(e) => { e.stopPropagation(); onAdd(photos.filter((_, j) => j !== i)); }}
+                style={{
+                  position: 'absolute', top: 3, right: 3, width: 18, height: 18,
+                  background: 'rgba(0,0,0,0.55)', borderRadius: '50%', border: 'none',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', color: 'white', fontSize: 12, lineHeight: 1,
+                }}
                 aria-label="Supprimer"
               >×</button>
             </div>
@@ -104,6 +133,9 @@ export default function StepProduit({ value, onChange, onBack, onNext }: {
     return ok;
   };
 
+  const ic = (id: string, f: string) => `${inputCls}${errors[id]?.[f] ? ' !border-red-300' : ''}`;
+  const sc = (id: string, f: string) => `${selectCls}${errors[id]?.[f] ? ' !border-red-300' : ''}`;
+
   return (
     <StepHeader
       title="Informations produit"
@@ -113,90 +145,120 @@ export default function StepProduit({ value, onChange, onBack, onNext }: {
     >
       <div className="space-y-5">
         {value.map((p, i) => (
-          <div key={p.id} className="rounded-xl border border-[#ebebeb] overflow-hidden">
-            <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 bg-gradient-to-r from-[#f5f1fb] to-[#faf8fd] border-b border-[#eee0f8]">
-              <span className="text-[12px] font-bold text-[#6B3FA0] tracking-wide uppercase">
-                Produit {i + 1}{p.denomination ? ` — ${p.denomination}` : ''}
-              </span>
+          <div key={p.id} style={{ borderRadius: 16, border: '1px solid #e8e0f5', overflow: 'hidden', boxShadow: '0 2px 8px rgba(107,63,160,0.06)' }}>
+
+            {/* En-tête produit */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 20px', background: 'linear-gradient(135deg, #f5f0ff 0%, #faf8fd 100%)', borderBottom: '1px solid #ede5f8' }}>
+              <div style={{ width: 32, height: 32, borderRadius: 9, background: '#6B3FA0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+                </svg>
+              </div>
+              <div style={{ flex: 1 }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: '#6B3FA0' }}>Produit {i + 1}</span>
+                {p.denomination && <span style={{ fontSize: 12, color: '#9b72cf', marginLeft: 6 }}>— {p.denomination}</span>}
+              </div>
               {value.length > 1 && (
-                <button type="button" onClick={() => onChange(value.filter((x) => x.id !== p.id))} className="text-[12px] text-[#bbb] hover:text-red-400 transition-colors font-medium py-1 px-2 min-h-[36px]">
+                <button type="button" onClick={() => onChange(value.filter((x) => x.id !== p.id))}
+                  style={{ fontSize: 12, color: '#bbb', background: 'none', border: '1px solid #e5e7eb', borderRadius: 7, padding: '4px 12px', cursor: 'pointer', transition: 'all 0.15s' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#ef4444'; (e.currentTarget as HTMLButtonElement).style.borderColor = '#fca5a5'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#bbb'; (e.currentTarget as HTMLButtonElement).style.borderColor = '#e5e7eb'; }}
+                >
                   Retirer
                 </button>
               )}
             </div>
 
-            <div className="p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white">
-              <FormField label="Marque" required error={errors[p.id]?.marque}>
-                <select className={`${selectCls}${errors[p.id]?.marque ? ' !border-red-300' : ''}`} value={p.marque} onChange={(e) => upd(p.id,'marque',e.target.value)}>
-                  <option value="">Sélectionner</option>
-                  {MARQUES.map((m) => <option key={m}>{m}</option>)}
-                </select>
-              </FormField>
-              <FormField label="Dénomination" required error={errors[p.id]?.denomination}>
-                <input className={`${inputCls}${errors[p.id]?.denomination ? ' !border-red-300' : ''}`} placeholder="Nom du produit" value={p.denomination} onChange={(e) => upd(p.id,'denomination',e.target.value)}/>
-              </FormField>
+            {/* Corps */}
+            <div style={{ padding: '20px 20px 0', background: 'white' }}>
 
-              {p.marque === 'Autre' && (
-                <div className="sm:col-span-2">
-                  <FormField label="Préciser la marque" required error={errors[p.id]?.marqueAutre}>
-                    <input className={`${inputCls}${errors[p.id]?.marqueAutre ? ' !border-red-300' : ''}`} placeholder="Nom de la marque" value={p.marqueAutre} onChange={(e) => upd(p.id,'marqueAutre',e.target.value)}/>
+              {/* Identification */}
+              <SectionLabel>Identification</SectionLabel>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" style={{ marginBottom: 20 }}>
+                <FormField label="Marque" required error={errors[p.id]?.marque}>
+                  <select className={sc(p.id, 'marque')} value={p.marque} onChange={(e) => upd(p.id,'marque',e.target.value)}>
+                    <option value="">Sélectionner</option>
+                    {MARQUES.map((m) => <option key={m}>{m}</option>)}
+                  </select>
+                </FormField>
+                <FormField label="Dénomination" required error={errors[p.id]?.denomination}>
+                  <input className={ic(p.id, 'denomination')} placeholder="Nom du produit" value={p.denomination} onChange={(e) => upd(p.id,'denomination',e.target.value)}/>
+                </FormField>
+                {p.marque === 'Autre' && (
+                  <div className="sm:col-span-2">
+                    <FormField label="Préciser la marque" required error={errors[p.id]?.marqueAutre}>
+                      <input className={ic(p.id, 'marqueAutre')} placeholder="Nom de la marque" value={p.marqueAutre} onChange={(e) => upd(p.id,'marqueAutre',e.target.value)}/>
+                    </FormField>
+                  </div>
+                )}
+              </div>
+
+              {/* Références */}
+              <div style={{ borderTop: '1px solid #f3f0fa', paddingTop: 16, marginBottom: 20 }}>
+                <SectionLabel>Références</SectionLabel>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <FormField label="Code barres" hint="EAN-13 ou EAN-8">
+                    <input className={inputCls} placeholder="3614271892454" inputMode="numeric" value={p.codeBarres} onChange={(e) => upd(p.id,'codeBarres',e.target.value)}/>
+                  </FormField>
+                  <FormField label="Numéro de lot">
+                    <input className={inputCls} placeholder="12345678" value={p.numeroDeLot} onChange={(e) => upd(p.id,'numeroDeLot',e.target.value)}/>
+                  </FormField>
+                  <FormField label="Date d'expiration">
+                    <input className={`${inputCls}${!p.dateExpiration ? ' text-gray-300' : ''}`} type="date" value={p.dateExpiration} onChange={(e) => upd(p.id,'dateExpiration',e.target.value)}/>
                   </FormField>
                 </div>
-              )}
+              </div>
 
-              <FormField label="Code barres" hint="EAN-13 ou EAN-8">
-                <input className={inputCls} placeholder="3614271892454" inputMode="numeric" value={p.codeBarres} onChange={(e) => upd(p.id,'codeBarres',e.target.value)}/>
-              </FormField>
-              <FormField label="Numéro de lot">
-                <input className={inputCls} placeholder="12345678" value={p.numeroDeLot} onChange={(e) => upd(p.id,'numeroDeLot',e.target.value)}/>
-              </FormField>
-              <FormField label="Date d'expiration">
-                <input
-                  className={dateInputCls(`${inputCls}`, !!p.dateExpiration)}
-                  type="date"
-                  value={p.dateExpiration}
-                  onChange={(e) => upd(p.id,'dateExpiration',e.target.value)}
-                />
-              </FormField>
-              <FormField label="Prix net (€)" required error={errors[p.id]?.prixNet}>
-                <input
-                  className={`${inputCls}${errors[p.id]?.prixNet ? ' !border-red-300' : ''}`}
-                  placeholder="24.99"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  inputMode="decimal"
-                  value={p.prixNet}
-                  onChange={(e) => upd(p.id,'prixNet',e.target.value)}
-                />
-              </FormField>
-              <FormField label="Date d'achat" required error={errors[p.id]?.dateAchat}>
-                <input
-                  className={dateInputCls(`${inputCls}${errors[p.id]?.dateAchat ? ' !border-red-300' : ''}`, !!p.dateAchat)}
-                  type="date"
-                  value={p.dateAchat}
-                  onChange={(e) => upd(p.id,'dateAchat',e.target.value)}
-                />
-              </FormField>
-              <FormField label="Quantité" required>
-                <select className={selectCls} value={p.quantite} onChange={(e) => upd(p.id,'quantite',e.target.value)}>
-                  {QUANTITES.map((q) => <option key={q}>{q}</option>)}
-                </select>
-              </FormField>
+              {/* Achat */}
+              <div style={{ borderTop: '1px solid #f3f0fa', paddingTop: 16, marginBottom: 20 }}>
+                <SectionLabel>Achat</SectionLabel>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <FormField label="Prix net (€)" required error={errors[p.id]?.prixNet}>
+                    <input className={ic(p.id, 'prixNet')} placeholder="24.99" type="number" step="0.01" min="0" inputMode="decimal" value={p.prixNet} onChange={(e) => upd(p.id,'prixNet',e.target.value)}/>
+                  </FormField>
+                  <FormField label="Date d'achat" required error={errors[p.id]?.dateAchat}>
+                    <input className={`${ic(p.id, 'dateAchat')}${!p.dateAchat ? ' text-gray-300' : ''}`} type="date" value={p.dateAchat} onChange={(e) => upd(p.id,'dateAchat',e.target.value)}/>
+                  </FormField>
+                  <FormField label="Quantité" required>
+                    <select className={selectCls} value={p.quantite} onChange={(e) => upd(p.id,'quantite',e.target.value)}>
+                      {QUANTITES.map((q) => <option key={q}>{q}</option>)}
+                    </select>
+                  </FormField>
+                </div>
+              </div>
             </div>
 
-            <div className="px-4 sm:px-5 py-3 bg-[#fafafa] border-t border-[#f0f0f0]">
-              <PhotoButton photos={p.photos} onAdd={(photos) => upd(p.id, 'photos', photos)}/>
+            {/* Zone photo */}
+            <div style={{ padding: '0 20px 20px', background: 'white' }}>
+              <div style={{ borderTop: '1px solid #f3f0fa', paddingTop: 16 }}>
+                <SectionLabel>Photos</SectionLabel>
+                <PhotoZone photos={p.photos} onAdd={(photos) => upd(p.id, 'photos', photos)}/>
+              </div>
             </div>
           </div>
         ))}
 
+        {/* Ajouter un produit */}
         <button
           type="button"
           onClick={() => onChange([...value, mk()])}
-          className="w-full py-4 border-2 border-dashed border-[#ddd0f0] rounded-xl text-[14px] font-semibold text-[#6B3FA0] hover:bg-[#faf8fd] hover:border-[#b89fd8] transition-all duration-200 min-h-[56px]"
+          style={{
+            width: '100%', padding: '16px 0',
+            border: '2px dashed #ddd0f0', borderRadius: 16,
+            background: 'transparent', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+            color: '#6B3FA0', fontSize: 14, fontWeight: 600,
+            transition: 'all 0.15s',
+          }}
+          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#faf7ff'; (e.currentTarget as HTMLButtonElement).style.borderColor = '#b89fd8'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; (e.currentTarget as HTMLButtonElement).style.borderColor = '#ddd0f0'; }}
         >
-          + Ajouter un produit
+          <div style={{ width: 26, height: 26, borderRadius: 8, background: 'rgba(107,63,160,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6B3FA0" strokeWidth="2.5" strokeLinecap="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </div>
+          Ajouter un produit
         </button>
       </div>
     </StepHeader>
