@@ -155,6 +155,21 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
+  /* ── Group (sous-section dans une section) ── */
+  group: {
+    marginBottom: 16,
+  },
+  groupLabel: {
+    fontSize: 8,
+    fontFamily: 'Helvetica-Bold',
+    color: PURPLE,
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
+    marginBottom: 6,
+    paddingBottom: 4,
+    borderBottom: `0.5pt solid ${PURPLE_MID}`,
+  },
+
   /* ── Signature ── */
   signatureBox: {
     border: `0.5pt solid #e5e7eb`,
@@ -302,20 +317,34 @@ function ReclamationPDF({
         {/* Coordonnées */}
         <View style={styles.section}>
           <SectionTitle>Coordonnées du client</SectionTitle>
-          <View style={styles.cols}>
-            <View style={styles.col}>
-              <Field label="Nom" value={c.nom} />
-              <Field label="Prénom" value={c.prenom} />
-              <Field label="Genre" value={c.genre} />
-              <Field label="Âge" value={c.age ? `${c.age} ans` : null} />
-              <Field label="Langue" value={
-                c.langueParlée === 'Autre' && c.langueAutre ? c.langueAutre : c.langueParlée
-              } />
+
+          <View style={styles.group}>
+            <Text style={styles.groupLabel}>Identité</Text>
+            <View style={styles.cols}>
+              <View style={styles.col}>
+                <Field label="Nom" value={c.nom} />
+                <Field label="Prénom" value={c.prenom} />
+              </View>
+              <View style={styles.col}>
+                <Field label="Genre" value={c.genre} />
+                <Field label="Âge" value={c.age ? `${c.age} ans` : null} />
+                <Field label="Langue" value={
+                  c.langueParlée === 'Autre' && c.langueAutre ? c.langueAutre : c.langueParlée
+                } />
+              </View>
             </View>
-            <View style={styles.col}>
-              <Field label="Email" value={c.email} />
-              <Field label="Téléphone" value={c.telephone} />
-              <Field label="Adresse" value={adresse} />
+          </View>
+
+          <View style={styles.group}>
+            <Text style={styles.groupLabel}>Contact</Text>
+            <View style={styles.cols}>
+              <View style={styles.col}>
+                <Field label="Email" value={c.email} />
+                <Field label="Téléphone" value={c.telephone} />
+              </View>
+              <View style={styles.col}>
+                <Field label="Adresse" value={adresse} />
+              </View>
             </View>
           </View>
         </View>
@@ -405,18 +434,21 @@ function ReclamationPDF({
         {/* Infos magasin */}
         <View style={styles.section}>
           <SectionTitle>Informations magasin</SectionTitle>
-          <View style={styles.cols}>
-            <View style={styles.col}>
-              <Field label="Magasin" value={ic.nomMagasin} />
-              <Field label="N° magasin" value={ic.numeroDuMagasin} />
-              <Field label="Email magasin" value={ic.emailMagasin} />
-            </View>
-            <View style={styles.col}>
-              <Field label="RRV" value={ic.nomPrenomRRV} />
-              <Field label="Responsable" value={ic.nomPrenomResponsable} />
-              <Field label="Salarié" value={ic.nomPrenomSalarie} />
-            </View>
+
+          <View style={styles.group}>
+            <Text style={styles.groupLabel}>Magasin</Text>
+            <Field label="Nom du magasin" value={ic.nomMagasin} />
+            <Field label="N° magasin" value={ic.numeroDuMagasin} />
+            <Field label="Email magasin" value={ic.emailMagasin} />
           </View>
+
+          <View style={styles.group}>
+            <Text style={styles.groupLabel}>Équipe</Text>
+            <Field label="RRV" value={ic.nomPrenomRRV} />
+            <Field label="Responsable" value={ic.nomPrenomResponsable} />
+            <Field label="Salarié" value={ic.nomPrenomSalarie} />
+          </View>
+
           <Tags label="Actions effectuées en magasin" items={ic.actionsEnMagasin} />
           <Text style={styles.subLabel}>Signature du salarié</Text>
           {ic.signatureSalarie ? (
