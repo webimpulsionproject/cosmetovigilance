@@ -74,7 +74,7 @@ export default function StepInfosComplementaires({ value, onChange, onBack, onSu
         </Bloc>
 
         <Bloc title="Informations du magasin">
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div className="grid grid-cols-2 gap-3">
               <FormField label="Nom du magasin" required error={errors.nomMagasin}>
                 <input className={`${inputCls}${errors.nomMagasin ? ' !border-red-300' : ''}`} placeholder="Paris Rivoli" value={value.nomMagasin} onChange={(e) => set('nomMagasin', e.target.value)}/>
