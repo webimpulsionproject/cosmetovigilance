@@ -65,6 +65,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fafafa',
   },
   signatureImg: { maxHeight: 70, maxWidth: 200 },
+  photoGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6 },
+  photoThumb: { width: 80, height: 80, objectFit: 'cover', borderRadius: 4, border: '1pt solid #d8b4fe' },
   footer: {
     position: 'absolute',
     bottom: 20,
@@ -85,6 +87,20 @@ function Field({ label, value }: { label: string; value?: string }) {
     <View style={styles.row}>
       <Text style={styles.label}>{label}</Text>
       <Text style={styles.value}>{value}</Text>
+    </View>
+  );
+}
+
+function PhotoGrid({ photos, label }: { photos: string[]; label?: string }) {
+  if (!photos || photos.length === 0) return null;
+  return (
+    <View style={{ marginTop: 6, marginBottom: 4 }}>
+      {label && <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 9, color: '#444', marginBottom: 4 }}>{label}</Text>}
+      <View style={styles.photoGrid}>
+        {photos.map((src, i) => (
+          <Image key={i} src={src} style={styles.photoThumb} />
+        ))}
+      </View>
     </View>
   );
 }
@@ -169,6 +185,7 @@ function ReclamationPDF({
               <Field label="Prix net (€)" value={p.prixNet} />
               <Field label="Date d'achat" value={p.dateAchat} />
               <Field label="Quantité" value={p.quantite} />
+              <PhotoGrid photos={p.photos} label="Photos du produit :" />
             </View>
           ))}
         </View>
@@ -214,6 +231,12 @@ function ReclamationPDF({
               </View>
             )}
             <Field label="Description" value={effetIndesirable.description} />
+            {effetIndesirable.ticketCaissePhoto && (
+              <PhotoGrid photos={[effetIndesirable.ticketCaissePhoto]} label="Ticket de caisse :" />
+            )}
+            {effetIndesirable.documentsPhotos?.length > 0 && (
+              <PhotoGrid photos={effetIndesirable.documentsPhotos} label="Documents / photos :" />
+            )}
           </View>
 
           {/* Accord client */}
