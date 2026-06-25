@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     const pdfBuffer = await generatePDF(body, numero);
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(new Uint8Array(pdfBuffer), {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
