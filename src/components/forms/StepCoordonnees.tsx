@@ -125,85 +125,79 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
 
   return (
     <StepHeader title="Coordonnées du client" subtitle="Étape 1 sur 5" onBack={onBack} onNext={() => { if (validate()) onNext(); }}>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12">
-        {/* Gauche : Identité + Contact */}
-        <div>
-          <Bloc title="Identité">
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <FormField label="Nom de famille" required error={errors.nom}>
-                  <input className={ic('nom')} placeholder="Dupont" value={value.nom} onChange={(e) => s('nom', e.target.value)} autoComplete="family-name"/>
-                </FormField>
-                <FormField label="Prénom" required error={errors.prenom}>
-                  <input className={ic('prenom')} placeholder="Marie" value={value.prenom} onChange={(e) => s('prenom', e.target.value)} autoComplete="given-name"/>
-                </FormField>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <FormField label="Genre">
-                  <select className={selectCls} value={value.genre} onChange={(e) => s('genre', e.target.value)}>
-                    <option value="">—</option>
-                    <option>Femme</option><option>Homme</option><option>Non précisé</option>
-                  </select>
-                </FormField>
-                <FormField label="Âge">
-                  <input className={inputCls} placeholder="30" type="number" min="0" max="120" inputMode="numeric" value={value.age} onChange={(e) => s('age', e.target.value)}/>
-                </FormField>
-              </div>
-              <FormField label="Langue parlée">
-                <select className={selectCls} value={value.langueParlée} onChange={(e) => s('langueParlée', e.target.value)}>
-                  <option value="">—</option>
-                  {LANGUES.map((l) => <option key={l}>{l}</option>)}
-                </select>
-              </FormField>
-              {value.langueParlée === 'Autre' && (
-                <FormField label="Préciser la langue">
-                  <input className={inputCls} placeholder="Langue" value={value.langueAutre} onChange={(e) => s('langueAutre', e.target.value)}/>
-                </FormField>
-              )}
-            </div>
-          </Bloc>
 
-          <Bloc title="Contact">
-            <div className="space-y-8">
-              <FormField label="Email" required error={errors.email}>
-                <input className={ic('email')} placeholder="marie@email.com" type="email" inputMode="email" autoComplete="email" value={value.email} onChange={(e) => s('email', e.target.value)}/>
-              </FormField>
-              <FormField label="Téléphone" required error={errors.telephone}>
-                <input className={ic('telephone')} placeholder="+33 6 00 00 00 00" type="tel" inputMode="tel" autoComplete="tel" value={value.telephone} onChange={(e) => s('telephone', e.target.value)}/>
-              </FormField>
-            </div>
-          </Bloc>
+      <Bloc title="Identité">
+        <div className="space-y-7">
+          <div className="grid grid-cols-2 gap-5">
+            <FormField label="Nom de famille" required error={errors.nom}>
+              <input className={ic('nom')} placeholder="Dupont" value={value.nom} onChange={(e) => s('nom', e.target.value)} autoComplete="family-name"/>
+            </FormField>
+            <FormField label="Prénom" required error={errors.prenom}>
+              <input className={ic('prenom')} placeholder="Marie" value={value.prenom} onChange={(e) => s('prenom', e.target.value)} autoComplete="given-name"/>
+            </FormField>
+          </div>
+          <div className="grid grid-cols-2 gap-5">
+            <FormField label="Genre">
+              <select className={selectCls} value={value.genre} onChange={(e) => s('genre', e.target.value)}>
+                <option value="">—</option>
+                <option>Femme</option><option>Homme</option><option>Non précisé</option>
+              </select>
+            </FormField>
+            <FormField label="Âge">
+              <input className={inputCls} placeholder="30" type="number" min="0" max="120" inputMode="numeric" value={value.age} onChange={(e) => s('age', e.target.value)}/>
+            </FormField>
+          </div>
+          <FormField label="Langue parlée">
+            <select className={selectCls} value={value.langueParlée} onChange={(e) => s('langueParlée', e.target.value)}>
+              <option value="">—</option>
+              {LANGUES.map((l) => <option key={l}>{l}</option>)}
+            </select>
+          </FormField>
+          {value.langueParlée === 'Autre' && (
+            <FormField label="Préciser la langue">
+              <input className={inputCls} placeholder="Langue" value={value.langueAutre} onChange={(e) => s('langueAutre', e.target.value)}/>
+            </FormField>
+          )}
         </div>
+      </Bloc>
 
-        {/* Droite : Adresse */}
-        <div>
-          <Bloc title="Adresse postale">
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                <FormField label="N° rue">
-                  <input className={inputCls} placeholder="12" autoComplete="address-line1" value={value.numeroRue} onChange={(e) => s('numeroRue', e.target.value)}/>
-                </FormField>
-                <div className="col-span-3">
-                  <FormField label="Nom de rue" required error={errors.nomRue}>
-                    <input className={ic('nomRue')} placeholder="Rue de la Paix" autoComplete="street-address" value={value.nomRue} onChange={(e) => s('nomRue', e.target.value)}/>
-                  </FormField>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <FormField label="Code postal" required error={errors.codePostal}>
-                  <input className={ic('codePostal')} placeholder="75001" inputMode="numeric" autoComplete="postal-code" value={value.codePostal} onChange={(e) => s('codePostal', e.target.value)}/>
-                </FormField>
-                <FormField label="Ville" required error={errors.ville}>
-                  <input className={ic('ville')} placeholder="Paris" autoComplete="address-level2" value={value.ville} onChange={(e) => s('ville', e.target.value)}/>
-                </FormField>
-              </div>
-              <FormField label="Pays" required error={errors.pays}>
-                <PaysCombobox value={value.pays} onChange={(v) => s('pays', v)} error={errors.pays}/>
+      <Bloc title="Contact">
+        <div className="space-y-7">
+          <FormField label="Email" required error={errors.email}>
+            <input className={ic('email')} placeholder="marie@email.com" type="email" inputMode="email" autoComplete="email" value={value.email} onChange={(e) => s('email', e.target.value)}/>
+          </FormField>
+          <FormField label="Téléphone" required error={errors.telephone}>
+            <input className={ic('telephone')} placeholder="+33 6 00 00 00 00" type="tel" inputMode="tel" autoComplete="tel" value={value.telephone} onChange={(e) => s('telephone', e.target.value)}/>
+          </FormField>
+        </div>
+      </Bloc>
+
+      <Bloc title="Adresse postale">
+        <div className="space-y-7">
+          <div className="grid grid-cols-4 gap-5">
+            <FormField label="N° rue">
+              <input className={inputCls} placeholder="12" autoComplete="address-line1" value={value.numeroRue} onChange={(e) => s('numeroRue', e.target.value)}/>
+            </FormField>
+            <div className="col-span-3">
+              <FormField label="Nom de rue" required error={errors.nomRue}>
+                <input className={ic('nomRue')} placeholder="Rue de la Paix" autoComplete="street-address" value={value.nomRue} onChange={(e) => s('nomRue', e.target.value)}/>
               </FormField>
             </div>
-          </Bloc>
+          </div>
+          <div className="grid grid-cols-2 gap-5">
+            <FormField label="Code postal" required error={errors.codePostal}>
+              <input className={ic('codePostal')} placeholder="75001" inputMode="numeric" autoComplete="postal-code" value={value.codePostal} onChange={(e) => s('codePostal', e.target.value)}/>
+            </FormField>
+            <FormField label="Ville" required error={errors.ville}>
+              <input className={ic('ville')} placeholder="Paris" autoComplete="address-level2" value={value.ville} onChange={(e) => s('ville', e.target.value)}/>
+            </FormField>
+          </div>
+          <FormField label="Pays" required error={errors.pays}>
+            <PaysCombobox value={value.pays} onChange={(v) => s('pays', v)} error={errors.pays}/>
+          </FormField>
         </div>
-      </div>
+      </Bloc>
+
     </StepHeader>
   );
 }
