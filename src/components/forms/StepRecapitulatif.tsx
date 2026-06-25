@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { ReclamationFormData, ReclamationType } from '@/types';
 
 const PURPLE = '#6B3FA0';
@@ -41,6 +42,31 @@ function SignatureMini({ data }: { data: string }) {
 export default function StepRecapitulatif({ data, type, onBack, onSubmit, isLoading }: {
   data: ReclamationFormData; type: ReclamationType; onBack: () => void; onSubmit: () => void; isLoading?: boolean;
 }) {
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  async function handleDownloadPDF() {
+    setIsDownloading(true);
+    try {
+      const res = await fetch('/api/pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error('Erreur serveur');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const date = new Date().toISOString().slice(0, 10);
+      a.download = `reclamation-${date}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      alert('Impossible de générer le PDF. Veuillez réessayer.');
+    } finally {
+      setIsDownloading(false);
+    }
+  }
   const { coordonnees: c, produits, effetIndesirable: ei, accordClient: ac, infosComplementaires: ic } = data;
   const isCv = type === 'cosmetovigilance';
 
@@ -197,6 +223,34 @@ export default function StepRecapitulatif({ data, type, onBack, onSubmit, isLoad
           }}
         >
           ← Modifier
+        </button>
+        <button
+          type="button"
+          onClick={handleDownloadPDF}
+          disabled={isDownloading}
+          style={{
+            flex: 1, padding: '13px 0', border: `1.5px solid ${PURPLE}`, borderRadius: 11,
+            background: 'white', color: PURPLE, fontSize: 13, fontWeight: 600,
+            cursor: isDownloading ? 'not-allowed' : 'pointer', transition: 'all 0.15s',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+            opacity: isDownloading ? 0.6 : 1,
+          }}
+        >
+          {isDownloading ? (
+            <>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" style={{ animation: 'spin 1s linear infinite' }}>
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+              </svg>
+              Génération…
+            </>
+          ) : (
+            <>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              PDF
+            </>
+          )}
         </button>
         <button
           type="button"
