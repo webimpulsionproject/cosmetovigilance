@@ -19,7 +19,7 @@ export default function StepHeader({
   return (
     <div>
       {/* Titre */}
-      <div style={{ marginBottom: 28, paddingBottom: 20, borderBottom: '1px solid #f3f4f6' }}>
+      <div style={{ marginBottom: 24, paddingBottom: 16, borderBottom: '1px solid #e5e0f0' }}>
         <h2 style={{ fontSize: 21, fontWeight: 700, color: '#111827', letterSpacing: '-0.02em', lineHeight: 1.25, margin: 0 }}>{title}</h2>
         {subtitle && (
           <p style={{ fontSize: 11, color: '#bbb', marginTop: 7, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600 }}>{subtitle}</p>

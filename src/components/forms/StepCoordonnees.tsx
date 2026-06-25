@@ -129,7 +129,7 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
         {/* Gauche : Identité + Contact */}
         <div>
           <Bloc title="Identité">
-            <div className="space-y-5">
+            <div className="space-y-8">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField label="Nom de famille" required error={errors.nom}>
                   <input className={ic('nom')} placeholder="Dupont" value={value.nom} onChange={(e) => s('nom', e.target.value)} autoComplete="family-name"/>
@@ -164,7 +164,7 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
           </Bloc>
 
           <Bloc title="Contact">
-            <div className="space-y-5">
+            <div className="space-y-8">
               <FormField label="Email" required error={errors.email}>
                 <input className={ic('email')} placeholder="marie@email.com" type="email" inputMode="email" autoComplete="email" value={value.email} onChange={(e) => s('email', e.target.value)}/>
               </FormField>
@@ -178,7 +178,7 @@ export default function StepCoordonnees({ value, onChange, onBack, onNext }: {
         {/* Droite : Adresse */}
         <div>
           <Bloc title="Adresse postale">
-            <div className="space-y-5">
+            <div className="space-y-8">
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <FormField label="N° rue">
                   <input className={inputCls} placeholder="12" autoComplete="address-line1" value={value.numeroRue} onChange={(e) => s('numeroRue', e.target.value)}/>

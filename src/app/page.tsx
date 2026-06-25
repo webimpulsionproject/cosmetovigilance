@@ -370,7 +370,7 @@ export default function HomePage() {
         </div>
 
         {/* Corps */}
-        <div style={{ padding: '32px 40px' }}>
+        <div style={{ padding: '36px 40px', background: '#ede8f7' }}>
           {submitError && (
             <div style={{ marginBottom: 20, background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, padding: '12px 16px', fontSize: 13, color: '#dc2626' }}>
               {submitError}
