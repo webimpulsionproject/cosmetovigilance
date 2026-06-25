@@ -7,8 +7,8 @@ interface BlocProps {
 
 export function Bloc({ title, hint, children, className }: BlocProps) {
   return (
-    <div className={`mb-7 ${className ?? ''}`}>
-      <div className="flex items-start gap-2.5 mb-4">
+    <div className={`mb-10 ${className ?? ''}`}>
+      <div className="flex items-start gap-2.5 mb-5">
         <div style={{ width: 3, height: 16, background: '#6B3FA0', borderRadius: 2, marginTop: 2, flexShrink: 0 }}/>
         <div>
           <h3 className="text-[13px] font-semibold text-gray-700 leading-tight">{title}</h3>
