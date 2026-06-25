@@ -12,76 +12,206 @@ import { ReclamationFormData } from '@/types';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
+const PURPLE = '#6B3FA0';
+const PURPLE_LIGHT = '#f5f0ff';
+const PURPLE_MID = '#d8b4fe';
+const GRAY = '#6b7280';
+const GRAY_LIGHT = '#f9fafb';
+const SEPARATOR = '#f0ebfa';
+
 const styles = StyleSheet.create({
-  page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica', color: '#1a1a1a' },
+  page: {
+    paddingTop: 48,
+    paddingBottom: 56,
+    paddingHorizontal: 50,
+    fontSize: 10,
+    fontFamily: 'Helvetica',
+    color: '#111827',
+    backgroundColor: 'white',
+  },
+
+  /* ── Header ── */
   header: {
-    backgroundColor: '#6B3FA0',
-    padding: 16,
-    marginBottom: 20,
-    borderRadius: 4,
+    marginBottom: 32,
   },
-  headerTitle: { color: 'white', fontSize: 16, fontFamily: 'Helvetica-Bold', textAlign: 'center' },
-  headerSub: { color: '#e0d0f0', fontSize: 10, textAlign: 'center', marginTop: 4 },
-  section: { marginBottom: 16 },
-  sectionTitle: {
-    fontSize: 12,
+  headerBand: {
+    backgroundColor: PURPLE,
+    borderRadius: 6,
+    padding: '20 24',
+    marginBottom: 0,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 15,
     fontFamily: 'Helvetica-Bold',
-    color: '#6B3FA0',
-    borderBottom: '1pt solid #6B3FA0',
-    paddingBottom: 4,
-    marginBottom: 8,
+    textAlign: 'center',
+    letterSpacing: 0.3,
   },
-  row: { flexDirection: 'row', marginBottom: 4 },
-  label: { width: 160, fontFamily: 'Helvetica-Bold', color: '#444' },
-  value: { flex: 1, color: '#1a1a1a' },
-  badge: {
-    backgroundColor: '#f3e8ff',
-    color: '#6B3FA0',
-    padding: '2 6',
-    borderRadius: 3,
-    fontSize: 9,
-    marginBottom: 8,
-    alignSelf: 'flex-start',
-  },
-  checkbox: {
+  headerMeta: {
     flexDirection: 'row',
-    marginBottom: 3,
+    justifyContent: 'space-between',
+    marginTop: 10,
+    paddingHorizontal: 2,
   },
-  checkmark: { width: 12, color: '#6B3FA0', fontFamily: 'Helvetica-Bold' },
-  produitBox: {
-    border: '1pt solid #d8b4fe',
-    borderRadius: 4,
-    padding: 10,
-    marginBottom: 8,
-    backgroundColor: '#faf5ff',
+  headerMetaText: {
+    fontSize: 9,
+    color: GRAY,
   },
-  signatureBox: {
-    border: '1pt solid #ccc',
-    borderRadius: 4,
+
+  /* ── Section ── */
+  section: {
+    marginBottom: 28,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 14,
+    gap: 8,
+  },
+  sectionAccent: {
+    width: 3,
+    height: 14,
+    backgroundColor: PURPLE,
+    borderRadius: 2,
+  },
+  sectionTitle: {
+    fontSize: 11,
+    fontFamily: 'Helvetica-Bold',
+    color: PURPLE,
+    letterSpacing: 0.2,
+  },
+
+  /* ── Field rows ── */
+  row: {
+    flexDirection: 'row',
+    paddingVertical: 6,
+    borderBottom: `0.5pt solid ${SEPARATOR}`,
+  },
+  label: {
+    width: 155,
+    fontSize: 9.5,
+    color: GRAY,
+    paddingRight: 8,
+    flexShrink: 0,
+  },
+  value: {
+    flex: 1,
+    fontSize: 9.5,
+    color: '#111827',
+    fontFamily: 'Helvetica-Bold',
+  },
+
+  /* ── Columns ── */
+  cols: {
+    flexDirection: 'row',
+    gap: 24,
+  },
+  col: { flex: 1 },
+
+  /* ── Product card ── */
+  produitCard: {
+    borderRadius: 6,
+    border: `1pt solid ${PURPLE_MID}`,
+    marginBottom: 12,
+    overflow: 'hidden',
+  },
+  produitCardHead: {
+    backgroundColor: PURPLE_LIGHT,
+    padding: '8 14',
+    borderBottom: `0.5pt solid ${PURPLE_MID}`,
+  },
+  produitCardHeadText: {
+    fontSize: 10,
+    fontFamily: 'Helvetica-Bold',
+    color: PURPLE,
+  },
+  produitCardBody: {
+    padding: '10 14 14',
+  },
+
+  /* ── Tags (checkboxes) ── */
+  tagRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 5,
     marginTop: 4,
-    height: 80,
+    marginBottom: 8,
+  },
+  tag: {
+    backgroundColor: PURPLE_LIGHT,
+    color: PURPLE,
+    fontSize: 9,
+    borderRadius: 99,
+    padding: '3 9',
+    fontFamily: 'Helvetica-Bold',
+  },
+
+  /* ── Sub-label ── */
+  subLabel: {
+    fontSize: 9,
+    color: GRAY,
+    fontFamily: 'Helvetica-Bold',
+    marginBottom: 6,
+    marginTop: 10,
+  },
+
+  /* ── Signature ── */
+  signatureBox: {
+    border: `0.5pt solid #e5e7eb`,
+    borderRadius: 5,
+    marginTop: 6,
+    height: 72,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fafafa',
+    backgroundColor: GRAY_LIGHT,
   },
-  signatureImg: { maxHeight: 70, maxWidth: 200 },
-  photoGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6 },
-  photoThumb: { width: 80, height: 80, objectFit: 'cover', borderRadius: 4, border: '1pt solid #d8b4fe' },
+  signatureImg: { maxHeight: 62, maxWidth: 200 },
+
+  /* ── Photos ── */
+  photoGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 7,
+    marginTop: 8,
+  },
+  photoThumb: {
+    width: 85,
+    height: 85,
+    objectFit: 'cover',
+    borderRadius: 5,
+    border: `0.5pt solid ${PURPLE_MID}`,
+  },
+
+  /* ── Footer ── */
   footer: {
     position: 'absolute',
-    bottom: 20,
-    left: 40,
-    right: 40,
-    textAlign: 'center',
-    color: '#999',
-    fontSize: 8,
-    borderTop: '1pt solid #eee',
-    paddingTop: 8,
+    bottom: 22,
+    left: 50,
+    right: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderTop: `0.5pt solid #e5e7eb`,
+    paddingTop: 7,
   },
-  pageNumber: { position: 'absolute', bottom: 20, right: 40, fontSize: 8, color: '#999' },
+  footerText: {
+    fontSize: 8,
+    color: '#9ca3af',
+  },
 });
 
-function Field({ label, value }: { label: string; value?: string }) {
+/* ── Components ── */
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <View style={styles.sectionHeader}>
+      <View style={styles.sectionAccent} />
+      <Text style={styles.sectionTitle}>{children}</Text>
+    </View>
+  );
+}
+
+function Field({ label, value }: { label: string; value?: string | null }) {
   if (!value) return null;
   return (
     <View style={styles.row}>
@@ -91,11 +221,25 @@ function Field({ label, value }: { label: string; value?: string }) {
   );
 }
 
+function Tags({ label, items }: { label: string; items: string[] }) {
+  if (!items || items.length === 0) return null;
+  return (
+    <View style={{ marginBottom: 4 }}>
+      <Text style={styles.subLabel}>{label}</Text>
+      <View style={styles.tagRow}>
+        {items.map((item, i) => (
+          <Text key={i} style={styles.tag}>{item}</Text>
+        ))}
+      </View>
+    </View>
+  );
+}
+
 function PhotoGrid({ photos, label }: { photos: string[]; label?: string }) {
   if (!photos || photos.length === 0) return null;
   return (
-    <View style={{ marginTop: 6, marginBottom: 4 }}>
-      {label && <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 9, color: '#444', marginBottom: 4 }}>{label}</Text>}
+    <View style={{ marginTop: 10 }}>
+      {label && <Text style={styles.subLabel}>{label}</Text>}
       <View style={styles.photoGrid}>
         {photos.map((src, i) => (
           <Image key={i} src={src} style={styles.photoThumb} />
@@ -105,18 +249,19 @@ function PhotoGrid({ photos, label }: { photos: string[]; label?: string }) {
   );
 }
 
-function CheckList({ items }: { items: string[] }) {
+function PageFooter({ numero }: { numero: string }) {
   return (
-    <View>
-      {items.map((item, i) => (
-        <View key={i} style={styles.checkbox}>
-          <Text style={styles.checkmark}>✓ </Text>
-          <Text>{item}</Text>
-        </View>
-      ))}
+    <View style={styles.footer} fixed>
+      <Text style={styles.footerText}>Réclamation {numero} — Marionnaud</Text>
+      <Text
+        style={styles.footerText}
+        render={({ pageNumber, totalPages }) => `Page ${pageNumber} / ${totalPages}`}
+      />
     </View>
   );
 }
+
+/* ── PDF Document ── */
 
 function ReclamationPDF({
   data,
@@ -127,184 +272,166 @@ function ReclamationPDF({
   numeroReclamation: string;
   dateDeclaration: string;
 }) {
-  const { coordonnees, produits, effetIndesirable, accordClient, infosComplementaires } = data;
+  const { coordonnees: c, produits, effetIndesirable: ei, accordClient: ac, infosComplementaires: ic } = data;
+  const isCv = data.type === 'cosmetovigilance';
+
+  const adresse = [
+    [c.numeroRue, c.nomRue].filter(Boolean).join(' '),
+    [c.codePostal, c.ville].filter(Boolean).join(' '),
+    c.pays,
+  ].filter(Boolean).join(' — ');
 
   return (
     <Document>
+      {/* ── Page 1 ── */}
       <Page size="A4" style={styles.page}>
+
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>
-            Formulaire de déclaration — {data.type === 'cosmetovigilance' ? 'Cosmétovigilance' : 'Qualité'}
-          </Text>
-          <Text style={styles.headerSub}>
-            N° {numeroReclamation} — {dateDeclaration}
-          </Text>
+          <View style={styles.headerBand}>
+            <Text style={styles.headerTitle}>
+              Déclaration {isCv ? 'Cosmétovigilance' : 'Qualité produit'}
+            </Text>
+          </View>
+          <View style={styles.headerMeta}>
+            <Text style={styles.headerMetaText}>N° {numeroReclamation}</Text>
+            <Text style={styles.headerMetaText}>{dateDeclaration}</Text>
+          </View>
         </View>
 
-        {/* Coordonnées client */}
+        {/* Coordonnées */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Étape 1 — Coordonnées du client</Text>
-          <View style={{ flexDirection: 'row', gap: 20 }}>
-            <View style={{ flex: 1 }}>
-              <Field label="Nom" value={coordonnees.nom} />
-              <Field label="Prénom" value={coordonnees.prenom} />
-              <Field label="Genre" value={coordonnees.genre} />
-              <Field label="Âge" value={coordonnees.age} />
-              <Field label="Langue parlée" value={
-                coordonnees.langueParlée === 'Autre' && coordonnees.langueAutre
-                  ? coordonnees.langueAutre
-                  : coordonnees.langueParlée
+          <SectionTitle>Coordonnées du client</SectionTitle>
+          <View style={styles.cols}>
+            <View style={styles.col}>
+              <Field label="Nom" value={c.nom} />
+              <Field label="Prénom" value={c.prenom} />
+              <Field label="Genre" value={c.genre} />
+              <Field label="Âge" value={c.age ? `${c.age} ans` : null} />
+              <Field label="Langue" value={
+                c.langueParlée === 'Autre' && c.langueAutre ? c.langueAutre : c.langueParlée
               } />
             </View>
-            <View style={{ flex: 1 }}>
-              <Field label="Email" value={coordonnees.email} />
-              <Field label="Téléphone" value={coordonnees.telephone} />
-              <Field label="N° de rue" value={coordonnees.numeroRue} />
-              <Field label="Rue" value={coordonnees.nomRue} />
-              <Field label="Ville" value={coordonnees.ville} />
-              <Field label="Code postal" value={coordonnees.codePostal} />
-              <Field label="Pays" value={coordonnees.pays} />
+            <View style={styles.col}>
+              <Field label="Email" value={c.email} />
+              <Field label="Téléphone" value={c.telephone} />
+              <Field label="Adresse" value={adresse} />
             </View>
           </View>
         </View>
 
         {/* Produits */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Étape 2 — Informations produit(s)</Text>
+          <SectionTitle>Informations produit{produits.length > 1 ? 's' : ''}</SectionTitle>
           {produits.map((p, i) => (
-            <View key={p.id} style={styles.produitBox}>
-              <Text style={{ fontFamily: 'Helvetica-Bold', marginBottom: 6, color: '#6B3FA0' }}>
-                Produit {i + 1}
-              </Text>
-              <Field label="Marque" value={p.marque} />
-              <Field label="Dénomination" value={p.denomination} />
-              <Field label="Code barres" value={p.codeBarres} />
-              <Field label="N° de lot" value={p.numeroDeLot} />
-              <Field label="Date expiration" value={p.dateExpiration} />
-              <Field label="Prix net (€)" value={p.prixNet} />
-              <Field label="Date d'achat" value={p.dateAchat} />
-              <Field label="Quantité" value={p.quantite} />
-              <PhotoGrid photos={p.photos} label="Photos du produit :" />
+            <View key={p.id} style={styles.produitCard}>
+              <View style={styles.produitCardHead}>
+                <Text style={styles.produitCardHeadText}>
+                  Produit {i + 1}{p.denomination ? ` — ${p.denomination}` : ''}
+                </Text>
+              </View>
+              <View style={styles.produitCardBody}>
+                <View style={styles.cols}>
+                  <View style={styles.col}>
+                    <Field label="Marque" value={p.marque === 'Autre' ? p.marqueAutre : p.marque} />
+                    <Field label="Dénomination" value={p.denomination} />
+                    <Field label="Code barres" value={p.codeBarres} />
+                    <Field label="N° de lot" value={p.numeroDeLot} />
+                  </View>
+                  <View style={styles.col}>
+                    <Field label="Date d'expiration" value={p.dateExpiration} />
+                    <Field label="Prix net" value={p.prixNet ? `${p.prixNet} €` : null} />
+                    <Field label="Date d'achat" value={p.dateAchat} />
+                    <Field label="Quantité" value={p.quantite} />
+                  </View>
+                </View>
+                <PhotoGrid photos={p.photos} label="Photos du produit" />
+              </View>
             </View>
           ))}
         </View>
 
-        <Text
-          style={styles.footer}
-          render={({ pageNumber, totalPages }) =>
-            `Réclamation ${numeroReclamation} — Marionnaud — Page ${pageNumber} / ${totalPages}`
-          }
-          fixed
-        />
+        <PageFooter numero={numeroReclamation} />
       </Page>
 
-      {data.type === 'cosmetovigilance' && (
-        <Page size="A4" style={styles.page}>
-          <View style={styles.header}>
-            <Text style={styles.headerTitle}>Cosmétovigilance — Suite</Text>
-            <Text style={styles.headerSub}>N° {numeroReclamation}</Text>
-          </View>
-
-          {/* Effet indésirable */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Étape 3 — Informations sur l'Effet Indésirable</Text>
-            <Field label="Date d'apparition" value={effetIndesirable.dateApparition} />
-            <Field
-              label="Date de disparition"
-              value={effetIndesirable.dateDisparition || 'Toujours présent'}
-            />
-            {effetIndesirable.consequences.length > 0 && (
-              <View style={styles.section}>
-                <Text style={{ fontFamily: 'Helvetica-Bold', marginBottom: 4 }}>
-                  Conséquences :
-                </Text>
-                <CheckList items={effetIndesirable.consequences} />
-              </View>
-            )}
-            {effetIndesirable.localisation.length > 0 && (
-              <View style={styles.section}>
-                <Text style={{ fontFamily: 'Helvetica-Bold', marginBottom: 4 }}>
-                  Localisation :
-                </Text>
-                <CheckList items={effetIndesirable.localisation} />
-              </View>
-            )}
-            <Field label="Description" value={effetIndesirable.description} />
-            {effetIndesirable.ticketCaissePhoto && (
-              <PhotoGrid photos={[effetIndesirable.ticketCaissePhoto]} label="Ticket de caisse :" />
-            )}
-            {effetIndesirable.documentsPhotos?.length > 0 && (
-              <PhotoGrid photos={effetIndesirable.documentsPhotos} label="Documents / photos :" />
-            )}
-          </View>
-
-          {/* Accord client */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Étape 4 — Accord du client</Text>
-            <Field
-              label="Accord transmission données"
-              value={accordClient.accordRGPD === 'oui' ? 'Oui' : 'Non'}
-            />
-            <Text style={{ fontFamily: 'Helvetica-Bold', marginTop: 8, marginBottom: 4 }}>
-              Signature du client :
+      {/* ── Page 2 (CV) ou suite qualité ── */}
+      <Page size="A4" style={styles.page}>
+        <View style={styles.header}>
+          <View style={styles.headerBand}>
+            <Text style={styles.headerTitle}>
+              {isCv ? 'Cosmétovigilance — Suite' : 'Qualité produit — Suite'}
             </Text>
-            {accordClient.signatureClient ? (
-              <View style={styles.signatureBox}>
-                <Image src={accordClient.signatureClient} style={styles.signatureImg} />
-              </View>
-            ) : (
-              <View style={styles.signatureBox}>
-                <Text style={{ color: '#999' }}>Non fournie</Text>
-              </View>
-            )}
           </View>
+          <View style={styles.headerMeta}>
+            <Text style={styles.headerMetaText}>N° {numeroReclamation}</Text>
+            <Text style={styles.headerMetaText}>{dateDeclaration}</Text>
+          </View>
+        </View>
 
-          {/* Infos complémentaires */}
+        {/* Effet indésirable (CV uniquement) */}
+        {isCv && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Étape 5 — Informations complémentaires</Text>
-            {infosComplementaires.actionsEnMagasin.length > 0 && (
-              <View style={{ marginBottom: 8 }}>
-                <Text style={{ fontFamily: 'Helvetica-Bold', marginBottom: 4 }}>
-                  Actions effectuées en magasin :
-                </Text>
-                <CheckList items={infosComplementaires.actionsEnMagasin} />
-              </View>
-            )}
-            <Field label="Nom du magasin" value={infosComplementaires.nomMagasin} />
-            <Field label="N° magasin" value={infosComplementaires.numeroDuMagasin} />
-            <Field label="Email magasin" value={infosComplementaires.emailMagasin} />
-            <Field label="Nom/Prénom RRV" value={infosComplementaires.nomPrenomRRV} />
-            <Field label="Nom/Prénom Responsable" value={infosComplementaires.nomPrenomResponsable} />
-            <Field label="Salarié ayant rempli" value={infosComplementaires.nomPrenomSalarie} />
-            <Text style={{ fontFamily: 'Helvetica-Bold', marginTop: 8, marginBottom: 4 }}>
-              Signature du salarié :
-            </Text>
-            {infosComplementaires.signatureSalarie ? (
-              <View style={styles.signatureBox}>
-                <Image
-                  src={infosComplementaires.signatureSalarie}
-                  style={styles.signatureImg}
-                />
-              </View>
-            ) : (
-              <View style={styles.signatureBox}>
-                <Text style={{ color: '#999' }}>Non fournie</Text>
-              </View>
-            )}
+            <SectionTitle>Effet indésirable</SectionTitle>
+            <Field label="Date d'apparition" value={ei.dateApparition} />
+            <Field label="Date de disparition" value={ei.dateDisparition || 'Toujours présent'} />
+            <Field label="Description" value={ei.description} />
+            <Tags label="Conséquences" items={ei.consequences} />
+            <Tags label="Localisation" items={ei.localisation} />
+            <PhotoGrid photos={ei.ticketCaissePhoto ? [ei.ticketCaissePhoto] : []} label="Ticket de caisse" />
+            <PhotoGrid photos={ei.documentsPhotos ?? []} label="Documents / photos" />
           </View>
+        )}
 
-          <Field label="Date de déclaration" value={dateDeclaration} />
-
-          <Text
-            style={styles.footer}
-            render={({ pageNumber, totalPages }) =>
-              `Réclamation ${numeroReclamation} — Marionnaud — Page ${pageNumber} / ${totalPages}`
-            }
-            fixed
+        {/* Accord client */}
+        <View style={styles.section}>
+          <SectionTitle>Accord du client</SectionTitle>
+          <Field
+            label="Accord RGPD"
+            value={ac.accordRGPD === 'oui' ? 'Oui — accord donné' : ac.accordRGPD === 'non' ? 'Non — refus' : null}
           />
-        </Page>
-      )}
+          <Field label="Nom / Prénom client" value={ac.nomPrenomClient} />
+          <Text style={styles.subLabel}>Signature du client</Text>
+          {ac.signatureClient ? (
+            <View style={styles.signatureBox}>
+              <Image src={ac.signatureClient} style={styles.signatureImg} />
+            </View>
+          ) : (
+            <View style={styles.signatureBox}>
+              <Text style={{ fontSize: 9, color: '#9ca3af' }}>Non fournie</Text>
+            </View>
+          )}
+        </View>
+
+        {/* Infos magasin */}
+        <View style={styles.section}>
+          <SectionTitle>Informations magasin</SectionTitle>
+          <View style={styles.cols}>
+            <View style={styles.col}>
+              <Field label="Magasin" value={ic.nomMagasin} />
+              <Field label="N° magasin" value={ic.numeroDuMagasin} />
+              <Field label="Email magasin" value={ic.emailMagasin} />
+            </View>
+            <View style={styles.col}>
+              <Field label="RRV" value={ic.nomPrenomRRV} />
+              <Field label="Responsable" value={ic.nomPrenomResponsable} />
+              <Field label="Salarié" value={ic.nomPrenomSalarie} />
+            </View>
+          </View>
+          <Tags label="Actions effectuées en magasin" items={ic.actionsEnMagasin} />
+          <Text style={styles.subLabel}>Signature du salarié</Text>
+          {ic.signatureSalarie ? (
+            <View style={styles.signatureBox}>
+              <Image src={ic.signatureSalarie} style={styles.signatureImg} />
+            </View>
+          ) : (
+            <View style={styles.signatureBox}>
+              <Text style={{ fontSize: 9, color: '#9ca3af' }}>Non fournie</Text>
+            </View>
+          )}
+        </View>
+
+        <PageFooter numero={numeroReclamation} />
+      </Page>
     </Document>
   );
 }
