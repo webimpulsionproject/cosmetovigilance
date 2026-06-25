@@ -7,21 +7,14 @@ interface BlocProps {
 
 export function Bloc({ title, hint, children, className }: BlocProps) {
   return (
-    <div className={`mb-16 ${className ?? ''}`}>
-      <div className="flex items-center gap-3 mb-6">
-        <div style={{ width: 4, height: 22, background: '#6B3FA0', borderRadius: 9, flexShrink: 0 }} />
-        <h3 style={{ fontSize: 15, fontWeight: 700, color: '#1f2937', letterSpacing: '-0.01em', margin: 0 }}>
+    <div className={className} style={{ marginBottom: 48 }}>
+      <div style={{ marginBottom: 20, paddingBottom: 12, borderBottom: '1.5px solid #f3f4f6' }}>
+        <h3 style={{ fontSize: 13, fontWeight: 600, color: '#6B3FA0', textTransform: 'uppercase', letterSpacing: '0.07em', margin: 0 }}>
           {title}
         </h3>
+        {hint && <p style={{ fontSize: 12, color: '#9ca3af', marginTop: 4, marginBottom: 0 }}>{hint}</p>}
       </div>
-      {hint && (
-        <p style={{ fontSize: 13, color: '#9ca3af', marginTop: -14, marginBottom: 20, paddingLeft: 19 }}>
-          {hint}
-        </p>
-      )}
-      <div style={{ paddingLeft: 0 }}>
-        {children}
-      </div>
+      {children}
     </div>
   );
 }

@@ -325,7 +325,7 @@ export default function HomePage() {
 
       {/* Carte */}
       <div style={{
-        width: '100%', maxWidth: 780, position: 'relative', zIndex: 1,
+        width: '100%', maxWidth: 920, position: 'relative', zIndex: 1,
         background: 'white', borderRadius: 22,
         boxShadow: '0 12px 48px rgba(107,63,160,0.18), 0 2px 6px rgba(0,0,0,0.04)',
         overflow: 'hidden',
